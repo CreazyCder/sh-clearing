@@ -12,56 +12,57 @@ import org.springframework.stereotype.Service;
 
 /**
  * 结算通知服务
- * @author boip
  *
+ * @author boip
  */
 @Service
 public class SettleNotifyService {
-	@Autowired
-	private SettleOrderMapper mapper;
-	/**
-	 * 薄记应答处理
-	 * @param req
-	 * @return
-	 */
+    @Autowired
+    private SettleOrderMapper mapper;
+
+    /**
+     * 薄记应答处理
+     *
+     * @param req
+     * @return
+     */
     public ResultDto bondRsp(BondSettleNotifyReq req) {
+        SettleOrder order = SettleOrder.builder()
+                .settleOrderId(req.getSettleOrderId())
+                .bondSettleId(req.getBondSettleId())
+                .bondSettleStatus(req.getBondProcStatus())
+                .bondSettleStatusUpdateTm(DateUtil.getCurrDateTimeStr())
+                .build();
 
-	 SettleOrder order = SettleOrder.builder()
-	 .settleOrderId(req.getSettleOrderId())
-	 .bondSettleId(req.getBondSettleId())
-	 .bondSettleStatus(req.getBondProcStatus())
-	 .bondSettleStatusUpdateTm(DateUtil.getCurrDateTimeStr())
-	 .build();
+        int ret = mapper.updateByPrimaryKeySelective(order);
+        if (ret == 1) {
+            return new ResultDto("成功");
+        } else {
+            throw new YuspException("1", "未找到记录");
+        }
+    }
 
-	 int ret = mapper.updateByPrimaryKeySelective(order);
+    /**
+     * 资金应答处理
+     *
+     * @param req
+     * @return
+     */
+    public ResultDto cashRsp(CashSettleNotifyReq req) {
+        SettleOrder order = SettleOrder.builder()
+                .settleOrderId(req.getSettleOrderId())
+                .cashSettleId(req.getCashSettleId())
+                .cashSettleStatus(req.getCashProcStatus())
+                .cashSettleStatusUpdateTm(DateUtil.getCurrDateTimeStr())
+                .build();
 
+        //TODO 清算
+        int ret = mapper.updateByPrimaryKeySelective(order);
 
-	 if(ret==1) {
-		 return new ResultDto("成功");
-	 }else{
-		 throw new YuspException("1","未找到记录");
-	 }
-	 }
-	 /**
-	 * 资金应答处理
-	 * @param req
-	 * @return
-			 */
-	public ResultDto cashRsp(CashSettleNotifyReq req) {
-
-		SettleOrder order = SettleOrder.builder()
-				.settleOrderId(req.getSettleOrderId())
-				.cashSettleId(req.getCashSettleId())
-				.cashSettleStatus(req.getCashProcStatus())
-				.cashSettleStatusUpdateTm(DateUtil.getCurrDateTimeStr())
-				.build();
-
-		int ret = mapper.updateByPrimaryKeySelective(order);
-
-		if(ret==1) {
-			return new ResultDto("成功");
-		}else{
-			throw new YuspException("1","未找到记录");
-		}
-	}
+        if (ret == 1) {
+            return new ResultDto("成功");
+        } else {
+            throw new YuspException("1", "未找到记录");
+        }
+    }
 }

@@ -29,4 +29,31 @@ public interface ClearJobService {
      * @return 待处理列表.
      */
     List<SettleOrder> findNeedCashSettles(int size);
+
+    /**
+     * 变更结算指令状态.
+     *
+     * @param settleId     清算ID，
+     * @param settleStatus 清算状态.
+     * @return 更新数量.
+     */
+    int updateSettleStatus(String settleId, String settleStatus);
+
+    /**
+     * 变更簿记结算状态.
+     *
+     * @param settleId   清算ID，
+     * @param bondStatus 簿记状态.
+     * @return 更新数量.
+     */
+    int updateBondSettleStatus(String settleId, String bondStatus);
+
+    /**
+     * 变更资金结算状态.
+     *
+     * @param settleId   结算ID
+     * @param cashStatus 资金状态.
+     * @return 更新数量
+     */
+    int updateCashSettleStatus(String settleId, String cashStatus);
 }

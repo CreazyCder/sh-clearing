@@ -3,10 +3,13 @@ package cn.com.yusys.yusp.service.task;
 import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
 import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
 import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
-import cn.com.yusys.yusp.commons.mapper.QueryModel;
-import cn.com.yusys.yusp.repository.mapper.SettleOrderMapper;
+import cn.com.yusys.yusp.constant.CashSettleStatusEnum;
 import cn.com.yusys.yusp.service.CallService;
+import cn.com.yusys.yusp.service.ClearJobService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * 资金处理任务.
@@ -15,11 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since 2019/11/18
  */
 @JobHandler("cashHandler")
+@Service
 public class CashHandlerJob extends IJobHandler {
+    private Logger log = LoggerFactory.getLogger(CashHandlerJob.class);
     @Autowired
     private CallService callServ;
     @Autowired
-    private SettleOrderMapper mapper;
+    private ClearJobService jobService;
+
     /**
      * 针对簿记成功，进行资金处理.
      *
@@ -29,19 +35,20 @@ public class CashHandlerJob extends IJobHandler {
      */
     @Override
     public ReturnT<String> execute(String s) throws Exception {
-        //TODO 查询需要处理的列表
-        // TODO 调用接口
-
-        QueryModel model = new QueryModel();
-        model.setSize(100);
-        mapper.selectPageSettleByParam(model).forEach(obj -> {
-            obj.setCashSettleStatus("1");// 交割中
-
-            mapper.updateByPrimaryKeySelective(obj); //TODO 独立事务
-            // toSend
-            callServ.callCashSettleApply();
+        jobService.findNeedCashSettles(100).forEach(obj -> {
+            // 修改为交割中.
+            int number = 0;
+            try {
+                number = jobService.updateCashSettleStatus(obj.getSettleOrderId(), CashSettleStatusEnum.HANDLING.getCode());
+            } catch (Throwable e) {
+                log.warn("执行数据库操作异常:{}", number);
+            }
+            if (number != 0) {
+                // TODO 调用资金接口
+                callServ.callCashSettleApply();
+            }
         });
 
-        return null;
+        return new ReturnT<>();
     }
 }

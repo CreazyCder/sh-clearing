@@ -14,6 +14,7 @@ import cn.com.yusys.yusp.service.SettleOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
@@ -59,7 +60,7 @@ public class SettleOrderResource {
      * @return 录入完成的记录.
      */
     @PostMapping("/")
-    protected ResultDto<String> save(@RequestBody DVPSettleApplyReq applyReq) {
+    protected ResultDto<String> save(@Validated @RequestBody DVPSettleApplyReq applyReq) {
         int order = settleOrderService.insert(applyReq);
         if (order == 0) {
             throw new YuspException("clear_01", "插入待清算列表失败!");

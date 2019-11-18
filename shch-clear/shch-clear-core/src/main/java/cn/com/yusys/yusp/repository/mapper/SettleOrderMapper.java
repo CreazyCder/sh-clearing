@@ -47,15 +47,23 @@ public interface SettleOrderMapper {
      * @param size 指定记录.
      * @return 记录.
      */
-    List<SettleOrder> selectNeedBondSettles(int size);
+    List<SettleOrder> selectSettlesByStatus(@Param("size") int size,
+                                            @Param("bondStatus") String bondStatus);
 
     /**
-     * 查询需要资金的记录.
+     * 更新清算的状态.
      *
-     * @param size 指定数目.
-     * @return 需要处理的记录数.
+     * @param settleId     清算ID
+     * @param settleStatus 清算指令状态
+     * @param bondStatus   簿记状态
+     * @param cashStatus   资金状态
+     * @return 更新数目
      */
-    List<SettleOrder> selectNeedCashSettles(int size);
+    int updateSettleStatus(@Param("settleId") String settleId,
+                           @Param("settleStatus") String settleStatus,
+                           @Param("bondStatus") String bondStatus,
+                           @Param("cashStatus") String cashStatus,
+                           @Param("updateTime") String updateTime);
 
     /**
      * @方法名称: selectByPrimaryKey
