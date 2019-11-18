@@ -1,0 +1,1 @@
+package cn.com.yusys.yusp.web.rest;

@@ -1,0 +1,874 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.repository.mapper.SettleOrderMapper">
+    <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.domain.SettleOrder">
+        <id column="SETTLE_ORDER_ID" jdbcType="VARCHAR" property="settleOrderId"/>
+        <result column="BIZ_DATE" jdbcType="VARCHAR" property="bizDate"/>
+        <result column="TRADE_ID" jdbcType="VARCHAR" property="tradeId"/>
+        <result column="TRADE_DATE" jdbcType="VARCHAR" property="tradeDate"/>
+        <result column="BOND_CODE" jdbcType="VARCHAR" property="bondCode"/>
+        <result column="BOND_NAME" jdbcType="VARCHAR" property="bondName"/>
+        <result column="BOND_TYPE" jdbcType="VARCHAR" property="bondType"/>
+        <result column="BOND_FACE_AMT" jdbcType="NUMERIC" property="bondFaceAmt"/>
+        <result column="SETTLE_DATE" jdbcType="VARCHAR" property="settleDate"/>
+        <result column="SETTLE_TYPE" jdbcType="VARCHAR" property="settleType"/>
+        <result column="SETTLE_AMT" jdbcType="VARCHAR" property="settleAmt"/>
+        <result column="BUYER_MEM_CODE" jdbcType="VARCHAR" property="buyerMemCode"/>
+        <result column="BUYER_MEM_NAME" jdbcType="VARCHAR" property="buyerMemName"/>
+        <result column="BUYER_HOLDER_ACCOUNT" jdbcType="VARCHAR" property="buyerHolderAccount"/>
+        <result column="BUYER_HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="buyerHolderAccountName"/>
+        <result column="SELLER_MEM_CODE" jdbcType="VARCHAR" property="sellerMemCode"/>
+        <result column="SELLER_MEM_NAME" jdbcType="VARCHAR" property="sellerMemName"/>
+        <result column="SELLER_HOLDER_ACCOUNT" jdbcType="VARCHAR" property="sellerHolderAccount"/>
+        <result column="SELLER_HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="sellerHolderAccountName"/>
+        <result column="BOND_SETTLE_ID" jdbcType="VARCHAR" property="bondSettleId"/>
+        <result column="CASH_SETTLE_ID" jdbcType="VARCHAR" property="cashSettleId"/>
+        <result column="BOND_SETTLE_STATUS" jdbcType="VARCHAR" property="bondSettleStatus"/>
+        <result column="BOND_SETTLE_STATUS_UPDATE_TM" jdbcType="VARCHAR" property="bondSettleStatusUpdateTm"/>
+        <result column="CASH_SETTLE_STATUS" jdbcType="VARCHAR" property="cashSettleStatus"/>
+        <result column="CASH_SETTLE_STATUS_UPDATE_TM" jdbcType="VARCHAR" property="cashSettleStatusUpdateTm"/>
+        <result column="SETTLE_ORDER_STATUS" jdbcType="VARCHAR" property="settleOrderStatus"/>
+        <result column="SETTLE_ORDER_STATUS_UPDATE_TM" jdbcType="VARCHAR" property="settleOrderStatusUpdateTm"/>
+        <result column="CASH_PEROID" jdbcType="VARCHAR" property="cashPeroid"/>
+        <result column="BOND_PEROID" jdbcType="VARCHAR" property="bondPeroid"/>
+        <result column="INPUT_OPER_ID" jdbcType="VARCHAR" property="inputOperId"/>
+        <result column="INPUT_TM" jdbcType="VARCHAR" property="inputTm"/>
+        <result column="REVIEW_OPER_ID" jdbcType="VARCHAR" property="reviewOperId"/>
+        <result column="REVIEW_TM" jdbcType="VARCHAR" property="reviewTm"/>
+        <result column="CONFIRM_OPER_ID" jdbcType="VARCHAR" property="confirmOperId"/>
+        <result column="CONFIRM_TM" jdbcType="VARCHAR" property="confirmTm"/>
+        <result column="SRC_FROM" jdbcType="VARCHAR" property="srcFrom"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        BIZ_DATE,TRADE_ID,TRADE_DATE,BOND_CODE,BOND_NAME,BOND_TYPE,BOND_FACE_AMT,SETTLE_DATE,SETTLE_TYPE,SETTLE_AMT,BUYER_MEM_CODE,BUYER_MEM_NAME,BUYER_HOLDER_ACCOUNT,BUYER_HOLDER_ACCOUNT_NAME,SELLER_MEM_CODE,SELLER_MEM_NAME,SELLER_HOLDER_ACCOUNT,SELLER_HOLDER_ACCOUNT_NAME,SETTLE_ORDER_ID,BOND_SETTLE_ID,CASH_SETTLE_ID,BOND_SETTLE_STATUS,BOND_SETTLE_STATUS_UPDATE_TM,CASH_SETTLE_STATUS,CASH_SETTLE_STATUS_UPDATE_TM,SETTLE_ORDER_STATUS,SETTLE_ORDER_STATUS_UPDATE_TM,CASH_PEROID,BOND_PEROID,INPUT_OPER_ID,INPUT_TM,REVIEW_OPER_ID,REVIEW_TM,CONFIRM_OPER_ID,CONFIRM_TM,SRC_FROM,REMARK
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SETTLE_ORDER
+        where
+        SETTLE_ORDER_ID = #{settleOrderId,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 条件列表查询 -->
+    <select id="selectByModel" parameterType="cn.com.yusys.yusp.commons.mapper.QueryModel" resultMap="BaseResultMap">
+        select
+        BIZ_DATE,TRADE_ID,TRADE_DATE,BOND_CODE,BOND_NAME,BOND_TYPE,BOND_FACE_AMT,SETTLE_DATE,SETTLE_TYPE,SETTLE_AMT,BUYER_MEM_CODE,BUYER_MEM_NAME,BUYER_HOLDER_ACCOUNT,BUYER_HOLDER_ACCOUNT_NAME,SELLER_MEM_CODE,SELLER_MEM_NAME,SELLER_HOLDER_ACCOUNT,SELLER_HOLDER_ACCOUNT_NAME,SETTLE_ORDER_ID,BOND_SETTLE_ID,CASH_SETTLE_ID,BOND_SETTLE_STATUS,BOND_SETTLE_STATUS_UPDATE_TM,CASH_SETTLE_STATUS,CASH_SETTLE_STATUS_UPDATE_TM,SETTLE_ORDER_STATUS,SETTLE_ORDER_STATUS_UPDATE_TM,CASH_PEROID,BOND_PEROID,INPUT_OPER_ID,INPUT_TM,REVIEW_OPER_ID,REVIEW_TM,CONFIRM_OPER_ID,CONFIRM_TM,SRC_FROM,REMARK
+        from SETTLE_ORDER
+        <where>
+            <if test="condition.bizDate != null and condition.bizDate != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bizDate)">AND
+                        BIZ_DATE like #{condition.bizDate,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BIZ_DATE = #{condition.bizDate,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.tradeId != null and condition.tradeId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.tradeId)">AND
+                        TRADE_ID like #{condition.tradeId,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND TRADE_ID = #{condition.tradeId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.tradeDate != null and condition.tradeDate != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.tradeDate)">AND
+                        TRADE_DATE like #{condition.tradeDate,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND TRADE_DATE = #{condition.tradeDate,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondCode != null and condition.bondCode != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondCode)">AND
+                        BOND_CODE like #{condition.bondCode,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BOND_CODE = #{condition.bondCode,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondName != null and condition.bondName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondName)">AND
+                        BOND_NAME like #{condition.bondName,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BOND_NAME = #{condition.bondName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondType != null and condition.bondType != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondType)">AND
+                        BOND_TYPE like #{condition.bondType,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BOND_TYPE = #{condition.bondType,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondFaceAmt != null and condition.bondFaceAmt != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondFaceAmt)">AND
+                        BOND_FACE_AMT like #{condition.bondFaceAmt,jdbcType=NUMERIC }
+                    </when>
+                    <otherwise>AND BOND_FACE_AMT = #{condition.bondFaceAmt,jdbcType=NUMERIC}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.settleDate != null and condition.settleDate != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.settleDate)">AND
+                        SETTLE_DATE like #{condition.settleDate,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SETTLE_DATE = #{condition.settleDate,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.settleType != null and condition.settleType != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.settleType)">AND
+                        SETTLE_TYPE like #{condition.settleType,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SETTLE_TYPE = #{condition.settleType,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.settleAmt != null and condition.settleAmt != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.settleAmt)">AND
+                        SETTLE_AMT like #{condition.settleAmt,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SETTLE_AMT = #{condition.settleAmt,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.buyerMemCode != null and condition.buyerMemCode != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.buyerMemCode)">AND
+                        BUYER_MEM_CODE like #{condition.buyerMemCode,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BUYER_MEM_CODE = #{condition.buyerMemCode,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.buyerMemName != null and condition.buyerMemName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.buyerMemName)">AND
+                        BUYER_MEM_NAME like #{condition.buyerMemName,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BUYER_MEM_NAME = #{condition.buyerMemName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.buyerHolderAccount != null and condition.buyerHolderAccount != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.buyerHolderAccount)">
+                        AND BUYER_HOLDER_ACCOUNT like #{condition.buyerHolderAccount,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BUYER_HOLDER_ACCOUNT = #{condition.buyerHolderAccount,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.buyerHolderAccountName != null and condition.buyerHolderAccountName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.buyerHolderAccountName)">
+                        AND BUYER_HOLDER_ACCOUNT_NAME like #{condition.buyerHolderAccountName,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BUYER_HOLDER_ACCOUNT_NAME = #{condition.buyerHolderAccountName,jdbcType=VARCHAR}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="condition.sellerMemCode != null and condition.sellerMemCode != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.sellerMemCode)">AND
+                        SELLER_MEM_CODE like #{condition.sellerMemCode,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SELLER_MEM_CODE = #{condition.sellerMemCode,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.sellerMemName != null and condition.sellerMemName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.sellerMemName)">AND
+                        SELLER_MEM_NAME like #{condition.sellerMemName,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SELLER_MEM_NAME = #{condition.sellerMemName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.sellerHolderAccount != null and condition.sellerHolderAccount != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.sellerHolderAccount)">
+                        AND SELLER_HOLDER_ACCOUNT like #{condition.sellerHolderAccount,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SELLER_HOLDER_ACCOUNT = #{condition.sellerHolderAccount,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.sellerHolderAccountName != null and condition.sellerHolderAccountName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.sellerHolderAccountName)">
+                        AND SELLER_HOLDER_ACCOUNT_NAME like #{condition.sellerHolderAccountName,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SELLER_HOLDER_ACCOUNT_NAME = #{condition.sellerHolderAccountName,jdbcType=VARCHAR}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="condition.settleOrderId != null and condition.settleOrderId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.settleOrderId)">AND
+                        SETTLE_ORDER_ID like #{condition.settleOrderId,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SETTLE_ORDER_ID = #{condition.settleOrderId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondSettleId != null and condition.bondSettleId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondSettleId)">AND
+                        BOND_SETTLE_ID like #{condition.bondSettleId,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BOND_SETTLE_ID = #{condition.bondSettleId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.cashSettleId != null and condition.cashSettleId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashSettleId)">AND
+                        CASH_SETTLE_ID like #{condition.cashSettleId,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND CASH_SETTLE_ID = #{condition.cashSettleId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondSettleStatus != null and condition.bondSettleStatus != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondSettleStatus)">
+                        AND BOND_SETTLE_STATUS like #{condition.bondSettleStatus,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BOND_SETTLE_STATUS = #{condition.bondSettleStatus,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondSettleStatusUpdateTm != null and condition.bondSettleStatusUpdateTm != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondSettleStatusUpdateTm)">
+                        AND BOND_SETTLE_STATUS_UPDATE_TM like #{condition.bondSettleStatusUpdateTm,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BOND_SETTLE_STATUS_UPDATE_TM =
+                        #{condition.bondSettleStatusUpdateTm,jdbcType=VARCHAR}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="condition.cashSettleStatus != null and condition.cashSettleStatus != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashSettleStatus)">
+                        AND CASH_SETTLE_STATUS like #{condition.cashSettleStatus,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND CASH_SETTLE_STATUS = #{condition.cashSettleStatus,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.cashSettleStatusUpdateTm != null and condition.cashSettleStatusUpdateTm != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashSettleStatusUpdateTm)">
+                        AND CASH_SETTLE_STATUS_UPDATE_TM like #{condition.cashSettleStatusUpdateTm,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND CASH_SETTLE_STATUS_UPDATE_TM =
+                        #{condition.cashSettleStatusUpdateTm,jdbcType=VARCHAR}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="condition.settleOrderStatus != null and condition.settleOrderStatus != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.settleOrderStatus)">
+                        AND SETTLE_ORDER_STATUS like #{condition.settleOrderStatus,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SETTLE_ORDER_STATUS = #{condition.settleOrderStatus,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.settleOrderStatusUpdateTm != null and condition.settleOrderStatusUpdateTm != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.settleOrderStatusUpdateTm)">
+                        AND SETTLE_ORDER_STATUS_UPDATE_TM like #{condition.settleOrderStatusUpdateTm,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SETTLE_ORDER_STATUS_UPDATE_TM =
+                        #{condition.settleOrderStatusUpdateTm,jdbcType=VARCHAR}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="condition.cashPeroid != null and condition.cashPeroid != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashPeroid)">AND
+                        CASH_PEROID like #{condition.cashPeroid,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND CASH_PEROID = #{condition.cashPeroid,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondPeroid != null and condition.bondPeroid != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondPeroid)">AND
+                        BOND_PEROID like #{condition.bondPeroid,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND BOND_PEROID = #{condition.bondPeroid,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.inputOperId != null and condition.inputOperId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.inputOperId)">AND
+                        INPUT_OPER_ID like #{condition.inputOperId,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND INPUT_OPER_ID = #{condition.inputOperId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.inputTm != null and condition.inputTm != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.inputTm)">AND
+                        INPUT_TM like #{condition.inputTm,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND INPUT_TM = #{condition.inputTm,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.reviewOperId != null and condition.reviewOperId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.reviewOperId)">AND
+                        REVIEW_OPER_ID like #{condition.reviewOperId,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND REVIEW_OPER_ID = #{condition.reviewOperId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.reviewTm != null and condition.reviewTm != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.reviewTm)">AND
+                        REVIEW_TM like #{condition.reviewTm,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND REVIEW_TM = #{condition.reviewTm,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.confirmOperId != null and condition.confirmOperId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.confirmOperId)">AND
+                        CONFIRM_OPER_ID like #{condition.confirmOperId,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND CONFIRM_OPER_ID = #{condition.confirmOperId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.confirmTm != null and condition.confirmTm != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.confirmTm)">AND
+                        CONFIRM_TM like #{condition.confirmTm,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND CONFIRM_TM = #{condition.confirmTm,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.srcFrom != null and condition.srcFrom != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.srcFrom)">AND
+                        SRC_FROM like #{condition.srcFrom,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND SRC_FROM = #{condition.srcFrom,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.remark != null and condition.remark != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.remark)">AND REMARK
+                        like #{condition.remark,jdbcType=VARCHAR }
+                    </when>
+                    <otherwise>AND REMARK = #{condition.remark,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            ${dataAuth}
+        </where>
+        <if test="sort != null">order by ${sort}</if>
+    </select>
+
+    <!--分页查询参数-->
+    <select id="selectPageSettleByParam" resultType="cn.com.yusys.yusp.domain.SettleOrder">
+        select
+        BIZ_DATE,TRADE_ID,TRADE_DATE,BOND_CODE,BOND_NAME,BOND_TYPE,BOND_FACE_AMT,SETTLE_DATE,SETTLE_TYPE,SETTLE_AMT,BUYER_MEM_CODE,BUYER_MEM_NAME,BUYER_HOLDER_ACCOUNT,BUYER_HOLDER_ACCOUNT_NAME,SELLER_MEM_CODE,SELLER_MEM_NAME,SELLER_HOLDER_ACCOUNT,SELLER_HOLDER_ACCOUNT_NAME,SETTLE_ORDER_ID,BOND_SETTLE_ID,CASH_SETTLE_ID,BOND_SETTLE_STATUS,BOND_SETTLE_STATUS_UPDATE_TM,CASH_SETTLE_STATUS,CASH_SETTLE_STATUS_UPDATE_TM,SETTLE_ORDER_STATUS,SETTLE_ORDER_STATUS_UPDATE_TM,CASH_PEROID,BOND_PEROID,INPUT_OPER_ID,INPUT_TM,REVIEW_OPER_ID,REVIEW_TM,CONFIRM_OPER_ID,CONFIRM_TM,SRC_FROM,REMARK
+        from SETTLE_ORDER
+        <where>
+            <if test="condition.tradeDateStart != null and condition.tradeDateStart != ''">
+                and BIZ_DATE &gt;= #{condition.tradeDateStart,jdbcType=VARCHAR}
+            </if>
+            <if test="condition.tradeDateEnd != null and condition.tradeDateEnd != ''">
+                and BIZ_DATE &lt;= #{condition.tradeDateEnd,jdbcType=VARCHAR}
+            </if>
+            <if test="condition.tradeId != null and condition.tradeId != ''">
+                AND TRADE_ID = #{condition.tradeId,jdbcType=VARCHAR}
+            </if>
+            <if test="condition.settleOrderId!=null and condition.settleOrderId!=''">
+                AND SETTLE_ORDER_ID=#{condition.settleOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="condition.settleDateStart!=null and condition.settleDateStart!=''">
+                AND SETTLE_DATE &gt;=#{condition.settleDateStart,jdbcType=VARCHAR}
+            </if>
+            <if test="condition.settleDateEnd!=null and condition.settleDateEnd!=''">
+                AND SETTLE_DATE &lt;=#{condition.settleDateEnd,jdbcType=VARCHAR}
+            </if>
+            <if test="condition.srcFrom!=null and condition.srcFrom!=''">
+                AND ARC_FROM =#{condition.srcFrom,jdbcType=VARCHAR}
+            </if>
+            <if test="condition.memCode!=null and condition.memCode!=''">
+                AND (BUYER_MEM_CODE = #{condition.memCode,jdbcType=VARCHAR}
+                OR SELLER_MEM_CODE = #{condition.memCode,jdbcType=VARCHAR}
+                )
+            </if>
+            <if test="condition.holderAccount!=null and condition.holderAccount!=''">
+                AND (BUYER_HOLDER_ACCOUNT =#{condition.holderAccount,jdbcType=VARCHAR}
+                OR SELLER_HOLDER_ACCOUNT =#{condition.holderAccount,jdbcType=VARCHAR}
+                )
+            </if>
+            <if test="condition.bondCode!=null and condition.bondCode!=''">
+                AND BOND_CODE=#{condition.bondCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by INPUT_TM
+    </select>
+
+    <!-- 插入 -->
+    <insert id="insert" parameterType="cn.com.yusys.yusp.domain.SettleOrder">
+        insert into SETTLE_ORDER (BIZ_DATE, TRADE_ID, TRADE_DATE, BOND_CODE, BOND_NAME, BOND_TYPE, BOND_FACE_AMT,
+                                  SETTLE_DATE, SETTLE_TYPE, SETTLE_AMT, BUYER_MEM_CODE, BUYER_MEM_NAME,
+                                  BUYER_HOLDER_ACCOUNT, BUYER_HOLDER_ACCOUNT_NAME, SELLER_MEM_CODE, SELLER_MEM_NAME,
+                                  SELLER_HOLDER_ACCOUNT, SELLER_HOLDER_ACCOUNT_NAME, SETTLE_ORDER_ID, BOND_SETTLE_ID,
+                                  CASH_SETTLE_ID, BOND_SETTLE_STATUS, BOND_SETTLE_STATUS_UPDATE_TM, CASH_SETTLE_STATUS,
+                                  CASH_SETTLE_STATUS_UPDATE_TM, SETTLE_ORDER_STATUS, SETTLE_ORDER_STATUS_UPDATE_TM,
+                                  CASH_PEROID, BOND_PEROID, INPUT_OPER_ID, INPUT_TM, REVIEW_OPER_ID, REVIEW_TM,
+                                  CONFIRM_OPER_ID, CONFIRM_TM, SRC_FROM, REMARK)
+        values (#{bizDate,jdbcType=VARCHAR},
+                #{tradeId,jdbcType=VARCHAR},
+                #{tradeDate,jdbcType=VARCHAR},
+                #{bondCode,jdbcType=VARCHAR},
+                #{bondName,jdbcType=VARCHAR},
+                #{bondType,jdbcType=VARCHAR},
+                #{bondFaceAmt,jdbcType=NUMERIC},
+                #{settleDate,jdbcType=VARCHAR},
+                #{settleType,jdbcType=VARCHAR},
+                #{settleAmt,jdbcType=VARCHAR},
+                #{buyerMemCode,jdbcType=VARCHAR},
+                #{buyerMemName,jdbcType=VARCHAR},
+                #{buyerHolderAccount,jdbcType=VARCHAR},
+                #{buyerHolderAccountName,jdbcType=VARCHAR},
+                #{sellerMemCode,jdbcType=VARCHAR},
+                #{sellerMemName,jdbcType=VARCHAR},
+                #{sellerHolderAccount,jdbcType=VARCHAR},
+                #{sellerHolderAccountName,jdbcType=VARCHAR},
+                #{settleOrderId,jdbcType=VARCHAR},
+                #{bondSettleId,jdbcType=VARCHAR},
+                #{cashSettleId,jdbcType=VARCHAR},
+                #{bondSettleStatus,jdbcType=VARCHAR},
+                #{bondSettleStatusUpdateTm,jdbcType=VARCHAR},
+                #{cashSettleStatus,jdbcType=VARCHAR},
+                #{cashSettleStatusUpdateTm,jdbcType=VARCHAR},
+                #{settleOrderStatus,jdbcType=VARCHAR},
+                #{settleOrderStatusUpdateTm,jdbcType=VARCHAR},
+                #{cashPeroid,jdbcType=VARCHAR},
+                #{bondPeroid,jdbcType=VARCHAR},
+                #{inputOperId,jdbcType=VARCHAR},
+                #{inputTm,jdbcType=VARCHAR},
+                #{reviewOperId,jdbcType=VARCHAR},
+                #{reviewTm,jdbcType=VARCHAR},
+                #{confirmOperId,jdbcType=VARCHAR},
+                #{confirmTm,jdbcType=VARCHAR},
+                #{srcFrom,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 插入-只插入非空字段 -->
+    <insert id="insertSelective" parameterType="cn.com.yusys.yusp.domain.SettleOrder">
+        insert into SETTLE_ORDER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bizDate != null">
+                BIZ_DATE,
+            </if>
+            <if test="tradeId != null">
+                TRADE_ID,
+            </if>
+            <if test="tradeDate != null">
+                TRADE_DATE,
+            </if>
+            <if test="bondCode != null">
+                BOND_CODE,
+            </if>
+            <if test="bondName != null">
+                BOND_NAME,
+            </if>
+            <if test="bondType != null">
+                BOND_TYPE,
+            </if>
+            <if test="bondFaceAmt != null">
+                BOND_FACE_AMT,
+            </if>
+            <if test="settleDate != null">
+                SETTLE_DATE,
+            </if>
+            <if test="settleType != null">
+                SETTLE_TYPE,
+            </if>
+            <if test="settleAmt != null">
+                SETTLE_AMT,
+            </if>
+            <if test="buyerMemCode != null">
+                BUYER_MEM_CODE,
+            </if>
+            <if test="buyerMemName != null">
+                BUYER_MEM_NAME,
+            </if>
+            <if test="buyerHolderAccount != null">
+                BUYER_HOLDER_ACCOUNT,
+            </if>
+            <if test="buyerHolderAccountName != null">
+                BUYER_HOLDER_ACCOUNT_NAME,
+            </if>
+            <if test="sellerMemCode != null">
+                SELLER_MEM_CODE,
+            </if>
+            <if test="sellerMemName != null">
+                SELLER_MEM_NAME,
+            </if>
+            <if test="sellerHolderAccount != null">
+                SELLER_HOLDER_ACCOUNT,
+            </if>
+            <if test="sellerHolderAccountName != null">
+                SELLER_HOLDER_ACCOUNT_NAME,
+            </if>
+            <if test="settleOrderId != null">
+                SETTLE_ORDER_ID,
+            </if>
+            <if test="bondSettleId != null">
+                BOND_SETTLE_ID,
+            </if>
+            <if test="cashSettleId != null">
+                CASH_SETTLE_ID,
+            </if>
+            <if test="bondSettleStatus != null">
+                BOND_SETTLE_STATUS,
+            </if>
+            <if test="bondSettleStatusUpdateTm != null">
+                BOND_SETTLE_STATUS_UPDATE_TM,
+            </if>
+            <if test="cashSettleStatus != null">
+                CASH_SETTLE_STATUS,
+            </if>
+            <if test="cashSettleStatusUpdateTm != null">
+                CASH_SETTLE_STATUS_UPDATE_TM,
+            </if>
+            <if test="settleOrderStatus != null">
+                SETTLE_ORDER_STATUS,
+            </if>
+            <if test="settleOrderStatusUpdateTm != null">
+                SETTLE_ORDER_STATUS_UPDATE_TM,
+            </if>
+            <if test="cashPeroid != null">
+                CASH_PEROID,
+            </if>
+            <if test="bondPeroid != null">
+                BOND_PEROID,
+            </if>
+            <if test="inputOperId != null">
+                INPUT_OPER_ID,
+            </if>
+            <if test="inputTm != null">
+                INPUT_TM,
+            </if>
+            <if test="reviewOperId != null">
+                REVIEW_OPER_ID,
+            </if>
+            <if test="reviewTm != null">
+                REVIEW_TM,
+            </if>
+            <if test="confirmOperId != null">
+                CONFIRM_OPER_ID,
+            </if>
+            <if test="confirmTm != null">
+                CONFIRM_TM,
+            </if>
+            <if test="srcFrom != null">
+                SRC_FROM,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bizDate != null">
+                #{bizDate,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeId != null">
+                #{tradeId,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeDate != null">
+                #{tradeDate,jdbcType=VARCHAR},
+            </if>
+            <if test="bondCode != null">
+                #{bondCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bondName != null">
+                #{bondName,jdbcType=VARCHAR},
+            </if>
+            <if test="bondType != null">
+                #{bondType,jdbcType=VARCHAR},
+            </if>
+            <if test="bondFaceAmt != null">
+                #{bondFaceAmt,jdbcType=NUMERIC},
+            </if>
+            <if test="settleDate != null">
+                #{settleDate,jdbcType=VARCHAR},
+            </if>
+            <if test="settleType != null">
+                #{settleType,jdbcType=VARCHAR},
+            </if>
+            <if test="settleAmt != null">
+                #{settleAmt,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerMemCode != null">
+                #{buyerMemCode,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerMemName != null">
+                #{buyerMemName,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerHolderAccount != null">
+                #{buyerHolderAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerHolderAccountName != null">
+                #{buyerHolderAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerMemCode != null">
+                #{sellerMemCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerMemName != null">
+                #{sellerMemName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerHolderAccount != null">
+                #{sellerHolderAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerHolderAccountName != null">
+                #{sellerHolderAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="settleOrderId != null">
+                #{settleOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="bondSettleId != null">
+                #{bondSettleId,jdbcType=VARCHAR},
+            </if>
+            <if test="cashSettleId != null">
+                #{cashSettleId,jdbcType=VARCHAR},
+            </if>
+            <if test="bondSettleStatus != null">
+                #{bondSettleStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="bondSettleStatusUpdateTm != null">
+                #{bondSettleStatusUpdateTm,jdbcType=VARCHAR},
+            </if>
+            <if test="cashSettleStatus != null">
+                #{cashSettleStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="cashSettleStatusUpdateTm != null">
+                #{cashSettleStatusUpdateTm,jdbcType=VARCHAR},
+            </if>
+            <if test="settleOrderStatus != null">
+                #{settleOrderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="settleOrderStatusUpdateTm != null">
+                #{settleOrderStatusUpdateTm,jdbcType=VARCHAR},
+            </if>
+            <if test="cashPeroid != null">
+                #{cashPeroid,jdbcType=VARCHAR},
+            </if>
+            <if test="bondPeroid != null">
+                #{bondPeroid,jdbcType=VARCHAR},
+            </if>
+            <if test="inputOperId != null">
+                #{inputOperId,jdbcType=VARCHAR},
+            </if>
+            <if test="inputTm != null">
+                #{inputTm,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewOperId != null">
+                #{reviewOperId,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewTm != null">
+                #{reviewTm,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmOperId != null">
+                #{confirmOperId,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmTm != null">
+                #{confirmTm,jdbcType=VARCHAR},
+            </if>
+            <if test="srcFrom != null">
+                #{srcFrom,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 根据主键更新 -->
+    <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.domain.SettleOrder">
+        update SETTLE_ORDER
+        set BIZ_DATE                      = #{bizDate,jdbcType=VARCHAR},
+            TRADE_ID                      = #{tradeId,jdbcType=VARCHAR},
+            TRADE_DATE                    = #{tradeDate,jdbcType=VARCHAR},
+            BOND_CODE                     = #{bondCode,jdbcType=VARCHAR},
+            BOND_NAME                     = #{bondName,jdbcType=VARCHAR},
+            BOND_TYPE                     = #{bondType,jdbcType=VARCHAR},
+            BOND_FACE_AMT                 = #{bondFaceAmt,jdbcType=NUMERIC},
+            SETTLE_DATE                   = #{settleDate,jdbcType=VARCHAR},
+            SETTLE_TYPE                   = #{settleType,jdbcType=VARCHAR},
+            SETTLE_AMT                    = #{settleAmt,jdbcType=VARCHAR},
+            BUYER_MEM_CODE                = #{buyerMemCode,jdbcType=VARCHAR},
+            BUYER_MEM_NAME                = #{buyerMemName,jdbcType=VARCHAR},
+            BUYER_HOLDER_ACCOUNT          = #{buyerHolderAccount,jdbcType=VARCHAR},
+            BUYER_HOLDER_ACCOUNT_NAME     = #{buyerHolderAccountName,jdbcType=VARCHAR},
+            SELLER_MEM_CODE               = #{sellerMemCode,jdbcType=VARCHAR},
+            SELLER_MEM_NAME               = #{sellerMemName,jdbcType=VARCHAR},
+            SELLER_HOLDER_ACCOUNT         = #{sellerHolderAccount,jdbcType=VARCHAR},
+            SELLER_HOLDER_ACCOUNT_NAME    = #{sellerHolderAccountName,jdbcType=VARCHAR},
+            SETTLE_ORDER_ID               = #{settleOrderId,jdbcType=VARCHAR},
+            BOND_SETTLE_ID                = #{bondSettleId,jdbcType=VARCHAR},
+            CASH_SETTLE_ID                = #{cashSettleId,jdbcType=VARCHAR},
+            BOND_SETTLE_STATUS            = #{bondSettleStatus,jdbcType=VARCHAR},
+            BOND_SETTLE_STATUS_UPDATE_TM  = #{bondSettleStatusUpdateTm,jdbcType=VARCHAR},
+            CASH_SETTLE_STATUS            = #{cashSettleStatus,jdbcType=VARCHAR},
+            CASH_SETTLE_STATUS_UPDATE_TM  = #{cashSettleStatusUpdateTm,jdbcType=VARCHAR},
+            SETTLE_ORDER_STATUS           = #{settleOrderStatus,jdbcType=VARCHAR},
+            SETTLE_ORDER_STATUS_UPDATE_TM = #{settleOrderStatusUpdateTm,jdbcType=VARCHAR},
+            CASH_PEROID                   = #{cashPeroid,jdbcType=VARCHAR},
+            BOND_PEROID                   = #{bondPeroid,jdbcType=VARCHAR},
+            INPUT_OPER_ID                 = #{inputOperId,jdbcType=VARCHAR},
+            INPUT_TM                      = #{inputTm,jdbcType=VARCHAR},
+            REVIEW_OPER_ID                = #{reviewOperId,jdbcType=VARCHAR},
+            REVIEW_TM                     = #{reviewTm,jdbcType=VARCHAR},
+            CONFIRM_OPER_ID               = #{confirmOperId,jdbcType=VARCHAR},
+            CONFIRM_TM                    = #{confirmTm,jdbcType=VARCHAR},
+            SRC_FROM                      = #{srcFrom,jdbcType=VARCHAR},
+            REMARK                        = #{remark,jdbcType=VARCHAR}
+        where SETTLE_ORDER_ID = #{settleOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 根据主键更新-只更新非空字段 -->
+    <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.domain.SettleOrder">
+        update SETTLE_ORDER
+        <set>
+            <if test="bizDate != null">
+                BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeId != null">
+                TRADE_ID = #{tradeId,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeDate != null">
+                TRADE_DATE = #{tradeDate,jdbcType=VARCHAR},
+            </if>
+            <if test="bondCode != null">
+                BOND_CODE = #{bondCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bondName != null">
+                BOND_NAME = #{bondName,jdbcType=VARCHAR},
+            </if>
+            <if test="bondType != null">
+                BOND_TYPE = #{bondType,jdbcType=VARCHAR},
+            </if>
+            <if test="bondFaceAmt != null">
+                BOND_FACE_AMT = #{bondFaceAmt,jdbcType=NUMERIC},
+            </if>
+            <if test="settleDate != null">
+                SETTLE_DATE = #{settleDate,jdbcType=VARCHAR},
+            </if>
+            <if test="settleType != null">
+                SETTLE_TYPE = #{settleType,jdbcType=VARCHAR},
+            </if>
+            <if test="settleAmt != null">
+                SETTLE_AMT = #{settleAmt,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerMemCode != null">
+                BUYER_MEM_CODE = #{buyerMemCode,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerMemName != null">
+                BUYER_MEM_NAME = #{buyerMemName,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerHolderAccount != null">
+                BUYER_HOLDER_ACCOUNT = #{buyerHolderAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerHolderAccountName != null">
+                BUYER_HOLDER_ACCOUNT_NAME = #{buyerHolderAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerMemCode != null">
+                SELLER_MEM_CODE = #{sellerMemCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerMemName != null">
+                SELLER_MEM_NAME = #{sellerMemName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerHolderAccount != null">
+                SELLER_HOLDER_ACCOUNT = #{sellerHolderAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerHolderAccountName != null">
+                SELLER_HOLDER_ACCOUNT_NAME = #{sellerHolderAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="settleOrderId != null">
+                SETTLE_ORDER_ID = #{settleOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="bondSettleId != null">
+                BOND_SETTLE_ID = #{bondSettleId,jdbcType=VARCHAR},
+            </if>
+            <if test="cashSettleId != null">
+                CASH_SETTLE_ID = #{cashSettleId,jdbcType=VARCHAR},
+            </if>
+            <if test="bondSettleStatus != null">
+                BOND_SETTLE_STATUS = #{bondSettleStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="bondSettleStatusUpdateTm != null">
+                BOND_SETTLE_STATUS_UPDATE_TM = #{bondSettleStatusUpdateTm,jdbcType=VARCHAR},
+            </if>
+            <if test="cashSettleStatus != null">
+                CASH_SETTLE_STATUS = #{cashSettleStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="cashSettleStatusUpdateTm != null">
+                CASH_SETTLE_STATUS_UPDATE_TM = #{cashSettleStatusUpdateTm,jdbcType=VARCHAR},
+            </if>
+            <if test="settleOrderStatus != null">
+                SETTLE_ORDER_STATUS = #{settleOrderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="settleOrderStatusUpdateTm != null">
+                SETTLE_ORDER_STATUS_UPDATE_TM = #{settleOrderStatusUpdateTm,jdbcType=VARCHAR},
+            </if>
+            <if test="cashPeroid != null">
+                CASH_PEROID = #{cashPeroid,jdbcType=VARCHAR},
+            </if>
+            <if test="bondPeroid != null">
+                BOND_PEROID = #{bondPeroid,jdbcType=VARCHAR},
+            </if>
+            <if test="inputOperId != null">
+                INPUT_OPER_ID = #{inputOperId,jdbcType=VARCHAR},
+            </if>
+            <if test="inputTm != null">
+                INPUT_TM = #{inputTm,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewOperId != null">
+                REVIEW_OPER_ID = #{reviewOperId,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewTm != null">
+                REVIEW_TM = #{reviewTm,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmOperId != null">
+                CONFIRM_OPER_ID = #{confirmOperId,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmTm != null">
+                CONFIRM_TM = #{confirmTm,jdbcType=VARCHAR},
+            </if>
+            <if test="srcFrom != null">
+                SRC_FROM = #{srcFrom,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+        SETTLE_ORDER_ID = #{settleOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteByPrimaryKey">
+        delete
+        from SETTLE_ORDER
+        where SETTLE_ORDER_ID = #{settleOrderId,jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 根据多个主键删除 -->
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from SETTLE_ORDER where SETTLE_ORDER_ID in
+        <foreach collection="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@toList('java.lang.String',ids)"
+                 open="(" close=")" separator="," item="settleOrderId">
+            #{settleOrderId,jdbcType=VARCHAR}
+        </foreach>
+        <if test="_parameter.containsKey('dataAuth')">${dataAuth}</if>
+    </delete>
+</mapper>

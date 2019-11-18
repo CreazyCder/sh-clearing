@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.repository.mapper.CashSettleOrderMapper">
+  <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.domain.CashSettleOrder">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="SERIAL_NUM" jdbcType="VARCHAR" property="serialNum" />
+    <result column="TRADE_ID" jdbcType="VARCHAR" property="tradeId" />
+    <result column="CASH_SETTLE_ID" jdbcType="VARCHAR" property="cashSettleId" />
+    <result column="CASH_ACCOUNT" jdbcType="VARCHAR" property="cashAccount" />
+    <result column="CASH_ACCOUNT_NAME" jdbcType="VARCHAR" property="cashAccountName" />
+    <result column="DEBIT_MEM_ID" jdbcType="VARCHAR" property="debitMemId" />
+    <result column="DEBIT_MEM_NAME" jdbcType="VARCHAR" property="debitMemName" />
+    <result column="DEBIT_HOLDER_ACCOUNT" jdbcType="VARCHAR" property="debitHolderAccount" />
+    <result column="DEBIT_HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="debitHolderAccountName" />
+    <result column="CASH_DEBIT_TITLE" jdbcType="VARCHAR" property="cashDebitTitle" />
+    <result column="CREDIT_MEM_ID" jdbcType="VARCHAR" property="creditMemId" />
+    <result column="CREDIT_MEM_NAME" jdbcType="VARCHAR" property="creditMemName" />
+    <result column="CREDIT_HOLDER_ACCOUNT" jdbcType="VARCHAR" property="creditHolderAccount" />
+    <result column="CREDIT_HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="creditHolderAccountName" />
+    <result column="CASH_CREDIT_TITLE" jdbcType="VARCHAR" property="cashCreditTitle" />
+    <result column="CASH_SETTLE_AMT" jdbcType="NUMERIC" property="cashSettleAmt" />
+    <result column="UPDATE_TM" jdbcType="VARCHAR" property="updateTm" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CASH_PROC_STATUS" jdbcType="VARCHAR" property="cashProcStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    SERIAL_NUM, TRADE_ID, CASH_SETTLE_ID, CASH_ACCOUNT, CASH_ACCOUNT_NAME, DEBIT_MEM_ID, 
+    DEBIT_MEM_NAME, DEBIT_HOLDER_ACCOUNT, DEBIT_HOLDER_ACCOUNT_NAME, CASH_DEBIT_TITLE, 
+    CREDIT_MEM_ID, CREDIT_MEM_NAME, CREDIT_HOLDER_ACCOUNT, CREDIT_HOLDER_ACCOUNT_NAME, 
+    CASH_CREDIT_TITLE, CASH_SETTLE_AMT, UPDATE_TM, REMARK, CASH_PROC_STATUS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from CASH_SETTLE_ORDER
+    where SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from CASH_SETTLE_ORDER
+    where SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.yusys.yusp.domain.CashSettleOrder">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into CASH_SETTLE_ORDER (SERIAL_NUM, TRADE_ID, CASH_SETTLE_ID, 
+      CASH_ACCOUNT, CASH_ACCOUNT_NAME, DEBIT_MEM_ID, 
+      DEBIT_MEM_NAME, DEBIT_HOLDER_ACCOUNT, DEBIT_HOLDER_ACCOUNT_NAME, 
+      CASH_DEBIT_TITLE, CREDIT_MEM_ID, CREDIT_MEM_NAME, 
+      CREDIT_HOLDER_ACCOUNT, CREDIT_HOLDER_ACCOUNT_NAME, 
+      CASH_CREDIT_TITLE, CASH_SETTLE_AMT, UPDATE_TM, 
+      REMARK, CASH_PROC_STATUS)
+    values (#{serialNum,jdbcType=VARCHAR}, #{tradeId,jdbcType=VARCHAR}, #{cashSettleId,jdbcType=VARCHAR}, 
+      #{cashAccount,jdbcType=VARCHAR}, #{cashAccountName,jdbcType=VARCHAR}, #{debitMemId,jdbcType=VARCHAR}, 
+      #{debitMemName,jdbcType=VARCHAR}, #{debitHolderAccount,jdbcType=VARCHAR}, #{debitHolderAccountName,jdbcType=VARCHAR}, 
+      #{cashDebitTitle,jdbcType=VARCHAR}, #{creditMemId,jdbcType=VARCHAR}, #{creditMemName,jdbcType=VARCHAR}, 
+      #{creditHolderAccount,jdbcType=VARCHAR}, #{creditHolderAccountName,jdbcType=VARCHAR}, 
+      #{cashCreditTitle,jdbcType=VARCHAR}, #{cashSettleAmt,jdbcType=NUMERIC}, #{updateTm,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{cashProcStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.yusys.yusp.domain.CashSettleOrder">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into CASH_SETTLE_ORDER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNum != null">
+        SERIAL_NUM,
+      </if>
+      <if test="tradeId != null">
+        TRADE_ID,
+      </if>
+      <if test="cashSettleId != null">
+        CASH_SETTLE_ID,
+      </if>
+      <if test="cashAccount != null">
+        CASH_ACCOUNT,
+      </if>
+      <if test="cashAccountName != null">
+        CASH_ACCOUNT_NAME,
+      </if>
+      <if test="debitMemId != null">
+        DEBIT_MEM_ID,
+      </if>
+      <if test="debitMemName != null">
+        DEBIT_MEM_NAME,
+      </if>
+      <if test="debitHolderAccount != null">
+        DEBIT_HOLDER_ACCOUNT,
+      </if>
+      <if test="debitHolderAccountName != null">
+        DEBIT_HOLDER_ACCOUNT_NAME,
+      </if>
+      <if test="cashDebitTitle != null">
+        CASH_DEBIT_TITLE,
+      </if>
+      <if test="creditMemId != null">
+        CREDIT_MEM_ID,
+      </if>
+      <if test="creditMemName != null">
+        CREDIT_MEM_NAME,
+      </if>
+      <if test="creditHolderAccount != null">
+        CREDIT_HOLDER_ACCOUNT,
+      </if>
+      <if test="creditHolderAccountName != null">
+        CREDIT_HOLDER_ACCOUNT_NAME,
+      </if>
+      <if test="cashCreditTitle != null">
+        CASH_CREDIT_TITLE,
+      </if>
+      <if test="cashSettleAmt != null">
+        CASH_SETTLE_AMT,
+      </if>
+      <if test="updateTm != null">
+        UPDATE_TM,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="cashProcStatus != null">
+        CASH_PROC_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNum != null">
+        #{serialNum,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeId != null">
+        #{tradeId,jdbcType=VARCHAR},
+      </if>
+      <if test="cashSettleId != null">
+        #{cashSettleId,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAccount != null">
+        #{cashAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAccountName != null">
+        #{cashAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="debitMemId != null">
+        #{debitMemId,jdbcType=VARCHAR},
+      </if>
+      <if test="debitMemName != null">
+        #{debitMemName,jdbcType=VARCHAR},
+      </if>
+      <if test="debitHolderAccount != null">
+        #{debitHolderAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="debitHolderAccountName != null">
+        #{debitHolderAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="cashDebitTitle != null">
+        #{cashDebitTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="creditMemId != null">
+        #{creditMemId,jdbcType=VARCHAR},
+      </if>
+      <if test="creditMemName != null">
+        #{creditMemName,jdbcType=VARCHAR},
+      </if>
+      <if test="creditHolderAccount != null">
+        #{creditHolderAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="creditHolderAccountName != null">
+        #{creditHolderAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="cashCreditTitle != null">
+        #{cashCreditTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="cashSettleAmt != null">
+        #{cashSettleAmt,jdbcType=NUMERIC},
+      </if>
+      <if test="updateTm != null">
+        #{updateTm,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cashProcStatus != null">
+        #{cashProcStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.domain.CashSettleOrder">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update CASH_SETTLE_ORDER
+    <set>
+      <if test="tradeId != null">
+        TRADE_ID = #{tradeId,jdbcType=VARCHAR},
+      </if>
+      <if test="cashSettleId != null">
+        CASH_SETTLE_ID = #{cashSettleId,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAccount != null">
+        CASH_ACCOUNT = #{cashAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAccountName != null">
+        CASH_ACCOUNT_NAME = #{cashAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="debitMemId != null">
+        DEBIT_MEM_ID = #{debitMemId,jdbcType=VARCHAR},
+      </if>
+      <if test="debitMemName != null">
+        DEBIT_MEM_NAME = #{debitMemName,jdbcType=VARCHAR},
+      </if>
+      <if test="debitHolderAccount != null">
+        DEBIT_HOLDER_ACCOUNT = #{debitHolderAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="debitHolderAccountName != null">
+        DEBIT_HOLDER_ACCOUNT_NAME = #{debitHolderAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="cashDebitTitle != null">
+        CASH_DEBIT_TITLE = #{cashDebitTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="creditMemId != null">
+        CREDIT_MEM_ID = #{creditMemId,jdbcType=VARCHAR},
+      </if>
+      <if test="creditMemName != null">
+        CREDIT_MEM_NAME = #{creditMemName,jdbcType=VARCHAR},
+      </if>
+      <if test="creditHolderAccount != null">
+        CREDIT_HOLDER_ACCOUNT = #{creditHolderAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="creditHolderAccountName != null">
+        CREDIT_HOLDER_ACCOUNT_NAME = #{creditHolderAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="cashCreditTitle != null">
+        CASH_CREDIT_TITLE = #{cashCreditTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="cashSettleAmt != null">
+        CASH_SETTLE_AMT = #{cashSettleAmt,jdbcType=NUMERIC},
+      </if>
+      <if test="updateTm != null">
+        UPDATE_TM = #{updateTm,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cashProcStatus != null">
+        CASH_PROC_STATUS = #{cashProcStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.domain.CashSettleOrder">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update CASH_SETTLE_ORDER
+    set TRADE_ID = #{tradeId,jdbcType=VARCHAR},
+      CASH_SETTLE_ID = #{cashSettleId,jdbcType=VARCHAR},
+      CASH_ACCOUNT = #{cashAccount,jdbcType=VARCHAR},
+      CASH_ACCOUNT_NAME = #{cashAccountName,jdbcType=VARCHAR},
+      DEBIT_MEM_ID = #{debitMemId,jdbcType=VARCHAR},
+      DEBIT_MEM_NAME = #{debitMemName,jdbcType=VARCHAR},
+      DEBIT_HOLDER_ACCOUNT = #{debitHolderAccount,jdbcType=VARCHAR},
+      DEBIT_HOLDER_ACCOUNT_NAME = #{debitHolderAccountName,jdbcType=VARCHAR},
+      CASH_DEBIT_TITLE = #{cashDebitTitle,jdbcType=VARCHAR},
+      CREDIT_MEM_ID = #{creditMemId,jdbcType=VARCHAR},
+      CREDIT_MEM_NAME = #{creditMemName,jdbcType=VARCHAR},
+      CREDIT_HOLDER_ACCOUNT = #{creditHolderAccount,jdbcType=VARCHAR},
+      CREDIT_HOLDER_ACCOUNT_NAME = #{creditHolderAccountName,jdbcType=VARCHAR},
+      CASH_CREDIT_TITLE = #{cashCreditTitle,jdbcType=VARCHAR},
+      CASH_SETTLE_AMT = #{cashSettleAmt,jdbcType=NUMERIC},
+      UPDATE_TM = #{updateTm,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CASH_PROC_STATUS = #{cashProcStatus,jdbcType=VARCHAR}
+    where SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByModel" parameterType="cn.com.yusys.yusp.commons.mapper.QueryModel" resultMap="BaseResultMap">
+    SELECT * FROM CASH_SETTLE_ORDER
+    <where>
+      <if test="condition.serialNum !=null and condition.serialNum !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.serialNum)">
+             AND SERIAL_NUM LIKE #{condition.serialNum,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND SERIAL_NUM = #{condition.serialNum,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.tradeId !=null and condition.tradeId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.tradeId)">
+             AND TRADE_ID LIKE #{condition.tradeId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND TRADE_ID = #{condition.tradeId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.cashSettleId !=null and condition.cashSettleId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashSettleId)">
+             AND CASH_SETTLE_ID LIKE #{condition.cashSettleId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CASH_SETTLE_ID = #{condition.cashSettleId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.cashAccount !=null and condition.cashAccount !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashAccount)">
+             AND CASH_ACCOUNT LIKE #{condition.cashAccount,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CASH_ACCOUNT = #{condition.cashAccount,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.cashAccountName !=null and condition.cashAccountName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashAccountName)">
+             AND CASH_ACCOUNT_NAME LIKE #{condition.cashAccountName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CASH_ACCOUNT_NAME = #{condition.cashAccountName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.debitMemId !=null and condition.debitMemId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.debitMemId)">
+             AND DEBIT_MEM_ID LIKE #{condition.debitMemId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND DEBIT_MEM_ID = #{condition.debitMemId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.debitMemName !=null and condition.debitMemName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.debitMemName)">
+             AND DEBIT_MEM_NAME LIKE #{condition.debitMemName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND DEBIT_MEM_NAME = #{condition.debitMemName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.debitHolderAccount !=null and condition.debitHolderAccount !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.debitHolderAccount)">
+             AND DEBIT_HOLDER_ACCOUNT LIKE #{condition.debitHolderAccount,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND DEBIT_HOLDER_ACCOUNT = #{condition.debitHolderAccount,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.debitHolderAccountName !=null and condition.debitHolderAccountName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.debitHolderAccountName)">
+             AND DEBIT_HOLDER_ACCOUNT_NAME LIKE #{condition.debitHolderAccountName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND DEBIT_HOLDER_ACCOUNT_NAME = #{condition.debitHolderAccountName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.cashDebitTitle !=null and condition.cashDebitTitle !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashDebitTitle)">
+             AND CASH_DEBIT_TITLE LIKE #{condition.cashDebitTitle,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CASH_DEBIT_TITLE = #{condition.cashDebitTitle,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.creditMemId !=null and condition.creditMemId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.creditMemId)">
+             AND CREDIT_MEM_ID LIKE #{condition.creditMemId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CREDIT_MEM_ID = #{condition.creditMemId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.creditMemName !=null and condition.creditMemName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.creditMemName)">
+             AND CREDIT_MEM_NAME LIKE #{condition.creditMemName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CREDIT_MEM_NAME = #{condition.creditMemName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.creditHolderAccount !=null and condition.creditHolderAccount !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.creditHolderAccount)">
+             AND CREDIT_HOLDER_ACCOUNT LIKE #{condition.creditHolderAccount,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CREDIT_HOLDER_ACCOUNT = #{condition.creditHolderAccount,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.creditHolderAccountName !=null and condition.creditHolderAccountName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.creditHolderAccountName)">
+             AND CREDIT_HOLDER_ACCOUNT_NAME LIKE #{condition.creditHolderAccountName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CREDIT_HOLDER_ACCOUNT_NAME = #{condition.creditHolderAccountName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.cashCreditTitle !=null and condition.cashCreditTitle !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashCreditTitle)">
+             AND CASH_CREDIT_TITLE LIKE #{condition.cashCreditTitle,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CASH_CREDIT_TITLE = #{condition.cashCreditTitle,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.cashSettleAmt !=null and condition.cashSettleAmt !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashSettleAmt)">
+             AND CASH_SETTLE_AMT LIKE #{condition.cashSettleAmt,jdbcType=NUMERIC}
+          </when>
+          <otherwise>
+            AND CASH_SETTLE_AMT = #{condition.cashSettleAmt,jdbcType=NUMERIC}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.updateTm !=null and condition.updateTm !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.updateTm)">
+             AND UPDATE_TM LIKE #{condition.updateTm,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND UPDATE_TM = #{condition.updateTm,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.remark !=null and condition.remark !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.remark)">
+             AND REMARK LIKE #{condition.remark,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND REMARK = #{condition.remark,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.cashProcStatus !=null and condition.cashProcStatus !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashProcStatus)">
+             AND CASH_PROC_STATUS LIKE #{condition.cashProcStatus,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CASH_PROC_STATUS = #{condition.cashProcStatus,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+  </select>
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    DELETE FROM CASH_SETTLE_ORDER WHERE SERIAL_NUM IN
+    <foreach close=")" collection="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@toList('java.lang.String',_parameter)" item="id" open="(" separator=",">
+      #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+  
+  <update id="updateState" parameterType="java.lang.String">
+		UPDATE CASH_SETTLE_ORDER SET CASH_PROC_STATUS='3' where CASH_PROC_STATUS='2' and SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateStateReturn" parameterType="java.lang.String">
+		UPDATE CASH_SETTLE_ORDER SET CASH_PROC_STATUS='2' where CASH_PROC_STATUS='3' and  SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateStateSuccess" parameterType="java.lang.String">
+		UPDATE CASH_SETTLE_ORDER SET CASH_PROC_STATUS='4' where  SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:sofa="http://sofastack.io/schema/sofaboot"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://sofastack.io/schema/sofaboot http://sofastack.io/schema/sofaboot.xsd"
+       default-destroy-method="stop" default-init-method="start">
+   <bean class="cn.com.yusys.yusp.bsp.workflow.mapping.HeadMappingStrategy" id="headStrategy">
+      <!-- 映射策略规则 -->
+      <property name="length" value="6"/>
+      <property name="encode" value="utf8"/>
+   </bean>
+   <bean class="cn.com.yusys.yusp.bsp.workflow.mapping.URIMappingStrategy" id="uriStrategy">
+      <!-- 映射策略规则 -->
+   </bean>
+   <bean class="cn.com.yusys.yusp.bsp.workflow.mapping.DefaultMappingStrategy" id="defaultStrategy"/>
+   <bean class="cn.com.yusys.yusp.bsp.resources.core.ResourceHolder" id="resourceHolder"/>
+</beans>

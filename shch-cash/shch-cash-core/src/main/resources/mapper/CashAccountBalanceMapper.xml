@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.repository.mapper.CashAccountBalanceMapper">
+  <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.domain.CashAccountBalance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="MEM_CODE" jdbcType="VARCHAR" property="memCode" />
+    <id column="HOLDER_ACCOUNT" jdbcType="VARCHAR" property="holderAccount" />
+    <id column="TITLE_CODE" jdbcType="VARCHAR" property="titleCode" />
+    <id column="CASH_ACCOUNT" jdbcType="VARCHAR" property="cashAccount" />
+    <result column="BIZ_DATE" jdbcType="VARCHAR" property="bizDate" />
+    <result column="MEM_NAME" jdbcType="VARCHAR" property="memName" />
+    <result column="HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="holderAccountName" />
+    <result column="TITLE_NAME" jdbcType="VARCHAR" property="titleName" />
+    <result column="CURRENCY_AMT" jdbcType="NUMERIC" property="currencyAmt" />
+    <result column="UPDATE_TM" jdbcType="VARCHAR" property="updateTm" />
+    <result column="CASH_ACCOUNT_NAME" jdbcType="VARCHAR" property="cashAccountName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    MEM_CODE, HOLDER_ACCOUNT, TITLE_CODE, CASH_ACCOUNT, BIZ_DATE, MEM_NAME, HOLDER_ACCOUNT_NAME, 
+    TITLE_NAME, CURRENCY_AMT, UPDATE_TM, CASH_ACCOUNT_NAME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from CASH_ACCOUNT_BALANCE
+    where MEM_CODE = #{memCode,jdbcType=VARCHAR}
+      and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+      and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
+      and CASH_ACCOUNT = #{cashAccount,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from CASH_ACCOUNT_BALANCE
+    where MEM_CODE = #{memCode,jdbcType=VARCHAR}
+      and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+      and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
+      and CASH_ACCOUNT = #{cashAccount,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into CASH_ACCOUNT_BALANCE (MEM_CODE, HOLDER_ACCOUNT, TITLE_CODE, 
+      CASH_ACCOUNT, BIZ_DATE, MEM_NAME, 
+      HOLDER_ACCOUNT_NAME, TITLE_NAME, CURRENCY_AMT, 
+      UPDATE_TM, CASH_ACCOUNT_NAME)
+    values (#{memCode,jdbcType=VARCHAR}, #{holderAccount,jdbcType=VARCHAR}, #{titleCode,jdbcType=VARCHAR}, 
+      #{cashAccount,jdbcType=VARCHAR}, #{bizDate,jdbcType=VARCHAR}, #{memName,jdbcType=VARCHAR}, 
+      #{holderAccountName,jdbcType=VARCHAR}, #{titleName,jdbcType=VARCHAR}, #{currencyAmt,jdbcType=NUMERIC}, 
+      #{updateTm,jdbcType=VARCHAR}, #{cashAccountName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into CASH_ACCOUNT_BALANCE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memCode != null">
+        MEM_CODE,
+      </if>
+      <if test="holderAccount != null">
+        HOLDER_ACCOUNT,
+      </if>
+      <if test="titleCode != null">
+        TITLE_CODE,
+      </if>
+      <if test="cashAccount != null">
+        CASH_ACCOUNT,
+      </if>
+      <if test="bizDate != null">
+        BIZ_DATE,
+      </if>
+      <if test="memName != null">
+        MEM_NAME,
+      </if>
+      <if test="holderAccountName != null">
+        HOLDER_ACCOUNT_NAME,
+      </if>
+      <if test="titleName != null">
+        TITLE_NAME,
+      </if>
+      <if test="currencyAmt != null">
+        CURRENCY_AMT,
+      </if>
+      <if test="updateTm != null">
+        UPDATE_TM,
+      </if>
+      <if test="cashAccountName != null">
+        CASH_ACCOUNT_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memCode != null">
+        #{memCode,jdbcType=VARCHAR},
+      </if>
+      <if test="holderAccount != null">
+        #{holderAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="titleCode != null">
+        #{titleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAccount != null">
+        #{cashAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bizDate != null">
+        #{bizDate,jdbcType=VARCHAR},
+      </if>
+      <if test="memName != null">
+        #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="holderAccountName != null">
+        #{holderAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="titleName != null">
+        #{titleName,jdbcType=VARCHAR},
+      </if>
+      <if test="currencyAmt != null">
+        #{currencyAmt,jdbcType=NUMERIC},
+      </if>
+      <if test="updateTm != null">
+        #{updateTm,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAccountName != null">
+        #{cashAccountName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update CASH_ACCOUNT_BALANCE
+    <set>
+      <if test="bizDate != null">
+        BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
+      </if>
+      <if test="memName != null">
+        MEM_NAME = #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="holderAccountName != null">
+        HOLDER_ACCOUNT_NAME = #{holderAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="titleName != null">
+        TITLE_NAME = #{titleName,jdbcType=VARCHAR},
+      </if>
+      <if test="currencyAmt != null">
+        CURRENCY_AMT = #{currencyAmt,jdbcType=NUMERIC},
+      </if>
+      <if test="updateTm != null">
+        UPDATE_TM = #{updateTm,jdbcType=VARCHAR},
+      </if>
+      <if test="cashAccountName != null">
+        CASH_ACCOUNT_NAME = #{cashAccountName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MEM_CODE = #{memCode,jdbcType=VARCHAR}
+      and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+      and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
+      and CASH_ACCOUNT = #{cashAccount,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update CASH_ACCOUNT_BALANCE
+    set BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
+      MEM_NAME = #{memName,jdbcType=VARCHAR},
+      HOLDER_ACCOUNT_NAME = #{holderAccountName,jdbcType=VARCHAR},
+      TITLE_NAME = #{titleName,jdbcType=VARCHAR},
+      CURRENCY_AMT = #{currencyAmt,jdbcType=NUMERIC},
+      UPDATE_TM = #{updateTm,jdbcType=VARCHAR},
+      CASH_ACCOUNT_NAME = #{cashAccountName,jdbcType=VARCHAR}
+    where MEM_CODE = #{memCode,jdbcType=VARCHAR}
+      and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+      and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
+      and CASH_ACCOUNT = #{cashAccount,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByModel" parameterType="cn.com.yusys.yusp.commons.mapper.QueryModel" resultMap="BaseResultMap">
+    SELECT * FROM CASH_ACCOUNT_BALANCE
+    <where>
+      <if test="condition.memCode !=null and condition.memCode !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.memCode)">
+             AND MEM_CODE LIKE #{condition.memCode,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND MEM_CODE = #{condition.memCode,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.holderAccount !=null and condition.holderAccount !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.holderAccount)">
+             AND HOLDER_ACCOUNT LIKE #{condition.holderAccount,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND HOLDER_ACCOUNT = #{condition.holderAccount,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.titleCode !=null and condition.titleCode !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.titleCode)">
+             AND TITLE_CODE LIKE #{condition.titleCode,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND TITLE_CODE = #{condition.titleCode,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.cashAccount !=null and condition.cashAccount !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashAccount)">
+             AND CASH_ACCOUNT LIKE #{condition.cashAccount,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CASH_ACCOUNT = #{condition.cashAccount,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.bizDate !=null and condition.bizDate !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bizDate)">
+             AND BIZ_DATE LIKE #{condition.bizDate,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND BIZ_DATE = #{condition.bizDate,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.memName !=null and condition.memName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.memName)">
+             AND MEM_NAME LIKE #{condition.memName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND MEM_NAME = #{condition.memName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.holderAccountName !=null and condition.holderAccountName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.holderAccountName)">
+             AND HOLDER_ACCOUNT_NAME LIKE #{condition.holderAccountName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND HOLDER_ACCOUNT_NAME = #{condition.holderAccountName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.titleName !=null and condition.titleName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.titleName)">
+             AND TITLE_NAME LIKE #{condition.titleName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND TITLE_NAME = #{condition.titleName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.currencyAmt !=null and condition.currencyAmt !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.currencyAmt)">
+             AND CURRENCY_AMT LIKE #{condition.currencyAmt,jdbcType=NUMERIC}
+          </when>
+          <otherwise>
+            AND CURRENCY_AMT = #{condition.currencyAmt,jdbcType=NUMERIC}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.updateTm !=null and condition.updateTm !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.updateTm)">
+             AND UPDATE_TM LIKE #{condition.updateTm,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND UPDATE_TM = #{condition.updateTm,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.cashAccountName !=null and condition.cashAccountName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.cashAccountName)">
+             AND CASH_ACCOUNT_NAME LIKE #{condition.cashAccountName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND CASH_ACCOUNT_NAME = #{condition.cashAccountName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+  </select>
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    DELETE FROM CASH_ACCOUNT_BALANCE WHERE MEM_CODE IN
+    <foreach close=")" collection="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@toList('java.lang.String',_parameter)" item="id" open="(" separator=",">
+      #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+  <update id="updateMoney" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
+    update CASH_ACCOUNT_BALANCE
+    <set>     
+        currency_amt = currency_amt - #{currencyAmt,jdbcType=NUMERIC}
+    </set>
+    where MEM_CODE       = #{memCode,jdbcType=VARCHAR}
+      and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+      and TITLE_CODE     = #{titleCode,jdbcType=VARCHAR}
+      and CASH_ACCOUNT   = #{cashAccount,jdbcType=VARCHAR}
+      and currency_amt - #{currencyAmt} >= 0.00
+  </update>
+  
+  <select id="selectAccountState" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
+    select count(currency_amt) from cash_account_balance where cash_account = #{cashAccount} and currency_amt >=  #{currencyAmt} 
+ </select>
+</mapper>

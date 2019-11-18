@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.repository.mapper.SettleOrderMapper">
+
+    <!--查询需要簿记,簿记状态为应履行.结算状态为应履行，资金状态为应履行-->
+    <select id="selectNeedBondSettles" resultType="cn.com.yusys.yusp.domain.SettleOrder">
+        select
+        <include refid="Base_Column_List"/>
+        from SETTLE_ORDER
+        where BOND_SETTLE_STATUS='0'
+        and SETTLE_ORDER_STATUS='Y'
+        and CASH_SETTLE_STATUS ='0'
+        and rownum gt;=#{size,jdbcType=INTEGER}
+    </select>
+
+    <!--查询需要资金的数据,簿记状态为卷足:3.结算状态为应履行:Y，资金状态为应履行:0-->
+    <select id="selectNeedCashSettles" resultType="cn.com.yusys.yusp.domain.SettleOrder">
+        select
+        <include refid="Base_Column_List"/>
+        from SETTLE_ORDER
+        where BOND_SETTLE_STATUS='3'
+        and SETTLE_ORDER_STATUS='Y'
+        and CASH_SETTLE_STATUS ='0'
+        and rownum gt;=#{size,jdbcType=INTEGER}
+    </select>
+
+</mapper>

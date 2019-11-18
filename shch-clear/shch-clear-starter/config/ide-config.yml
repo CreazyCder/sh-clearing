@@ -1,0 +1,7 @@
+# 使用数据库时代码自动创建的配置文件，从application.yml中可获取，不使用数据库时可删除该文件
+spring:
+  datasource:
+    driver: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:ycorcl
+    username: yusp
+    password: yusp
