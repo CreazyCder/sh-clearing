@@ -58,18 +58,21 @@ public class BondSettltOrderResource {
     	if("1".equals(bondDto.getOpertionType())) {
     		logger.debug("簿记DVP结算圈券指令接收报文:"+bondDto);
     		bondSettltOrderService.procCouponBond(bondDto);
+    		//需清算传入借贷科目：借方科目-->借方可用，贷方科目-->借方待付
     		logger.debug("资金DVP结算请求指令接收报文成功");
     	}
     	//2记账逻辑；
     	if("2".equals(bondDto.getOpertionType())) {
     		logger.debug("簿记DVP结算记账指令接收报文:"+bondDto);
     		bondSettltOrderService.procRecordBond(bondDto);
+    		//需清算传入借贷科目：借方科目-->借方待付，贷方科目-->贷方可用
     		logger.debug("资金DVP结算记账指令接收报文成功");
     	}
     	//3撤销逻辑;
     	if("3".equals(bondDto.getOpertionType())) {
     		logger.debug("簿记DVP结算撤销指令接收报文:"+bondDto);
     		bondSettltOrderService.procCancleBond(bondDto);
+    		//需清算传入借贷科目：借方科目-->借方待付，贷方科目：借方可用
     		logger.debug("资金DVP结算撤销指令接收报文成功");
     	}
     	
