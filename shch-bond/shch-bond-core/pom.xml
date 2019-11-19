@@ -16,6 +16,14 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        
+        <!-- 流程编排基本依赖，不使用流程编排时可注释掉以下依赖 -->
+        <dependency>
+          <groupId>cn.com.yusys.yusp</groupId>
+          <artifactId>yusp-fee-logic</artifactId>
+          <version>${yusp-fee.version}</version>
+        </dependency>
+        
     	<dependency>
 			<groupId>cn.com.yusys.yusp</groupId>
 			<artifactId>shch-bond-client</artifactId>
