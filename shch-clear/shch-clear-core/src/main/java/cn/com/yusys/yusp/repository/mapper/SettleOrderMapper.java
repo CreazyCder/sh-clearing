@@ -31,7 +31,13 @@ import java.util.List;
  */
 @CataLog(nodeType = ActionNodeType.MAPPER, value = "mapper/SettleOrderMapper", lableType = LableType.DB)
 public interface SettleOrderMapper {
-
+    /**
+     * 查询需要交割中的记录.·
+     *
+     * @param size 指定记录.前X条
+     * @return 记录.
+     */
+    List<SettleOrder> selectDeliveringByStatus(@Param("size") int sizes);
     /**
      * 结算分页查询.
      *

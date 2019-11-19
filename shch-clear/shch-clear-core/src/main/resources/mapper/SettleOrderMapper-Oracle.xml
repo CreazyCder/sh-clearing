@@ -13,5 +13,14 @@
         and CASH_SETTLE_STATUS ='0'
         <![CDATA[ AND ROWNUM <= ${size} ]]>
     </select>
-
+    <!-- 查询交割中的数据 -->
+    <select id="selectDeliveringByStatus" resultType="cn.com.yusys.yusp.domain.SettleOrder">
+        select
+        <include refid="Base_Column_List"/>
+        from SETTLE_ORDER
+        where BOND_SETTLE_STATUS=#{bondStatus,jdbcType=VARCHAR}
+        and SETTLE_ORDER_STATUS='Y'
+        and CASH_SETTLE_STATUS ='0'
+        <![CDATA[ AND ROWNUM <= ${size} ]]>
+    </select>
 </mapper>
