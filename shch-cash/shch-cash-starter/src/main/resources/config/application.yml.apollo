@@ -1,0 +1,198 @@
+#########################
+# Spring Boot
+#########################
+spring:
+    #多网卡情况下ip配置
+    #   cloud:
+    #       inetutils:
+    #           preferred-networks:
+    #jackson配置
+    jackson:
+        serialization:
+            INDENT_OUTPUT: true # jackson格式化输出 
+    # 数据库配置，不使用数据库时请删除以下配置
+    datasource:
+        driver-class-name: oracle.jdbc.driver.OracleDriver  # 数据库驱动类
+        type: com.zaxxer.hikari.HikariDataSource            # datasource使用的连接池类型
+        validation-query: SELECT 1 FROM DUAL                # datasource连接验证的查询语句
+        url: jdbc:oracle:thin:@192.168.251.166:1521:orcl        # 数据库连接的url
+        username: SHCH_POC # 数据库连接的用户名
+        password: SHCH_POC # 数据库连接的密码
+        hikari:
+            minimum-idle: 2                 # 空闲时最小连接数
+            maximum-pool-size: 2            # 连接池大小
+            data-source-properties:
+                cachePrepStmts: true        # 是否启用Prep缓存
+                prepStmtCacheSize: 250      # Prep缓存大小
+                prepStmtCacheSqlLimit: 2048 # Prep缓存sql限制大小
+                useServerPrepStmts: true    # 是否用服务缓存Prep
+    # 数据库配置，不使用数据库时请删除以上配置
+    #
+    # spring国际化配置
+    messages:
+        cache-duration: 1
+    #
+    # 如不使用redis，请将以下配置删除
+    redis:
+        database: 0         # Redis默认情况下有16个分片，这里配置具体使用的分片，默认是0
+        host: 127.0.0.1     # Redis的地址
+        port: 6379          # Redis的端口
+        password: 123456    # Redis的密码
+        timeout: 60000      # 连接超时时间（毫秒）
+        # 使用lettce最为redis客户端
+        lettuce:
+            shutdown-timeout: 60000ms # 关闭超时时间
+            pool:
+                max-active: 20        # 连接池最大连接数（使用负值表示没有限制） 默认 8
+                max-wait: 20000ms     # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+                min-idle: 1           # 连接池中的最小空闲连接 默认 0
+                max-idle: 20          # 连接池中的最大空闲连接 默认 8
+    cache:
+        type: redis #spring cache类型
+    # 如不使用redis，请将以上配置删除
+    #
+    # 如不使用zipkin，请将以下配置删除
+    zipkin:
+        base-url: http://localhost:9411 #spring zipkin地址
+        enabled: true #是否启用zipkin
+        locator:
+            discovery:
+                enabled: true #zipkin端点是否被发现
+# actuator监控配置
+management:
+    endpoints:
+        enabled-by-default: true
+        web:
+            exposure:
+                include: "*"
+    health:
+        mail:
+            enabled: false
+#########################
+# Spring Cloud
+#########################
+# eureka配置
+eureka:
+    instance:
+        prefer-ip-address: true # 以IP地址注册到服务中心
+        instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port} # eureka实例id
+    client:
+        service-url:
+            defaultZone: http://192.168.251.173:8761/eureka/ # 微服务注册中心地址
+#Feign启动okhttp3
+feign:
+    httpclient:
+        enabled: false
+    okhttp:
+        enabled: true
+    hystrix:
+        enabled: true
+#
+# 如当前微服务未调用其他的微服务应用，如下配置无效，可删除
+# ribbon配置
+ribbon:
+    ConnectTimeout: 10000           # ribbon请求连接的超时时间（ms）
+    ReadTimeout: 10000              # 请求处理的超时时间（ms）
+    OkToRetryOnAllOperations: true  # 是否对所有请求操作都进行重试
+    MaxAutoRetries: 0               # 对当前服务的重试次数（第一次分配给实例1的时候，如果404，则再重试MaxAutoRetries次，如果还是404，则切换到其他服务MaxAutoRetriesNextServer决定）
+    MaxAutoRetriesNextServer: 1     # 切换服务的次数(比如本次请求分配给实例1处理，发现404，则切换分配给实例2处理，如果还是404，则返回404给客户端）
+    serverListRefreshInterval: 2000 # 刷新服务列表时间间隔（ms）
+    eureka:
+        enabled: true               # 是否启用eureka列表拉取
+#
+# Hystrix 配置
+hystrix:
+    command:
+        default:
+            execution:
+                timeout:
+                    enabled: true                    # Hystrix是否启用超时时间
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 10000 # Hystrix断路器的超时时间，默认是1s，断路器的超时时间需要大于ribbon的超时时间，不然不会触发重试。
+#########################
+# mybatis  配置
+#########################
+mybatis:
+    mapperLocations: classpath*:mapper/**/*.xml # mybatis对应的xml文件路径
+    configuration:
+        map-underscore-to-camel-case: true      # 是否开启驼峰命名
+#
+# 通用mapper列表，使用apollo配置中心时，该配置使用bootstrap中配置
+mapper:
+    mappers:
+        - cn.com.yusys.yusp.commons.mapper.CommonMapper
+#
+# 分页配置
+pagehelper:
+    helperDialect: oracle # 分页使用的数据库方言
+    reasonable: true      # 最后一页时是否总返回最后一页数据
+# 数据库相关，不使用数据库时请删除以上配置
+#########################
+# 以下为统一开发平台提供的相关配置
+#########################
+jasypt:
+    encryptor:
+        bootstrap: false # 配置意义同上application.decrypt.enabled，如果需要开启，请将该属性改为true，此属性为是否启用
+application:
+    # 应用属性解密配置
+    decrypt:
+        enabled: false # 应用属性解密是否开启,如果需要开启，请改为true 在需要解密的字段值前添加“DECRYPT@”， apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        type: DES      # 应用属性解密类型 DES RAS, apollo模式下该配置无用，请使用bootstrap.properties中该配置
+    # apm配置
+    apm:
+        enabled: false                          # 应用apm监控是否启用，apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        server-url: http://localhost:8200       # 应用apm监控服务器地址
+        application-packages: cn.com.yusys.yusp # 应用apm监控包路径
+    #
+    # excel相关配置
+    excel:
+        enabled: false         # 应用excel配置是否启用，apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        temp-file-dir: d:/temp # 应用excel临时文件存放路径
+        batch-size: 20         # 应用excel批量提交数量
+    #
+    # 应用异步配置
+    async:
+        enabled: false      # 应用异步配置是否启用，apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        core-pool-size: 10  # 应用异步配置核心线程池大小
+        max-pool-size: 40   # 应用异步配置最大线程池大小
+        queue-capacity: 100 # 应用异步配置队列大小
+    #
+    # 应用文件配置
+    file:
+        enabled: false                    # 应用文件配置是否启用,  apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        file-storage-type: localdisk      # 应用文件配置启用模式  localdisk本地文件存储  fastdfs存储
+        #fastdfs-track-ip: 127.0.0.1:22122 # 应用文件配置fastdfs地址
+        local-disk-path: D:/localDisk     # 应用文件配置本地存储路径
+    #
+    # 是否开启系统缓存配置
+    cache:
+        type: redis         # spring cache类型, apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        ttl: 720            # spring cache redis 缓存时间
+        user:
+            enabled: false  # 是否开启系统用户缓存, apollo模式下该配置无用，请使用bootstrap.properties中该配置
+    #
+    # swagger配置
+    swagger:
+        enabled: true # 是否开启swagger功能，生产建议关闭， apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        title: YUSP APP shch-funds-starter Application API         # swagger显示title
+        description: YUSP APP shch-funds-starter API documentation # swagger显示描述
+        version: 2.1.1.RELEASE                                # swagger显示的api版本
+    #
+    # web安全过滤配置
+    web:
+        ignore-resources: .css, .js, .html, .ttf, .woff, .svg, .eot, .png, .gif, .ico, .json
+        ignore-urls: /error,/actuator/*
+    #
+    # 过滤器配置
+    filter:
+        access:
+            enabled: false   # 过滤器-控制点权限, apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        dataauth:
+            enabled: false # 过滤器-数据权限, apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        cors:
+            enabled: false # 过滤器-支持跨域, apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        xss:
+            enabled: true  # 过滤器-防跨域攻击和SQL注入, apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        fileupload:
+            enabled: true #过滤器-防止恶意文件上传
