@@ -12,12 +12,12 @@ spring:
             INDENT_OUTPUT: true # jackson格式化输出 
 # 数据库配置，不使用数据库时请删除以下配置
     datasource: 
-        driver-class-name: oracle.jdbc.driver.OracleDriver  # 数据库驱动类
-        type: com.zaxxer.hikari.HikariDataSource            # datasource使用的连接池类型
-        validation-query: SELECT 1 FROM DUAL                # datasource连接验证的查询语句
-        url: jdbc:oracle:thin:@localhost:1521:orcl        # 数据库连接的url
-        username: mycat1 # 数据库连接的用户名
-        password: mycat1 # 数据库连接的密码
+        driver: oracle.jdbc.driver.OracleDriver
+        type: com.zaxxer.hikari.HikariDataSource
+        validation-query: SELECT 1 FROM DUAL
+        url: jdbc:oracle:thin:@192.168.251.166:1521:orcl
+        username: SHCH_POC
+        password: SHCH_POC
         hikari: 
             minimum-idle: 2                 # 空闲时最小连接数
             maximum-pool-size: 2            # 连接池大小
@@ -49,22 +49,6 @@ spring:
                 max-idle: 20          # 连接池中的最大空闲连接 默认 8
     cache: 
         type: redis #spring cache类型
-    rabbitmq: 
-        host: 192.168.251.241 #Rabbitmq的地址
-        port: 5672 #Rabbitmq的端口
-        username: admin  #Rabbitmq的用户名
-        password: admin  #Rabbitmq的密码
-        publisher-confirms: true #是否开启发送确认
-        publisher-returns: true #是否开发发送失败退回
-        template: 
-            mandatory: true #生产者是否启用强制消息
-            retry: 
-                enabled: true #生产者是否开启重启
-        listener: 
-            acknowledge-mode: manual #消费者ack模式
-            retry: 
-                enabled: true #消费者是否重试
-                max-attempts: 1 #消费者重试次数
 # 如不使用redis，请将以上配置删除
 #
 # 如不使用zipkin，请将以下配置删除
@@ -91,11 +75,10 @@ management:
 eureka: 
     instance: 
         prefer-ip-address: true # 以IP地址注册到服务中心
-        ip-address: 172.16.80.144
         instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port} # eureka实例id
     client: 
         service-url: 
-            defaultZone: http://192.168.251.173:8761/eureka/ # 微服务注册中心地址
+            defaultZone: http://localhost:8761/eureka/ # 微服务注册中心地址
 #Feign启动okhttp3
 feign:
     httpclient:
@@ -152,6 +135,21 @@ jasypt:
     encryptor: 
         bootstrap: false # 配置意义同上application.decrypt.enabled，如果需要开启，请将该属性改为true，此属性为是否启用
 application: 
+    fee:
+        pre-load-all-flows: true                  # 是否预加载全部flow
+        hot-deploy: true                          # 是否开启热加载
+        hot-deploy-cron: 0/5 * * * * ?            # 热加载cron表达式
+        flow-location: classpath*:flows/**/*.xml  # 编排文件路径
+        curator:
+            connectString: 127.0.0.1:2181
+            #重试次数
+            retryCount: 5
+            #重试间隔时间
+            elapsedTimeMs: 5000
+            # session超时时间
+            sessionTimeoutMs: 60000
+            # 连接超时时间
+            connectionTimeoutMs: 5000
 # 应用属性解密配置
     decrypt: 
         enabled: false # 应用属性解密是否开启,如果需要开启，请改为true 在需要解密的字段值前添加“DECRYPT@”， apollo模式下该配置无用，请使用bootstrap.properties中该配置
@@ -170,7 +168,7 @@ application:
 #
 # 应用异步配置
     async: 
-        enabled: true      # 应用异步配置是否启用，apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        enabled: false      # 应用异步配置是否启用，apollo模式下该配置无用，请使用bootstrap.properties中该配置
         core-pool-size: 10  # 应用异步配置核心线程池大小
         max-pool-size: 40   # 应用异步配置最大线程池大小
         queue-capacity: 100 # 应用异步配置队列大小
@@ -192,8 +190,8 @@ application:
 # swagger配置
     swagger: 
         enabled: true # 是否开启swagger功能，生产建议关闭， apollo模式下该配置无用，请使用bootstrap.properties中该配置
-        title: YUSP APP shch-funds-starter Application API         # swagger显示title
-        description: YUSP APP shch-funds-starter API documentation # swagger显示描述
+        title: YUSP APP shch-bookkeeping-starter Application API         # swagger显示title
+        description: YUSP APP shch-bookkeeping-starter API documentation # swagger显示描述
         version: 2.1.1.RELEASE                                # swagger显示的api版本
 #
 # web安全过滤配置
@@ -210,22 +208,10 @@ application:
         cors: 
             enabled: false # 过滤器-支持跨域, apollo模式下该配置无用，请使用bootstrap.properties中该配置
         xss: 
-            enabled: false  # 过滤器-防跨域攻击和SQL注入, apollo模式下该配置无用，请使用bootstrap.properties中该配置
+            enabled: true  # 过滤器-防跨域攻击和SQL注入, apollo模式下该配置无用，请使用bootstrap.properties中该配置
         fileupload: 
-            enabled: false #过滤器-防止恶意文件上传
-    #定时任务配置
-    xxl:
-      job:
-        enabled: true  
-        admin:
-            addresses: http://192.168.251.173:8080/yusp-job-admin #127.0.0.1:8080指网关ip:port，yusp-job-admin为调度中心服务名称。通过网关，注册到微服务的/api/server接口，完成注册动作
-        executor:
-            appname: cash   #执行器名称，要求务必唯一
-            ip: 172.16.80.144  #执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP
-            port: 9097          #调度中心给微服务发送任务，通过此端口发送指令
-            logpath: C:/temp    #执行器日志文件路径
-            logretentiondays: 1  # 本地日志保存天数，-1为永远保存
+            enabled: true #过滤器-防止恶意文件上传
 # License 配置信息
-license: 
-    licenseContext: <?xml version="1.0" encoding="UTF-8"?><license build-time="Sat Oct 12 11:45:37 CST 2019" validate-code="2A5A45E1A16632780F6194C823880C40"><element name="customer_name">宇信科技</element><element name="contract_code"/><element name="license_code">0000013715</element><element name="product_code">0000001482</element><element name="product_name_zh-cn">业务产品License测试</element><element name="product_name_en-us">License</element><element name="version_major">1</element><element name="version_sub">0</element><element name="version_publish">0</element><element name="complie_date">2019-09-28</element><element name="license_type">产品演示许可证</element><element name="license_start_time">2019-10-10</element><element name="license_end_time">2019-12-31</element><element name="expend_info0">Shuffle:True</element><element name="expend_info1">YUDP:True</element><element name="expend_info2">eChain:True</element></license>
+license:
+    licenseContext: <?xml version="1.0" encoding="UTF-8"?><license build-time="Wed Oct 16 12:24:41 CST 2019" validate-code="EB039C0D7A73C173ECBD0228AA8D4344"><element name="contract_code">YTEC-2019-0923-B</element><element name="customer_name">统一服务平台2019二阶段研发项目</element><element name="license_code">0000013754</element><element name="product_code">0000001122</element><element name="product_name_zh-cn">宇信科技基于微服务框架统一开发平台</element><element name="product_name_en-us">YUSP</element><element name="version_major">1</element><element name="version_sub">0</element><element name="version_publish">1</element><element name="complie_date">2018-03-20</element><element name="license_type">内部试用许可证</element><element name="license_start_time">2019-10-21</element><element name="license_end_time">2020-04-01</element></license>
     licenseModel: TRIAL

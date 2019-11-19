@@ -2,15 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.yusys.yusp.repository.mapper.BondBalanceMapper">
     <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.domain.BondBalance">
-		<result column="BIZ_DATE" jdbcType="VARCHAR" property="bizDate" />
+		
 		<id column="MEM_CODE" jdbcType="VARCHAR" property="memCode" />
-		<result column="MEM_NAME" jdbcType="VARCHAR" property="memName" />
 		<id column="HOLDER_ACCOUNT" jdbcType="VARCHAR" property="holderAccount" />
-		<result column="HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="holderAccountName" />
 		<id column="BOND_CODE" jdbcType="VARCHAR" property="bondCode" />
+		<id column="TITLE_CODE" jdbcType="VARCHAR" property="titleCode" />
+		<result column="BIZ_DATE" jdbcType="VARCHAR" property="bizDate" />
+		
+		<result column="MEM_NAME" jdbcType="VARCHAR" property="memName" />
+		
+		<result column="HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="holderAccountName" />
+		
 		<result column="BOND_NAME" jdbcType="VARCHAR" property="bondName" />
 		<result column="BOND_TYPE" jdbcType="VARCHAR" property="bondType" />
-		<id column="TITLE_CODE" jdbcType="VARCHAR" property="titleCode" />
+		
 		<result column="TITLE_NAME" jdbcType="VARCHAR" property="titleName" />
 		<result column="CURRENCY_AMT" jdbcType="NUMERIC" property="currencyAmt" />
 		<result column="UPDATE_TM" jdbcType="VARCHAR" property="updateTm" />
