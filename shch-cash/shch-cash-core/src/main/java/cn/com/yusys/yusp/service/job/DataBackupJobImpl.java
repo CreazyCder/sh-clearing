@@ -1,24 +1,18 @@
 package cn.com.yusys.yusp.service.job;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
 import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
 import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
 import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
 import cn.com.yusys.yusp.commons.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @JobHandler(value = "DataBackupJobImpl")
 @Service
@@ -78,7 +72,6 @@ public class DataBackupJobImpl extends IJobHandler {
         }
 	}
 	
-	@Test
 	public void testInsertData() throws Exception {
 		Connection connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl","SHCH_POC","SHCH_POC");					
 		connection.setAutoCommit(false);

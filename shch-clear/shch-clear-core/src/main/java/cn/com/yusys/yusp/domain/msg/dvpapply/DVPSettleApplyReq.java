@@ -5,9 +5,6 @@ import cn.com.yusys.yusp.constant.BondSettleStatusEnum;
 import cn.com.yusys.yusp.constant.CashSettleStatusEnum;
 import cn.com.yusys.yusp.constant.SettleStatusEnum;
 import cn.com.yusys.yusp.domain.SettleOrder;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
@@ -18,9 +15,6 @@ import java.io.Serializable;
  * @author wpplu
  * @since 2019/11/18
  */
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class DVPSettleApplyReq implements Serializable {
     private String tradeId;
     private String tradeDate;

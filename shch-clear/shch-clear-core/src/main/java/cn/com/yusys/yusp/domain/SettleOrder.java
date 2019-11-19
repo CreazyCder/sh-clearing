@@ -8,10 +8,6 @@ package cn.com.yusys.yusp.domain;
 import cn.com.yusys.yusp.commons.mapper.annotation.Generated;
 import cn.com.yusys.yusp.commons.mapper.annotation.GenerationType;
 import cn.com.yusys.yusp.commons.mapper.domain.BaseDomain;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -31,10 +27,6 @@ import java.io.Serializable;
  * -------------------------------------------------------------
  * @Copyright (c) 宇信科技-版权所有
  */
-@Builder
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "SETTLE_ORDER")
 public class SettleOrder extends BaseDomain implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -781,6 +773,5 @@ public class SettleOrder extends BaseDomain implements Serializable {
     public String getRemark() {
         return this.remark;
     }
-
 
 }

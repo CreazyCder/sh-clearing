@@ -32,7 +32,8 @@ public class SettleOrderResourceTest extends ClearAppTest {
      */
     @Test
     public void save() {
-        DVPSettleApplyReq req = DVPSettleApplyReq.builder()
+        DVPSettleApplyReq req = new DVPSettleApplyReq();
+       /* .builder()
                 .tradeId("DVP201911170000001")
                 .tradeDate("2019-11-17")
                 .bondCode("011900001")
@@ -50,7 +51,7 @@ public class SettleOrderResourceTest extends ClearAppTest {
                 .sellerHolderAccount("0000002")
                 .sellerHolderAccountName("持有人2")
                 .srcFrom("0")
-                .build();
+                .build();*/
         log.info("保存成功:{}", orderService.insert(req));
     }
 }

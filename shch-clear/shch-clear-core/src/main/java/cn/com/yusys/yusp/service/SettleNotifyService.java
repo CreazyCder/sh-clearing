@@ -3,6 +3,7 @@ package cn.com.yusys.yusp.service;
 import cn.com.yusys.yusp.commons.exception.YuspException;
 import cn.com.yusys.yusp.commons.util.DateUtil;
 import cn.com.yusys.yusp.commons.web.rest.dto.ResultDto;
+import cn.com.yusys.yusp.constant.BondSettleStatusEnum;
 import cn.com.yusys.yusp.domain.SettleOrder;
 import cn.com.yusys.yusp.domain.msg.settlenotify.BondSettleNotifyReq;
 import cn.com.yusys.yusp.domain.msg.settlenotify.CashSettleNotifyReq;
@@ -27,15 +28,14 @@ public class SettleNotifyService {
      * @return
      */
     public ResultDto bondRsp(BondSettleNotifyReq req) {
-    	
-        SettleOrder order = SettleOrder.builder()
-                .settleOrderId(req.getSettleOrderId())
-                .bondSettleId(req.getBondSettleId())
-                .bondSettleStatus(req.getBondProcStatus())
-                .settleOrderStatus("S".equals(req.getBondProcStatus())?"S":"")
-                .bondSettleStatusUpdateTm(DateUtil.getCurrDateTimeStr())
-                .build();
-
+        SettleOrder order = new SettleOrder();
+        order.setSettleOrderId(req.getSettleOrderId());
+        order.setBondSettleId(req.getBondSettleId());
+        order.setBondSettleStatus(req.getBondProcStatus());
+        order.setSettleOrderStatus(
+                BondSettleStatusEnum.SUCCESS.getCode().equals(req.getBondProcStatus()) ?
+                        BondSettleStatusEnum.SUCCESS.getCode() : "");
+        order.setBondSettleStatusUpdateTm(DateUtil.formatDate(DateUtil.PATTERN_DATETIME_COMPACT));
         int ret = mapper.updateByPrimaryKeySelective(order);
         if (ret == 1) {
             return new ResultDto("成功");
@@ -51,13 +51,11 @@ public class SettleNotifyService {
      * @return
      */
     public ResultDto cashRsp(CashSettleNotifyReq req) {
-        SettleOrder order = SettleOrder.builder()
-                .settleOrderId(req.getSettleOrderId())
-                .cashSettleId(req.getCashSettleId())
-                .cashSettleStatus(req.getCashProcStatus())
-                .cashSettleStatusUpdateTm(DateUtil.getCurrDateTimeStr())
-                .build();
-
+        SettleOrder order = new SettleOrder();
+        order.setSettleOrderId(req.getSettleOrderId());
+        order.setCashSettleId(req.getCashSettleId());
+        order.setCashSettleStatus(req.getCashProcStatus());
+        order.setCashSettleStatusUpdateTm(DateUtil.formatDate(DateUtil.PATTERN_DATETIME_COMPACT));
         //TODO 清算
         int ret = mapper.updateByPrimaryKeySelective(order);
 
