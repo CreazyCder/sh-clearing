@@ -13,6 +13,16 @@
         and CASH_SETTLE_STATUS ='0'
         <![CDATA[ AND ROWNUM <= ${size} ]]>
     </select>
+     <!-- 查询待处理数据 -->
+    <select id="selectTaskByStatus" resultType="cn.com.yusys.yusp.domain.SettleOrder">
+        select
+        <include refid="Base_Column_List"/>
+        from SETTLE_ORDER
+        where BOND_SETTLE_STATUS=#{bondStatus,jdbcType=VARCHAR}
+        and SETTLE_ORDER_STATUS=#{settleStatus,jdbcType=VARCHAR}
+        and CASH_SETTLE_STATUS=#{cashStatus,jdbcType=VARCHAR}
+        <![CDATA[ AND ROWNUM <= ${size} ]]>
+    </select>
     <!-- 查询交割中的数据 -->
     <select id="selectDeliveringByStatus" resultType="cn.com.yusys.yusp.domain.SettleOrder">
         select

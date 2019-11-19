@@ -27,10 +27,12 @@ public class SettleNotifyService {
      * @return
      */
     public ResultDto bondRsp(BondSettleNotifyReq req) {
+    	
         SettleOrder order = SettleOrder.builder()
                 .settleOrderId(req.getSettleOrderId())
                 .bondSettleId(req.getBondSettleId())
                 .bondSettleStatus(req.getBondProcStatus())
+                .settleOrderStatus("S".equals(req.getBondProcStatus())?"S":"")
                 .bondSettleStatusUpdateTm(DateUtil.getCurrDateTimeStr())
                 .build();
 

@@ -21,7 +21,16 @@ public interface ClearJobService {
      * @return 待处理列表.
      */
     List<SettleOrder> findNeedBondSettles(int size);
-
+    /**
+     * 查询待簿记记账的指定条数.
+     * <pre>
+     *     会同时变更记录状态.
+     * </pre>
+     *
+     * @param size 查询条数.
+     * @return 待处理列表.
+     */
+    List<SettleOrder> findNeedBondAccountSettles(int size);
     /**
      * 查询待资金处理的列表.
      *
@@ -46,7 +55,7 @@ public interface ClearJobService {
      * @param bondStatus 簿记状态.
      * @return 更新数量.
      */
-    int updateBondSettleStatus(String settleId, String bondStatus);
+	int updateBondSettleStatus(String settleId, String bondStatus, String operType);
 
     /**
      * 变更资金结算状态.
@@ -56,4 +65,5 @@ public interface ClearJobService {
      * @return 更新数量
      */
     int updateCashSettleStatus(String settleId, String cashStatus);
+
 }

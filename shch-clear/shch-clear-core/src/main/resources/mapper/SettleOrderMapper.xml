@@ -739,17 +739,17 @@
     <update id="updateSettleStatus" parameterType="cn.com.yusys.yusp.domain.SettleOrder">
         update SETTLE_ORDER
         <set>
-            <if test="bondSettleStatus != null">
+            <if test="bondStatus != null and bondStatus!=''">
                 BOND_SETTLE_STATUS = #{bondStatus,jdbcType=VARCHAR},
-                BOND_SETTLE_STATUS_UPDTAE_TM=#{updateTime,jdbcType=VARCHAR},
+                BOND_SETTLE_STATUS_UPDATE_TM=#{updateTime,jdbcType=VARCHAR},
             </if>
-            <if test="cashSettleStatus != null">
+            <if test="cashStatus != null and cashStatus!=''">
                 CASH_SETTLE_STATUS = #{cashStatus,jdbcType=VARCHAR},
-                CASH_SETTLE_STATUS_UPDTAE_TM=#{updateTime,jdbcType=VARCHAR},
+                CASH_SETTLE_STATUS_UPDATE_TM=#{updateTime,jdbcType=VARCHAR},
             </if>
-            <if test="settleOrderStatus != null">
+            <if test="settleStatus != null and settleStatus!=''">
                 SETTLE_ORDER_STATUS = #{settleStatus,jdbcType=VARCHAR},
-                SETTLE_ORDER_STATUS_UPDTAE_TM=#{updateTime,jdbcType=VARCHAR},
+                SETTLE_ORDER_STATUS_UPDATE_TM=#{updateTime,jdbcType=VARCHAR},
             </if>
         </set>
         where

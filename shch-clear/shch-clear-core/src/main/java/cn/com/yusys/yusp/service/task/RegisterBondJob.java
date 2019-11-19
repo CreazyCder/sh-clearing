@@ -40,12 +40,13 @@ public class RegisterBondJob extends IJobHandler {
      */
     @Override
     public ReturnT<String> execute(String s) throws Exception {
+        log.info("开始执行需要簿记的任务");
         clearJobService.findNeedBondSettles(batchSize).forEach(obj -> {
             int result = 0;
             try {
                 // 交割中
                 result = clearJobService.updateBondSettleStatus(obj.getSettleOrderId(),
-                        BondSettleStatusEnum.HANDLING.getCode()); //TODO 独立事务
+                        BondSettleStatusEnum.HANDLING.getCode(),"0"); //TODO 独立事务
             } catch (Throwable e) {
                 log.warn("执行变更状态失败:{}", e);
             }

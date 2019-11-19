@@ -1,6 +1,5 @@
 package cn.com.yusys.yusp.domain.msg.settlenotify;
 
-import lombok.Data;
 
 public class CashSettleNotifyReq {
 	private String settleOrderId;

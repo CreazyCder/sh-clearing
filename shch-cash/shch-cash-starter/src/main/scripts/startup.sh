@@ -13,7 +13,7 @@ APOLLO_ENABLED=true
 APOLLO_APPID=yusp-gateway
 APOLLO_ENV=DEV
 APOLLO_DEVMETA=http://localhost:9001
-NAMESPACES=application.yml
+NAMESPACES=application.yml.apollo
 
 ## Adjust memory settings if necessary
 #export JAVA_OPTS="-Xms6144m -Xmx6144m -Xss256k -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=384m -XX:NewSize=4096m -XX:MaxNewSize=4096m -XX:SurvivorRatio=8"
