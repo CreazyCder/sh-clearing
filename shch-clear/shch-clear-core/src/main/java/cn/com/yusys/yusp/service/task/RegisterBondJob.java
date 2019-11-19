@@ -40,6 +40,7 @@ public class RegisterBondJob extends IJobHandler {
      */
     @Override
     public ReturnT<String> execute(String s) throws Exception {
+        log.info("开始执行需要簿记的任务");
         clearJobService.findNeedBondSettles(batchSize).forEach(obj -> {
             int result = 0;
             try {
