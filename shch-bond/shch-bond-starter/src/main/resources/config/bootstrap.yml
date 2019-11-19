@@ -11,7 +11,7 @@ apollo:
     meta: http://192.168.251.240:9001 #apollo地址
     bootstrap:
         enabled: true #是否启用apollo, 不使用apollo 请剔除该包
-        namespaces: application.yml.apollo,application-public
+        namespaces: application.yml,shch-public
 # 日志相关
 logging: 
     path: ../logs #日志文件路径

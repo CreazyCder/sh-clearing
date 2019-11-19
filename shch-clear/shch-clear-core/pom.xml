@@ -24,6 +24,10 @@
         </dependency>
         <dependency>
             <groupId>cn.com.yusys.yusp</groupId>
+            <artifactId>yusp-app-message-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.com.yusys.yusp</groupId>
             <artifactId>shch-cash-client</artifactId>
         </dependency>
         <dependency>

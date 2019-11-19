@@ -1,5 +1,8 @@
 package cn.com.yusys.yusp;
 
+import cn.com.yusys.yusp.commons.config.ApplicationProperties;
+import cn.com.yusys.yusp.commons.util.AppStartMessageUtil;
+import com.ulisesbocchio.jasyptspringboot.JasyptSpringBootAutoConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -9,15 +12,12 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-//import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import com.ulisesbocchio.jasyptspringboot.JasyptSpringBootAutoConfiguration;
-
-import cn.com.yusys.yusp.commons.config.ApplicationProperties;
-import cn.com.yusys.yusp.commons.util.AppStartMessageUtil;
 import tk.mybatis.spring.annotation.MapperScan;
+
+//import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
 /**
@@ -95,19 +95,20 @@ import tk.mybatis.spring.annotation.MapperScan;
  * &nbsp;&nbsp;&lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</br>
  * &nbsp;&nbsp;&lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;</br>
  * &lt;/dependency&gt;</li>
- * 
+ *
+ * @author wpplu
  * @version 1.0
  */
 @EnableConfigurationProperties({ApplicationProperties.class})
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = {"cn.com.yusys.yusp"},
-    exclude = {JmxAutoConfiguration.class, ThymeleafAutoConfiguration.class, 
-            SecurityAutoConfiguration.class, JasyptSpringBootAutoConfiguration.class})
+        exclude = {JmxAutoConfiguration.class, ThymeleafAutoConfiguration.class,
+                SecurityAutoConfiguration.class, JasyptSpringBootAutoConfiguration.class})
 @MapperScan({"cn.com.yusys.yusp.**.repository.mapper"})
-//@EnableFeignClients("cn.com.yusys.yusp")
+@EnableFeignClients({"cn.com.yusys.yusp", "cn.com.yusys.yusp.message.client"})
 @EnableTransactionManagement
 public class ShchClearApp {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(ShchClearApp.class);
 
     public static void main(String[] args) {

@@ -45,7 +45,7 @@
     </dependencies>
     <dependencyManagement>
         <dependencies>
-	        
+
             <dependency>
                 <groupId>cn.com.yusys.yusp</groupId>
                 <artifactId>yusp-dependencies</artifactId>
@@ -97,6 +97,19 @@
                 <groupId>cn.com.yusys.yusp</groupId>
                 <artifactId>yusp-common-actuator-web</artifactId>
                 <version>${yusp-common.version}</version>
+            </dependency>
+
+            <!--应用组件依赖-->
+            <dependency>
+                <groupId>cn.com.yusys.yusp</groupId>
+                <artifactId>yusp-app-common-client</artifactId>
+                <version>${yusp-platform-service.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.com.yusys.yusp</groupId>
+                <artifactId>yusp-app-message-client</artifactId>
+                <version>${yusp-platform-service.version}</version>
             </dependency>
 
             <!-- 本工程模块版本管理 -->
