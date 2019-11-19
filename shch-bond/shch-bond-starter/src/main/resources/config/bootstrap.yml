@@ -1,17 +1,17 @@
 spring: 
     application:
-        name: shch-bookkeeping  #应用名称
+        name: shch-bond  #应用名称
         
 server:
     port: 16001 #应用启动端口
     
 app:
-    id: shch-bookkeeping #apollo配置中心应用名
+    id: shch-bond #apollo配置中心应用名
 apollo: 
     meta: http://192.168.251.240:9001 #apollo地址
     bootstrap:
         enabled: true #是否启用apollo, 不使用apollo 请剔除该包
-        namespaces: application.yml,application-public
+        namespaces: application.yml.apollo,application-public
 # 日志相关
 logging: 
     path: ../logs #日志文件路径

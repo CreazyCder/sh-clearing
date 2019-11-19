@@ -205,3 +205,4 @@ public class DVPSettleApplyReq implements Serializable {
     }
 
 }
+

@@ -1,4 +1,5 @@
 # 使用数据库时代码自动创建的配置文件，从application.yml中可获取，不使用数据库时可删除该文件
+# 使用数据库时代码自动创建的配置文件，从application.yml中可获取，不使用数据库时可删除该文件
 spring:
   datasource:
     driver: oracle.jdbc.driver.OracleDriver
@@ -7,3 +8,8 @@ spring:
     url: jdbc:oracle:thin:@192.168.251.166:1521:orcl
     username: SHCH_POC
     password: SHCH_POC
+# 配置流程扫描架包名字前缀,用英文逗号分隔多个jir包名
+flow: 
+  jarnames: yusp-fee
+  # 配置流程文件保存的时候，是否自动发布,注意maven项目中一个模块配置就行，重复配置，配置值会相互覆盖(最好配置到流程编排工程下),修改值后，需要刷新流程(重新打开流程文件)
+  saveautopubflow: false 

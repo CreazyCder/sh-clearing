@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flow bspIntercepter="" description="薄记" enableBSP="false" enableREST="true" flowId="BondSettltOrder" idempotent="false" intercepterName="" iptField="" iptRepeatField="" iptTtl="" publish="true" requestType="POST" serviceCombType="" url="/api/bondsettltorder2">
+  <input>
+    <param assignType="VARIABLE" className="cn.com.yusys.yusp.service.BondDto" description="薄记传参对象" isArray="false" name="bondDto" value=""/>
+  </input>
+  <output>
+    <param assignType="VARIABLE" className="String" isArray="false" value="null"/>
+  </output>
+  <global/>
+  <actions>
+    <action description="开始节点" id="2" nodeType="START">
+      <input/>
+      <output/>
+      <transitions>
+        <transition condition="" description="" from="2" to="7" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action description="结束节点" id="3" nodeType="END">
+      <input/>
+      <output/>
+      <transitions/>
+    </action>
+    <action async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="procCouponBond" description="债券DVP结算圈存指令异步处理逻辑" id="7" nodeType="MAPPER" transaction="NEW">
+      <input>
+        <param assignType="VARIABLE" className="cn.com.yusys.yusp.service.BondDto" isArray="false" name="bondDto" value="bondDto"/>
+      </input>
+      <output/>
+      <transitions>
+        <transition condition="" description="" from="7" to="3" type="NORMAL"/>
+      </transitions>
+    </action>
+  </actions>
+</flow>
