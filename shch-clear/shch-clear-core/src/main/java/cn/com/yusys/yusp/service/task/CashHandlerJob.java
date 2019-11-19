@@ -46,9 +46,8 @@ public class CashHandlerJob extends IJobHandler {
                 log.warn("执行数据库操作异常:{}", number);
             }
             if (number != 0) {
-            	CashDto dto = new CashDto();
-            	BeanUtil.beanCopy(obj, dto);
-                callServ.callCashSettleApply(dto);
+
+                callServ.callCashSettleApply(obj);
             }
         });
 

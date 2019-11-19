@@ -50,9 +50,8 @@ public class RegisterBondJob extends IJobHandler {
                 log.warn("执行变更状态失败:{}", e);
             }
             if (result != 0) {
-                // 需要处理
-                //TODO 调用簿记接口.
-                callServ.callBondSettleApply();
+                // 调用簿记接口.
+                callServ.callBondSettleApply(obj);
             }
         });
         return new ReturnT<>();
