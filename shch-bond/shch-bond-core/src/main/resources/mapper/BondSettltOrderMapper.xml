@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.repository.mapper.BondSettltOrderMapper">
+    <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.domain.BondSettltOrder">
+		<id column="SERIAL_NUM" jdbcType="VARCHAR" property="serialNum" />
+		<result column="TRADE_ID" jdbcType="VARCHAR" property="tradeId" />
+		<result column="BOND_SETTLE_ID" jdbcType="VARCHAR" property="bondSettleId" />
+		<result column="BOND_CODE" jdbcType="VARCHAR" property="bondCode" />
+		<result column="BOND_NAME" jdbcType="VARCHAR" property="bondName" />
+		<result column="DEBIT_MEM_ID" jdbcType="VARCHAR" property="debitMemId" />
+		<result column="DEBIT_MEM_NAME" jdbcType="VARCHAR" property="debitMemName" />
+		<result column="DEBIT_HOLDER_ACCOUNT" jdbcType="VARCHAR" property="debitHolderAccount" />
+		<result column="DEBIT_HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="debitHolderAccountName" />
+		<result column="BOND_DEBIT_TITLE" jdbcType="VARCHAR" property="bondDebitTitle" />
+		<result column="CREDIT_MEM_ID" jdbcType="VARCHAR" property="creditMemId" />
+		<result column="CREDIT_MEM_NAME" jdbcType="VARCHAR" property="creditMemName" />
+		<result column="CREDIT_HOLDER_ACCOUNT" jdbcType="VARCHAR" property="creditHolderAccount" />
+		<result column="CREDIT_HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="creditHolderAccountName" />
+		<result column="BOND_CREDIT_TITLE" jdbcType="VARCHAR" property="bondCreditTitle" />
+		<result column="BOND_FACE_AMT" jdbcType="NUMERIC" property="bondFaceAmt" />
+		<result column="UPDATE_TM" jdbcType="VARCHAR" property="updateTm" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="BOND_PROC_STATUS" jdbcType="VARCHAR" property="bondProcStatus" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        SERIAL_NUM,TRADE_ID,BOND_SETTLE_ID,BOND_CODE,BOND_NAME,DEBIT_MEM_ID,DEBIT_MEM_NAME,DEBIT_HOLDER_ACCOUNT,DEBIT_HOLDER_ACCOUNT_NAME,BOND_DEBIT_TITLE,CREDIT_MEM_ID,CREDIT_MEM_NAME,CREDIT_HOLDER_ACCOUNT,CREDIT_HOLDER_ACCOUNT_NAME,BOND_CREDIT_TITLE,BOND_FACE_AMT,UPDATE_TM,REMARK,BOND_PROC_STATUS
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from BOND_SETTLT_ORDER
+        where 
+        SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+    </select>
+    
+    <!-- 条件列表查询 -->
+    <select id="selectByModel" parameterType="cn.com.yusys.yusp.commons.mapper.QueryModel" resultMap="BaseResultMap">
+        select SERIAL_NUM,TRADE_ID,BOND_SETTLE_ID,BOND_CODE,BOND_NAME,DEBIT_MEM_ID,DEBIT_MEM_NAME,DEBIT_HOLDER_ACCOUNT,DEBIT_HOLDER_ACCOUNT_NAME,BOND_DEBIT_TITLE,CREDIT_MEM_ID,CREDIT_MEM_NAME,CREDIT_HOLDER_ACCOUNT,CREDIT_HOLDER_ACCOUNT_NAME,BOND_CREDIT_TITLE,BOND_FACE_AMT,UPDATE_TM,REMARK,BOND_PROC_STATUS from BOND_SETTLT_ORDER
+        <where>
+            <if test="condition.serialNum != null and condition.serialNum != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.serialNum)"> AND SERIAL_NUM like #{condition.serialNum,jdbcType=VARCHAR }</when>
+                    <otherwise> AND SERIAL_NUM = #{condition.serialNum,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.tradeId != null and condition.tradeId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.tradeId)"> AND TRADE_ID like #{condition.tradeId,jdbcType=VARCHAR }</when>
+                    <otherwise> AND TRADE_ID = #{condition.tradeId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondSettleId != null and condition.bondSettleId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondSettleId)"> AND BOND_SETTLE_ID like #{condition.bondSettleId,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BOND_SETTLE_ID = #{condition.bondSettleId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondCode != null and condition.bondCode != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondCode)"> AND BOND_CODE like #{condition.bondCode,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BOND_CODE = #{condition.bondCode,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondName != null and condition.bondName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondName)"> AND BOND_NAME like #{condition.bondName,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BOND_NAME = #{condition.bondName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.debitMemId != null and condition.debitMemId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.debitMemId)"> AND DEBIT_MEM_ID like #{condition.debitMemId,jdbcType=VARCHAR }</when>
+                    <otherwise> AND DEBIT_MEM_ID = #{condition.debitMemId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.debitMemName != null and condition.debitMemName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.debitMemName)"> AND DEBIT_MEM_NAME like #{condition.debitMemName,jdbcType=VARCHAR }</when>
+                    <otherwise> AND DEBIT_MEM_NAME = #{condition.debitMemName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.debitHolderAccount != null and condition.debitHolderAccount != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.debitHolderAccount)"> AND DEBIT_HOLDER_ACCOUNT like #{condition.debitHolderAccount,jdbcType=VARCHAR }</when>
+                    <otherwise> AND DEBIT_HOLDER_ACCOUNT = #{condition.debitHolderAccount,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.debitHolderAccountName != null and condition.debitHolderAccountName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.debitHolderAccountName)"> AND DEBIT_HOLDER_ACCOUNT_NAME like #{condition.debitHolderAccountName,jdbcType=VARCHAR }</when>
+                    <otherwise> AND DEBIT_HOLDER_ACCOUNT_NAME = #{condition.debitHolderAccountName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondDebitTitle != null and condition.bondDebitTitle != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondDebitTitle)"> AND BOND_DEBIT_TITLE like #{condition.bondDebitTitle,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BOND_DEBIT_TITLE = #{condition.bondDebitTitle,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.creditMemId != null and condition.creditMemId != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.creditMemId)"> AND CREDIT_MEM_ID like #{condition.creditMemId,jdbcType=VARCHAR }</when>
+                    <otherwise> AND CREDIT_MEM_ID = #{condition.creditMemId,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.creditMemName != null and condition.creditMemName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.creditMemName)"> AND CREDIT_MEM_NAME like #{condition.creditMemName,jdbcType=VARCHAR }</when>
+                    <otherwise> AND CREDIT_MEM_NAME = #{condition.creditMemName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.creditHolderAccount != null and condition.creditHolderAccount != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.creditHolderAccount)"> AND CREDIT_HOLDER_ACCOUNT like #{condition.creditHolderAccount,jdbcType=VARCHAR }</when>
+                    <otherwise> AND CREDIT_HOLDER_ACCOUNT = #{condition.creditHolderAccount,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.creditHolderAccountName != null and condition.creditHolderAccountName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.creditHolderAccountName)"> AND CREDIT_HOLDER_ACCOUNT_NAME like #{condition.creditHolderAccountName,jdbcType=VARCHAR }</when>
+                    <otherwise> AND CREDIT_HOLDER_ACCOUNT_NAME = #{condition.creditHolderAccountName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondCreditTitle != null and condition.bondCreditTitle != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondCreditTitle)"> AND BOND_CREDIT_TITLE like #{condition.bondCreditTitle,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BOND_CREDIT_TITLE = #{condition.bondCreditTitle,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondFaceAmt != null and condition.bondFaceAmt != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondFaceAmt)"> AND BOND_FACE_AMT like #{condition.bondFaceAmt,jdbcType=NUMERIC }</when>
+                    <otherwise> AND BOND_FACE_AMT = #{condition.bondFaceAmt,jdbcType=NUMERIC}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.updateTm != null and condition.updateTm != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.updateTm)"> AND UPDATE_TM like #{condition.updateTm,jdbcType=VARCHAR }</when>
+                    <otherwise> AND UPDATE_TM = #{condition.updateTm,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.remark != null and condition.remark != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.remark)"> AND REMARK like #{condition.remark,jdbcType=VARCHAR }</when>
+                    <otherwise> AND REMARK = #{condition.remark,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondProcStatus != null and condition.bondProcStatus != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondProcStatus)"> AND BOND_PROC_STATUS like #{condition.bondProcStatus,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BOND_PROC_STATUS = #{condition.bondProcStatus,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            ${dataAuth}
+        </where>
+        <if test="sort != null"> order by ${sort} </if>
+    </select>
+	
+    <!-- 插入 -->
+    <insert id="insert" parameterType="cn.com.yusys.yusp.domain.BondSettltOrder">
+        insert into BOND_SETTLT_ORDER (SERIAL_NUM,TRADE_ID,BOND_SETTLE_ID,BOND_CODE,BOND_NAME,DEBIT_MEM_ID,DEBIT_MEM_NAME,DEBIT_HOLDER_ACCOUNT,DEBIT_HOLDER_ACCOUNT_NAME,BOND_DEBIT_TITLE,CREDIT_MEM_ID,CREDIT_MEM_NAME,CREDIT_HOLDER_ACCOUNT,CREDIT_HOLDER_ACCOUNT_NAME,BOND_CREDIT_TITLE,BOND_FACE_AMT,UPDATE_TM,REMARK,BOND_PROC_STATUS)
+        values (
+        #{serialNum,jdbcType=VARCHAR},
+        #{tradeId,jdbcType=VARCHAR},
+        #{bondSettleId,jdbcType=VARCHAR},
+        #{bondCode,jdbcType=VARCHAR},
+        #{bondName,jdbcType=VARCHAR},
+        #{debitMemId,jdbcType=VARCHAR},
+        #{debitMemName,jdbcType=VARCHAR},
+        #{debitHolderAccount,jdbcType=VARCHAR},
+        #{debitHolderAccountName,jdbcType=VARCHAR},
+        #{bondDebitTitle,jdbcType=VARCHAR},
+        #{creditMemId,jdbcType=VARCHAR},
+        #{creditMemName,jdbcType=VARCHAR},
+        #{creditHolderAccount,jdbcType=VARCHAR},
+        #{creditHolderAccountName,jdbcType=VARCHAR},
+        #{bondCreditTitle,jdbcType=VARCHAR},
+        #{bondFaceAmt,jdbcType=NUMERIC},
+        systimestamp,
+        #{remark,jdbcType=VARCHAR},
+        #{bondProcStatus,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 插入-只插入非空字段 -->
+    <insert id="insertSelective" parameterType="cn.com.yusys.yusp.domain.BondSettltOrder">
+		insert into BOND_SETTLT_ORDER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serialNum != null">
+                SERIAL_NUM,
+            </if>        
+            <if test="tradeId != null">
+                TRADE_ID,
+            </if>        
+            <if test="bondSettleId != null">
+                BOND_SETTLE_ID,
+            </if>        
+            <if test="bondCode != null">
+                BOND_CODE,
+            </if>        
+            <if test="bondName != null">
+                BOND_NAME,
+            </if>        
+            <if test="debitMemId != null">
+                DEBIT_MEM_ID,
+            </if>        
+            <if test="debitMemName != null">
+                DEBIT_MEM_NAME,
+            </if>        
+            <if test="debitHolderAccount != null">
+                DEBIT_HOLDER_ACCOUNT,
+            </if>        
+            <if test="debitHolderAccountName != null">
+                DEBIT_HOLDER_ACCOUNT_NAME,
+            </if>        
+            <if test="bondDebitTitle != null">
+                BOND_DEBIT_TITLE,
+            </if>        
+            <if test="creditMemId != null">
+                CREDIT_MEM_ID,
+            </if>        
+            <if test="creditMemName != null">
+                CREDIT_MEM_NAME,
+            </if>        
+            <if test="creditHolderAccount != null">
+                CREDIT_HOLDER_ACCOUNT,
+            </if>        
+            <if test="creditHolderAccountName != null">
+                CREDIT_HOLDER_ACCOUNT_NAME,
+            </if>        
+            <if test="bondCreditTitle != null">
+                BOND_CREDIT_TITLE,
+            </if>        
+            <if test="bondFaceAmt != null">
+                BOND_FACE_AMT,
+            </if>        
+            <if test="updateTm != null">
+                UPDATE_TM,
+            </if>        
+            <if test="remark != null">
+                REMARK,
+            </if>        
+            <if test="bondProcStatus != null">
+                BOND_PROC_STATUS,
+            </if>        
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serialNum != null">
+                #{serialNum,jdbcType=VARCHAR},
+            </if>                   
+            <if test="tradeId != null">
+                #{tradeId,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondSettleId != null">
+                #{bondSettleId,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondCode != null">
+                #{bondCode,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondName != null">
+                #{bondName,jdbcType=VARCHAR},
+            </if>                   
+            <if test="debitMemId != null">
+                #{debitMemId,jdbcType=VARCHAR},
+            </if>                   
+            <if test="debitMemName != null">
+                #{debitMemName,jdbcType=VARCHAR},
+            </if>                   
+            <if test="debitHolderAccount != null">
+                #{debitHolderAccount,jdbcType=VARCHAR},
+            </if>                   
+            <if test="debitHolderAccountName != null">
+                #{debitHolderAccountName,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondDebitTitle != null">
+                #{bondDebitTitle,jdbcType=VARCHAR},
+            </if>                   
+            <if test="creditMemId != null">
+                #{creditMemId,jdbcType=VARCHAR},
+            </if>                   
+            <if test="creditMemName != null">
+                #{creditMemName,jdbcType=VARCHAR},
+            </if>                   
+            <if test="creditHolderAccount != null">
+                #{creditHolderAccount,jdbcType=VARCHAR},
+            </if>                   
+            <if test="creditHolderAccountName != null">
+                #{creditHolderAccountName,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondCreditTitle != null">
+                #{bondCreditTitle,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondFaceAmt != null">
+                #{bondFaceAmt,jdbcType=NUMERIC},
+            </if>                   
+            <if test="updateTm != null">
+                #{updateTm,jdbcType=VARCHAR},
+            </if>                   
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondProcStatus != null">
+                #{bondProcStatus,jdbcType=VARCHAR},
+            </if>                   
+        </trim>
+    </insert>
+
+    <!-- 根据主键更新 -->
+    <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.domain.BondSettltOrder">
+        update BOND_SETTLT_ORDER set 
+        SERIAL_NUM = #{serialNum,jdbcType=VARCHAR},
+        TRADE_ID = #{tradeId,jdbcType=VARCHAR},
+        BOND_SETTLE_ID = #{bondSettleId,jdbcType=VARCHAR},
+        BOND_CODE = #{bondCode,jdbcType=VARCHAR},
+        BOND_NAME = #{bondName,jdbcType=VARCHAR},
+        DEBIT_MEM_ID = #{debitMemId,jdbcType=VARCHAR},
+        DEBIT_MEM_NAME = #{debitMemName,jdbcType=VARCHAR},
+        DEBIT_HOLDER_ACCOUNT = #{debitHolderAccount,jdbcType=VARCHAR},
+        DEBIT_HOLDER_ACCOUNT_NAME = #{debitHolderAccountName,jdbcType=VARCHAR},
+        BOND_DEBIT_TITLE = #{bondDebitTitle,jdbcType=VARCHAR},
+        CREDIT_MEM_ID = #{creditMemId,jdbcType=VARCHAR},
+        CREDIT_MEM_NAME = #{creditMemName,jdbcType=VARCHAR},
+        CREDIT_HOLDER_ACCOUNT = #{creditHolderAccount,jdbcType=VARCHAR},
+        CREDIT_HOLDER_ACCOUNT_NAME = #{creditHolderAccountName,jdbcType=VARCHAR},
+        BOND_CREDIT_TITLE = #{bondCreditTitle,jdbcType=VARCHAR},
+        BOND_FACE_AMT = #{bondFaceAmt,jdbcType=NUMERIC},
+        UPDATE_TM = #{updateTm,jdbcType=VARCHAR},
+        REMARK = #{remark,jdbcType=VARCHAR},
+        BOND_PROC_STATUS = #{bondProcStatus,jdbcType=VARCHAR}
+        where 
+        SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 根据主键更新-只更新非空字段 -->
+    <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.domain.BondSettltOrder">
+        update BOND_SETTLT_ORDER
+        <set>
+            <if test="serialNum != null">
+                SERIAL_NUM = #{serialNum,jdbcType=VARCHAR},
+            </if>        
+            <if test="tradeId != null">
+                TRADE_ID = #{tradeId,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondSettleId != null">
+                BOND_SETTLE_ID = #{bondSettleId,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondCode != null">
+                BOND_CODE = #{bondCode,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondName != null">
+                BOND_NAME = #{bondName,jdbcType=VARCHAR},
+            </if>        
+            <if test="debitMemId != null">
+                DEBIT_MEM_ID = #{debitMemId,jdbcType=VARCHAR},
+            </if>        
+            <if test="debitMemName != null">
+                DEBIT_MEM_NAME = #{debitMemName,jdbcType=VARCHAR},
+            </if>        
+            <if test="debitHolderAccount != null">
+                DEBIT_HOLDER_ACCOUNT = #{debitHolderAccount,jdbcType=VARCHAR},
+            </if>        
+            <if test="debitHolderAccountName != null">
+                DEBIT_HOLDER_ACCOUNT_NAME = #{debitHolderAccountName,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondDebitTitle != null">
+                BOND_DEBIT_TITLE = #{bondDebitTitle,jdbcType=VARCHAR},
+            </if>        
+            <if test="creditMemId != null">
+                CREDIT_MEM_ID = #{creditMemId,jdbcType=VARCHAR},
+            </if>        
+            <if test="creditMemName != null">
+                CREDIT_MEM_NAME = #{creditMemName,jdbcType=VARCHAR},
+            </if>        
+            <if test="creditHolderAccount != null">
+                CREDIT_HOLDER_ACCOUNT = #{creditHolderAccount,jdbcType=VARCHAR},
+            </if>        
+            <if test="creditHolderAccountName != null">
+                CREDIT_HOLDER_ACCOUNT_NAME = #{creditHolderAccountName,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondCreditTitle != null">
+                BOND_CREDIT_TITLE = #{bondCreditTitle,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondFaceAmt != null">
+                BOND_FACE_AMT = #{bondFaceAmt,jdbcType=NUMERIC},
+            </if>        
+            <if test="updateTm != null">
+                UPDATE_TM = #{updateTm,jdbcType=VARCHAR},
+            </if>        
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondProcStatus != null">
+                BOND_PROC_STATUS = #{bondProcStatus,jdbcType=VARCHAR}
+            </if>        
+        </set>
+        where
+        SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteByPrimaryKey">
+        delete from BOND_SETTLT_ORDER where  
+        SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 根据多个主键删除 -->
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from BOND_SETTLT_ORDER where  SERIAL_NUM in
+        <foreach collection="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@toList('java.lang.String',ids)" open="(" close=")" separator="," item="serialNum">
+          #{serialNum,jdbcType=VARCHAR}
+        </foreach>
+        <if test="_parameter.containsKey('dataAuth')">${dataAuth}</if>
+    </delete>
+</mapper>

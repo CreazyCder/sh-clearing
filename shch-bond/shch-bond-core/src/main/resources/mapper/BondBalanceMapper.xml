@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.repository.mapper.BondBalanceMapper">
+    <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.domain.BondBalance">
+		<result column="BIZ_DATE" jdbcType="VARCHAR" property="bizDate" />
+		<id column="MEM_CODE" jdbcType="VARCHAR" property="memCode" />
+		<result column="MEM_NAME" jdbcType="VARCHAR" property="memName" />
+		<id column="HOLDER_ACCOUNT" jdbcType="VARCHAR" property="holderAccount" />
+		<result column="HOLDER_ACCOUNT_NAME" jdbcType="VARCHAR" property="holderAccountName" />
+		<id column="BOND_CODE" jdbcType="VARCHAR" property="bondCode" />
+		<result column="BOND_NAME" jdbcType="VARCHAR" property="bondName" />
+		<result column="BOND_TYPE" jdbcType="VARCHAR" property="bondType" />
+		<id column="TITLE_CODE" jdbcType="VARCHAR" property="titleCode" />
+		<result column="TITLE_NAME" jdbcType="VARCHAR" property="titleName" />
+		<result column="CURRENCY_AMT" jdbcType="NUMERIC" property="currencyAmt" />
+		<result column="UPDATE_TM" jdbcType="VARCHAR" property="updateTm" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        BIZ_DATE,MEM_CODE,MEM_NAME,HOLDER_ACCOUNT,HOLDER_ACCOUNT_NAME,BOND_CODE,BOND_NAME,BOND_TYPE,TITLE_CODE,TITLE_NAME,CURRENCY_AMT,UPDATE_TM
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from BOND_BALANCE
+        where 
+        MEM_CODE = #{memCode,jdbcType=VARCHAR}
+        and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+        and BOND_CODE = #{bondCode,jdbcType=VARCHAR}
+        and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
+    </select>
+    
+    <!-- 条件列表查询 -->
+    <select id="selectByModel" parameterType="cn.com.yusys.yusp.commons.mapper.QueryModel" resultMap="BaseResultMap">
+        select BIZ_DATE,MEM_CODE,MEM_NAME,HOLDER_ACCOUNT,HOLDER_ACCOUNT_NAME,BOND_CODE,BOND_NAME,BOND_TYPE,TITLE_CODE,TITLE_NAME,CURRENCY_AMT,UPDATE_TM from BOND_BALANCE
+        <where>
+            <if test="condition.bizDate != null and condition.bizDate != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bizDate)"> AND BIZ_DATE like #{condition.bizDate,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BIZ_DATE = #{condition.bizDate,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.memCode != null and condition.memCode != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.memCode)"> AND MEM_CODE like #{condition.memCode,jdbcType=VARCHAR }</when>
+                    <otherwise> AND MEM_CODE = #{condition.memCode,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.memName != null and condition.memName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.memName)"> AND MEM_NAME like #{condition.memName,jdbcType=VARCHAR }</when>
+                    <otherwise> AND MEM_NAME = #{condition.memName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.holderAccount != null and condition.holderAccount != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.holderAccount)"> AND HOLDER_ACCOUNT like #{condition.holderAccount,jdbcType=VARCHAR }</when>
+                    <otherwise> AND HOLDER_ACCOUNT = #{condition.holderAccount,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.holderAccountName != null and condition.holderAccountName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.holderAccountName)"> AND HOLDER_ACCOUNT_NAME like #{condition.holderAccountName,jdbcType=VARCHAR }</when>
+                    <otherwise> AND HOLDER_ACCOUNT_NAME = #{condition.holderAccountName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondCode != null and condition.bondCode != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondCode)"> AND BOND_CODE like #{condition.bondCode,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BOND_CODE = #{condition.bondCode,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondName != null and condition.bondName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondName)"> AND BOND_NAME like #{condition.bondName,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BOND_NAME = #{condition.bondName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.bondType != null and condition.bondType != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.bondType)"> AND BOND_TYPE like #{condition.bondType,jdbcType=VARCHAR }</when>
+                    <otherwise> AND BOND_TYPE = #{condition.bondType,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.titleCode != null and condition.titleCode != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.titleCode)"> AND TITLE_CODE like #{condition.titleCode,jdbcType=VARCHAR }</when>
+                    <otherwise> AND TITLE_CODE = #{condition.titleCode,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.titleName != null and condition.titleName != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.titleName)"> AND TITLE_NAME like #{condition.titleName,jdbcType=VARCHAR }</when>
+                    <otherwise> AND TITLE_NAME = #{condition.titleName,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.currencyAmt != null and condition.currencyAmt != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.currencyAmt)"> AND CURRENCY_AMT like #{condition.currencyAmt,jdbcType=NUMERIC }</when>
+                    <otherwise> AND CURRENCY_AMT = #{condition.currencyAmt,jdbcType=NUMERIC}</otherwise>
+                </choose>
+            </if>
+            <if test="condition.updateTm != null and condition.updateTm != ''">
+                <choose>
+                    <when test="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@like(condition.updateTm)"> AND UPDATE_TM like #{condition.updateTm,jdbcType=VARCHAR }</when>
+                    <otherwise> AND UPDATE_TM = #{condition.updateTm,jdbcType=VARCHAR}</otherwise>
+                </choose>
+            </if>
+            ${dataAuth}
+        </where>
+        <if test="sort != null"> order by ${sort} </if>
+    </select>
+	
+    <!-- 插入 -->
+    <insert id="insert" parameterType="cn.com.yusys.yusp.domain.BondBalance">
+        insert into BOND_BALANCE (BIZ_DATE,MEM_CODE,MEM_NAME,HOLDER_ACCOUNT,HOLDER_ACCOUNT_NAME,BOND_CODE,BOND_NAME,BOND_TYPE,TITLE_CODE,TITLE_NAME,CURRENCY_AMT,UPDATE_TM)
+        values (
+        #{bizDate,jdbcType=VARCHAR},
+        #{memCode,jdbcType=VARCHAR},
+        #{memName,jdbcType=VARCHAR},
+        #{holderAccount,jdbcType=VARCHAR},
+        #{holderAccountName,jdbcType=VARCHAR},
+        #{bondCode,jdbcType=VARCHAR},
+        #{bondName,jdbcType=VARCHAR},
+        #{bondType,jdbcType=VARCHAR},
+        #{titleCode,jdbcType=VARCHAR},
+        #{titleName,jdbcType=VARCHAR},
+        #{currencyAmt,jdbcType=NUMERIC},
+        #{updateTm,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 插入-只插入非空字段 -->
+    <insert id="insertSelective" parameterType="cn.com.yusys.yusp.domain.BondBalance">
+		insert into BOND_BALANCE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bizDate != null">
+                BIZ_DATE,
+            </if>        
+            <if test="memCode != null">
+                MEM_CODE,
+            </if>        
+            <if test="memName != null">
+                MEM_NAME,
+            </if>        
+            <if test="holderAccount != null">
+                HOLDER_ACCOUNT,
+            </if>        
+            <if test="holderAccountName != null">
+                HOLDER_ACCOUNT_NAME,
+            </if>        
+            <if test="bondCode != null">
+                BOND_CODE,
+            </if>        
+            <if test="bondName != null">
+                BOND_NAME,
+            </if>        
+            <if test="bondType != null">
+                BOND_TYPE,
+            </if>        
+            <if test="titleCode != null">
+                TITLE_CODE,
+            </if>        
+            <if test="titleName != null">
+                TITLE_NAME,
+            </if>        
+            <if test="currencyAmt != null">
+                CURRENCY_AMT,
+            </if>        
+            <if test="updateTm != null">
+                UPDATE_TM,
+            </if>        
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bizDate != null">
+                #{bizDate,jdbcType=VARCHAR},
+            </if>                   
+            <if test="memCode != null">
+                #{memCode,jdbcType=VARCHAR},
+            </if>                   
+            <if test="memName != null">
+                #{memName,jdbcType=VARCHAR},
+            </if>                   
+            <if test="holderAccount != null">
+                #{holderAccount,jdbcType=VARCHAR},
+            </if>                   
+            <if test="holderAccountName != null">
+                #{holderAccountName,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondCode != null">
+                #{bondCode,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondName != null">
+                #{bondName,jdbcType=VARCHAR},
+            </if>                   
+            <if test="bondType != null">
+                #{bondType,jdbcType=VARCHAR},
+            </if>                   
+            <if test="titleCode != null">
+                #{titleCode,jdbcType=VARCHAR},
+            </if>                   
+            <if test="titleName != null">
+                #{titleName,jdbcType=VARCHAR},
+            </if>                   
+            <if test="currencyAmt != null">
+                #{currencyAmt,jdbcType=NUMERIC},
+            </if>                   
+            <if test="updateTm != null">
+                #{updateTm,jdbcType=VARCHAR},
+            </if>                   
+        </trim>
+    </insert>
+
+    <!-- 根据主键更新 -->
+    <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.domain.BondBalance">
+        update BOND_BALANCE set 
+        BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
+        MEM_CODE = #{memCode,jdbcType=VARCHAR},
+        MEM_NAME = #{memName,jdbcType=VARCHAR},
+        HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR},
+        HOLDER_ACCOUNT_NAME = #{holderAccountName,jdbcType=VARCHAR},
+        BOND_CODE = #{bondCode,jdbcType=VARCHAR},
+        BOND_NAME = #{bondName,jdbcType=VARCHAR},
+        BOND_TYPE = #{bondType,jdbcType=VARCHAR},
+        TITLE_CODE = #{titleCode,jdbcType=VARCHAR},
+        TITLE_NAME = #{titleName,jdbcType=VARCHAR},
+        CURRENCY_AMT = #{currencyAmt,jdbcType=NUMERIC},
+        UPDATE_TM = #{updateTm,jdbcType=VARCHAR}
+        where 
+        MEM_CODE = #{memCode,jdbcType=VARCHAR}
+        and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+        and BOND_CODE = #{bondCode,jdbcType=VARCHAR}
+        and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 根据主键更新-只更新非空字段 -->
+    <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.domain.BondBalance">
+        update BOND_BALANCE
+        <set>
+            <if test="bizDate != null">
+                BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
+            </if>        
+            <if test="memCode != null">
+                MEM_CODE = #{memCode,jdbcType=VARCHAR},
+            </if>        
+            <if test="memName != null">
+                MEM_NAME = #{memName,jdbcType=VARCHAR},
+            </if>        
+            <if test="holderAccount != null">
+                HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR},
+            </if>        
+            <if test="holderAccountName != null">
+                HOLDER_ACCOUNT_NAME = #{holderAccountName,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondCode != null">
+                BOND_CODE = #{bondCode,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondName != null">
+                BOND_NAME = #{bondName,jdbcType=VARCHAR},
+            </if>        
+            <if test="bondType != null">
+                BOND_TYPE = #{bondType,jdbcType=VARCHAR},
+            </if>        
+            <if test="titleCode != null">
+                TITLE_CODE = #{titleCode,jdbcType=VARCHAR},
+            </if>        
+            <if test="titleName != null">
+                TITLE_NAME = #{titleName,jdbcType=VARCHAR},
+            </if>        
+            <if test="currencyAmt != null">
+                CURRENCY_AMT = #{currencyAmt,jdbcType=NUMERIC},
+            </if>        
+            <if test="updateTm != null">
+                UPDATE_TM = #{updateTm,jdbcType=VARCHAR}
+            </if>        
+        </set>
+        where
+        MEM_CODE = #{memCode,jdbcType=VARCHAR}
+        and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+        and BOND_CODE = #{bondCode,jdbcType=VARCHAR}
+        and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteByPrimaryKey">
+        delete from BOND_BALANCE where  
+        MEM_CODE = #{memCode,jdbcType=VARCHAR}
+        and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+        and BOND_CODE = #{bondCode,jdbcType=VARCHAR}
+        and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
+    </delete>
+
+</mapper>
