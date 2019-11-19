@@ -4,14 +4,12 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 
@@ -143,5 +141,17 @@ public class CashSettleOrderService {
     	if(result){// 调用资金dep异步结算通知
 			
 		}
+    }
+    
+    public void pay(String serialNum) {
+    	CashSettleOrder record3 = new CashSettleOrder();
+		record3.setSerialNum(serialNum);
+		record3.setCashProcStatus("3");
+		cashSettleOrderMapper.updateByPrimaryKeySelective(record3);	
+		
+		/**
+		 * 通知清算成功
+		 */
+       
     }
 }

@@ -14,14 +14,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.com.yusys.yusp.domain.CashSettleOrder;
 import cn.com.yusys.yusp.repository.mapper.CashSettleOrderMapper;
+import cn.com.yusys.yusp.service.CashSettleOrderService;
 
-@Service
+/*@Service*/
 public class HVPSMQListener {
     private ObjectMapper objectMapper = new ObjectMapper();
     private Logger logger = LoggerFactory.getLogger(HVPSMQListener.class);
     
     @Autowired
-    private CashSettleOrderMapper cashSettleOrderMapper;
+    private CashSettleOrderService cashSettleOrderService;
 
 	@RabbitListener(queues = {"pay"})
 	@RabbitHandler
@@ -30,14 +31,8 @@ public class HVPSMQListener {
 		try {
 			Map data = objectMapper.readValue(message, Map.class);
 			logger.info("支付处理接收报文格式化对象成功："+message);
-			CashSettleOrder record3 = new CashSettleOrder();
-			record3.setSerialNum(data.get("serialNum").toString());
-			record3.setCashProcStatus("3");
-			cashSettleOrderMapper.updateByPrimaryKeySelective(record3);	
 			
-			/**
-			 * 通知清算成功
-			 */
+			cashSettleOrderService.pay(data.get("serialNum").toString());
 		} catch (IOException e) {
 			logger.info("支付处理接收报文格式化对象失败："+message);
 		}

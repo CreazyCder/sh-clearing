@@ -17,7 +17,9 @@ public interface CashAccountBalanceMapper {
     int updateByPrimaryKeySelective(CashAccountBalance record);
     
     int updateMoney(CashAccountBalance record);
-
+    
+    int addMoney(CashAccountBalance record);
+    
     int updateByPrimaryKey(CashAccountBalance record);
 
     List<CashAccountBalance> selectByModel(QueryModel model);
