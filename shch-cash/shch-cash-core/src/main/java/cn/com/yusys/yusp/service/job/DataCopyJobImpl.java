@@ -27,16 +27,20 @@ public class DataCopyJobImpl extends IJobHandler {
     
 	@Override
     public ReturnT<String> execute(String param) throws Exception {
-    	logger.info("定时任务执行：DataCopyJobImpl");
+    	logger.info("数据同步定时任务执行：DataCopyJobImpl");
     	Connection connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl","SHCH_POC","SHCH_POC");					
 		connection.setAutoCommit(false);
+		List<String> task = getTask(connection);	
+		List<String> cols = getTableColName(connection,task.get(0));
+		String sql = getSelectSql(cols,task.get(0));
+		//sql = sql +" where update_tm >= to_date("+task.get(2)+", 'yyyymmddhh24miss') and update_tm < to_date("+task.get(2)+", 'yyyymmddhh24miss') + numtodsinterval(10, 'second')";
+		System.out.println(sql);
+		List<Map<String, Object>> data = getData(connection,cols,sql);
 		closeConnection(connection);
-		
+		insertData(data , task.get(1));
 		
         return ReturnT.SUCCESS;
     }
-	
-	
 	
 	/**
 	 * 获取数据库连接
@@ -86,16 +90,11 @@ public class DataCopyJobImpl extends IJobHandler {
 		List<String> task = getTask(connection);	
 		List<String> cols = getTableColName(connection,task.get(0));
 		String sql = getSelectSql(cols,task.get(0));
-		sql = sql +" where update_tm >= to_date("+task.get(2)+", 'yyyymmddhh24miss') and update_tm < to_date("+task.get(2)+", 'yyyymmddhh24miss') + numtodsinterval(10, 'second')";
+		//sql = sql +" where update_tm >= to_date("+task.get(2)+", 'yyyymmddhh24miss') and update_tm < to_date("+task.get(2)+", 'yyyymmddhh24miss') + numtodsinterval(10, 'second')";
 		System.out.println(sql);
 		List<Map<String, Object>> data = getData(connection,cols,sql);
+		closeConnection(connection);
 		insertData(data , task.get(1));
-		closeConnection(connection);
-		
-		
-		connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl","SHCH_SUM","SHCH_SUM");					
-		connection.setAutoCommit(false);
-		closeConnection(connection);
 	}
 	
 	
@@ -116,7 +115,6 @@ public class DataCopyJobImpl extends IJobHandler {
 			data.add(s);
 			data.add(t);
 			data.add(d);
-			System.out.println(s+" "+t+" "+d);
 			break;
 		}
 		rs.close();
@@ -169,19 +167,28 @@ public class DataCopyJobImpl extends IJobHandler {
 			for(String col:cols){
 				Object colData = rs.getObject(col);
 				map.put(col, colData);
-				System.out.println(col+":"+data);
 			}
 			data.add(map);
 		}
 		rs.close();
+		logger.info("数据量："+data.size());
 		return data;
 	}
 	
-	private int insertData(List<Map<String,Object>> data ,String table){
-		for(Map<String,Object> dataT:data){
-			String sql = generateSql(dataT,table);
+	private int insertData(List<Map<String,Object>> data ,String table) throws Exception{
+		Connection connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", "SHCH_SUM", "SHCH_SUM");
+		connection.setAutoCommit(false);
+		for (Map<String, Object> dataT : data) {
+			String sql = generateSql(dataT, table);
 			System.out.println(sql);
+			try {
+				insert(connection, sql);
+				logger.info("插入成功：" + sql);
+			} catch (Exception e) {
+				//e.printStackTrace();
+			}
 		}
+		closeConnection(connection);
 		return data.size();
 	}
 	
@@ -191,8 +198,11 @@ public class DataCopyJobImpl extends IJobHandler {
 		StringBuilder key1 = new StringBuilder("(");
 		StringBuilder data1 = new StringBuilder("(");
 		for(String key:data.keySet()){
+			if(null==data.get(key)){
+				continue;
+			}
 			key1 = key1.append(key).append(",");
-			data1 = data1.append("'").append(data.get(key)).append("',");
+			data1 = data1.append(dataChange(data.get(key))).append(",");
 		}
 		String key2 = key1.toString();
 		key2 = key2.substring(0, key2.length()-1);
@@ -206,4 +216,31 @@ public class DataCopyJobImpl extends IJobHandler {
 		return sql.toString();
 	}
 	
+	private Object dataChange(Object data){
+		StringBuffer dd = new StringBuffer();
+		if(data instanceof java.sql.Timestamp){
+			dd = dd.append("to_timestamp('").append(data).append("', 'yyyy-mm-dd hh24:mi:ss.ff1')");
+		}else{
+			dd = dd.append("'").append(data).append("'");
+		}
+		return dd;
+	}
+	
+	private void insert(Connection connection,String sql) {
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
