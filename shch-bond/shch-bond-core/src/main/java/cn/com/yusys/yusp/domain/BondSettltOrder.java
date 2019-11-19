@@ -40,6 +40,7 @@ public class BondSettltOrder extends BaseDomain implements Serializable {
 	private String tradeId;
 	
 	/** 债券结算编号 **/
+	@Generated(GenerationType.UUID)
 	@Column(name = "BOND_SETTLE_ID", unique = false, nullable = true, length = 10)
 	private String bondSettleId;
 	
