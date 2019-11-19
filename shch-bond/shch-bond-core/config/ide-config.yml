@@ -2,6 +2,8 @@
 spring:
   datasource:
     driver: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@localhost:1521:ycorcl
-    username: yusp
-    password: yusp
+    type: com.zaxxer.hikari.HikariDataSource
+    validation-query: SELECT 1 FROM DUAL
+    url: jdbc:oracle:thin:@192.168.251.166:1521:orcl
+    username: SHCH_POC
+    password: SHCH_POC

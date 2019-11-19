@@ -16,6 +16,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
+    	<dependency>
+			<groupId>cn.com.yusys.yusp</groupId>
+			<artifactId>shch-bond-client</artifactId>
+			<version>2.2.2-SNAPSHOT</version>
+		</dependency>
         <dependency>
             <groupId>cn.com.yusys.yusp</groupId>
             <artifactId>yusp-common-app</artifactId>
