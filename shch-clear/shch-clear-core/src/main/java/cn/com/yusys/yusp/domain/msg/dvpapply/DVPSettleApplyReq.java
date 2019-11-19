@@ -40,7 +40,7 @@ public class DVPSettleApplyReq implements Serializable {
     private String sellerHolderAccount;
     private String sellerHolderAccountName;
 
-    @Pattern(regexp = "'01'|'02'", message = "只接受指定来源的数据")
+    @Pattern(regexp = "0|1", message = "只接受指定来源的数据,客户端，直联接口")
     private String srcFrom;
 
     public String getTradeId() {
@@ -205,3 +205,4 @@ public class DVPSettleApplyReq implements Serializable {
     }
 
 }
+

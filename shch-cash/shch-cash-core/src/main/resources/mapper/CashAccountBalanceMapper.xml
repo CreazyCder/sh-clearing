@@ -322,6 +322,17 @@
       and currency_amt - #{currencyAmt} >= 0.00
   </update>
   
+  <update id="addMoney" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
+    update CASH_ACCOUNT_BALANCE
+    <set>     
+        currency_amt = currency_amt + #{currencyAmt,jdbcType=NUMERIC}
+    </set>
+    where MEM_CODE       = #{memCode,jdbcType=VARCHAR}
+      and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
+      and TITLE_CODE     = #{titleCode,jdbcType=VARCHAR}
+      and CASH_ACCOUNT   = #{cashAccount,jdbcType=VARCHAR}
+  </update>
+  
   <select id="selectAccountState" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
     select count(currency_amt) from cash_account_balance where cash_account = #{cashAccount} and currency_amt >=  #{currencyAmt} 
  </select>
