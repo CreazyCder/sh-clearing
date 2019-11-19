@@ -52,29 +52,29 @@ public class BondSettltOrderResource {
      */
     @PostMapping("/procBond")
     protected ResultDto<String> procBond(@RequestBody BondDto bondDto) throws URISyntaxException {
-//    	logger.debug("簿记DVP结算指令处理开始:"+bondDto);
-//    	//根据bondDto的opertionType进行分类处理簿记处理流程（异步处理）
-//    	//1圈券逻辑；
-//    	if("1".equals(bondDto.getOpertionType())) {
+    	logger.debug("簿记DVP结算指令处理开始:"+bondDto);
+    	//根据bondDto的opertionType进行分类处理簿记处理流程（异步处理）
+    	//1圈券逻辑；
+    	if("1".equals(bondDto.getOpertionType())) {
     		logger.debug("簿记DVP结算圈券指令接收报文:"+bondDto);
     		bondSettltOrderService.procCouponBond(bondDto);
     		//需清算传入借贷科目：借方科目-->借方可用，贷方科目-->借方待付
     		logger.debug("资金DVP结算请求指令接收报文成功");
-//    	}
-//    	//2记账逻辑；
-//    	if("2".equals(bondDto.getOpertionType())) {
-//    		logger.debug("簿记DVP结算记账指令接收报文:"+bondDto);
-//    		bondSettltOrderService.procRecordBond(bondDto);
-//    		//需清算传入借贷科目：借方科目-->借方待付，贷方科目-->贷方可用
-//    		logger.debug("资金DVP结算记账指令接收报文成功");
-//    	}
-//    	//3撤销逻辑;
-//    	if("3".equals(bondDto.getOpertionType())) {
-//    		logger.debug("簿记DVP结算撤销指令接收报文:"+bondDto);
-//    		bondSettltOrderService.procCancleBond(bondDto);
-//    		//需清算传入借贷科目：借方科目-->借方待付，贷方科目：借方可用
-//    		logger.debug("资金DVP结算撤销指令接收报文成功");
-//    	}
+    	}
+    	//2记账逻辑；
+    	if("2".equals(bondDto.getOpertionType())) {
+    		logger.debug("簿记DVP结算记账指令接收报文:"+bondDto);
+    		bondSettltOrderService.procRecordBond(bondDto);
+    		//需清算传入借贷科目：借方科目-->借方待付，贷方科目-->贷方可用
+    		logger.debug("资金DVP结算记账指令接收报文成功");
+    	}
+    	//3撤销逻辑;
+    	if("3".equals(bondDto.getOpertionType())) {
+    		logger.debug("簿记DVP结算撤销指令接收报文:"+bondDto);
+    		bondSettltOrderService.procCancleBond(bondDto);
+    		//需清算传入借贷科目：借方科目-->借方待付，贷方科目：借方可用
+    		logger.debug("资金DVP结算撤销指令接收报文成功");
+    	}
     	
     	logger.debug("簿记DVP结算指令处理结束");
         return new ResultDto<String>("0");

@@ -5,11 +5,15 @@
  */
 package cn.com.yusys.yusp.service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,8 @@ import cn.com.yusys.yusp.commons.fee.common.annotation.ide.LogicParam;
 import cn.com.yusys.yusp.commons.fee.common.enums.ActionNodeType;
 import cn.com.yusys.yusp.commons.fee.common.enums.LableType;
 import cn.com.yusys.yusp.commons.mapper.QueryModel;
+import cn.com.yusys.yusp.commons.util.BeanUtil;
+import cn.com.yusys.yusp.commons.web.rest.dto.ResultDto;
 import cn.com.yusys.yusp.domain.BondBalance;
 import cn.com.yusys.yusp.domain.BondSettltOrder;
 import cn.com.yusys.yusp.domain.msg.settlenotify.BondSettleNotifyReq;
@@ -53,15 +59,73 @@ public class BondSettltOrderService {
     private BondBalanceMapper bondBalanceMapper;//簿记债券余额
     @Autowired
     SettleNotifyClient settleNotifyClient;//系统间家口（簿记流程处理结束，进行异步反馈）
-    /**
-     * @方法名称: procCouponBond
-     * @方法描述: 债券DVP结算圈存指令异步处理
-     * @参数与返回说明: 簿记传输对象,异步处理结果反馈
-     * @算法描述: 无
-     */
-    @Async("taskExecutor")
-	@Logic(description="债券DVP结算圈存指令异步处理逻辑",transaction=true)
-	public void procCouponBond(BondDto bondDto){
+    
+    @Logic(description="金额比较",transaction=true)
+    public boolean checkCompareTo(BigDecimal var1,BigDecimal var2) {
+    	return var1.subtract(var2).compareTo(BigDecimal.ZERO) < 0 ? true : false;
+    }
+    
+    //获取借方双方簿记余额信息
+    @Logic(description="获取借方双方簿记余额信息",transaction=true)
+    public Map<String,BondBalance> getBondBalanceMap(BondDto bondDto){
+    	Map<String,BondBalance> map = new HashMap<String,BondBalance>();
+    	BondBalance debitBalance = bondBalanceMapper.selectByPrimaryKey(bondDto.getDebitMemId(), bondDto.getDebitHolderAccount(), bondDto.getBondCode(), bondDto.getBondDebitTitle());
+    	BondBalance creditBalance = bondBalanceMapper.selectByPrimaryKey(bondDto.getDebitMemId(), bondDto.getDebitHolderAccount(), bondDto.getBondCode(), bondDto.getBondCreditTitle());
+    	map.put("debitBalance", debitBalance);
+    	map.put("creditBalance", creditBalance);
+    	return map;
+    }
+    
+    //簿记余额双边记账
+    @Logic(description="簿记余额双边记账",transaction=true)
+    public void updateBondBalanceAll(BondBalance debitBalance,BondBalance creditBalance,BondDto bondDto) {
+    	BondBalance debitBalance1 = new BondBalance();
+    	BondBalance creditBalance1 = new BondBalance();
+    	BeanUtils.copyProperties(debitBalance, debitBalance1);
+    	BeanUtils.copyProperties(creditBalance, creditBalance1);
+    	//借方减(借方一定有记录)
+    	debitBalance1.setCurrencyAmt(debitBalance.getCurrencyAmt().subtract(bondDto.getBondFaceAmt()));
+    	bondBalanceMapper.updateByPrimaryKeySelective(debitBalance1);
+    	//贷方增（增的一方可能没记录
+    	if(creditBalance != null) {
+	    	creditBalance1.setCurrencyAmt(creditBalance.getCurrencyAmt().add(bondDto.getBondFaceAmt()));
+	    	bondBalanceMapper.updateByPrimaryKeySelective(creditBalance);
+    	}else {
+    		//暂不考虑
+    	}
+    }
+    
+    //插入簿记余额流水
+    @Logic(description="插入簿记余额流水",transaction=true)
+    public void addBondSettleOrder(BondDto bondDto,String bondProcStatus) {
+    	BondDto bondDto1 = new BondDto();
+    	BeanUtils.copyProperties(bondDto, bondDto1);
+    	BondSettltOrder order = recordMatch(bondDto1,bondProcStatus);
+    	bondSettltOrderMapper.insert(order);
+    }
+    
+    //异步反馈债券圈存结果
+    @Logic(description="异步反馈债券圈存结果",transaction=true)
+    public ResultDto callBackClear(BondDto bondDto,String bondProcStatus) {
+    	BondSettleNotifyReq req = new BondSettleNotifyReq();
+		req.setSettleOrderId(bondDto.getSettleOrderId());//结算指令编号
+		req.setTradeId(bondDto.getTradeId());//交易编号
+		req.setBondSettleId(bondDto.getBondProcStatus()==null ? String.valueOf(System.currentTimeMillis()).substring(0, 10):bondProcStatus);//债券结算编号
+		req.setBondProcStatus(bondProcStatus);//债券处理状态
+		req.setRetMsg("处理成功");//处理信息反馈
+		ResultDto returnDto = settleNotifyClient.bondRsp(req);
+		returnDto.setCode(0);
+		returnDto.setMessage("");
+		return returnDto;
+    }
+    
+    public void procCouponBond(BondDto bondDto){
+    	//根据主键获取簿记余额表信息（贷方余额信息）
+    	//0.同步接收应答
+    	//1.获取借方双方簿记余额信息
+    	//2.簿记余额双边记账
+    	//3.更新、插入簿记余额流水
+    	//4.异步反馈债券圈存结果
     	//借方：可用-->借方待付
 		//数据字典：券足为3、等券为2、失败为F
 		String bondProcStatus = "";
@@ -126,6 +190,79 @@ public class BondSettltOrderService {
 		settleNotifyClient.bondRsp(req);
 	}
     
+    /**
+     * @方法名称: procCouponBond
+     * @方法描述: 债券DVP结算圈存指令异步处理
+     * @参数与返回说明: 簿记传输对象,异步处理结果反馈
+     * @算法描述: 无
+     *//*
+    @Async("taskExecutor")
+	@Logic(description="债券DVP结算圈存指令异步处理逻辑",transaction=true)
+	public void procCouponBondBak(BondDto bondDto){
+    	//借方：可用-->借方待付
+		//数据字典：券足为3、等券为2、失败为F
+		String bondProcStatus = "";
+		//1.根据参数中借方参与者、借方持有人、债券代码查询债券余额表记录（借方:可用科目）
+		BondBalance debitBalance = bondBalanceMapper.selectByPrimaryKey(bondDto.getDebitMemId(), bondDto.getDebitHolderAccount(), bondDto.getBondCode(), bondDto.getBondDebitTitle());
+		if(debitBalance != null) {
+			BigDecimal tempAmt = bondDto.getBondFaceAmt();
+			if(debitBalance.getCurrencyAmt().subtract(tempAmt).compareTo(BigDecimal.ZERO) < 0) {
+				//券不足，返回等券
+				bondProcStatus = "2";
+			}else {
+				//券足
+				//1.1先更新当前余额表信息：可用余额=当前余额-债券面额
+				//可用科目减少
+				debitBalance.setCurrencyAmt(debitBalance.getCurrencyAmt().subtract(tempAmt));//科目余额 =当前余额 -债券面额
+				bondBalanceMapper.updateByPrimaryKeySelective(debitBalance);
+				
+				//1.2再更新当前余额表信息：待付余额=当前余额+债券面额	
+				BondBalance creditBalance = bondBalanceMapper.selectByPrimaryKey(bondDto.getDebitMemId(), bondDto.getDebitHolderAccount(), bondDto.getBondCode(), bondDto.getBondCreditTitle());
+				if(creditBalance == null) {
+					//待付科目当前无记录-->插入
+					BondBalance tmp = new BondBalance();
+					tmp.setBizDate("20191111");
+					tmp.setMemCode(bondDto.getDebitMemId());
+					tmp.setMemName(bondDto.getDebitMemName());
+					tmp.setHolderAccount(bondDto.getDebitHolderAccount());
+					tmp.setHolderAccountName(bondDto.getDebitHolderAccountName());
+					tmp.setBondCode(bondDto.getBondCode());
+					tmp.setBondName(bondDto.getBondName());
+					tmp.setBondType("01");
+					tmp.setTitleCode(bondDto.getBondCreditTitle());
+					tmp.setTitleName("待付");//TODO
+					tmp.setCurrencyAmt(bondDto.getBondFaceAmt());
+					bondBalanceMapper.insert(tmp);
+				}else {
+					//待付科目记录存在，更新待付科目余额
+					creditBalance.setCurrencyAmt(creditBalance.getCurrencyAmt().add(tempAmt));//科目余额 =当前余额+债券面额
+					bondBalanceMapper.updateByPrimaryKeySelective(creditBalance);
+				}
+				
+				bondProcStatus = "3";//券足
+			}
+		}else {
+			//这里需要做报错处理
+			bondProcStatus = "F";//失败(借方该债券余额信息不存在，流程失败)
+		}
+		
+		//债券结算状态特殊化处理(圈券时传入为空)
+		String tempBondSettleId = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+		//3插入簿记流水表
+		bondSettltOrderMapper.insert(recordMatch(bondDto,bondProcStatus));
+		
+		//4.拼接异步反馈对象，返回异步调用处（给清算系统异步应答）
+		BondSettleNotifyReq req = new BondSettleNotifyReq();
+		req.setSettleOrderId(bondDto.getSettleOrderId());//结算指令编号
+		req.setTradeId(bondDto.getTradeId());//交易编号
+		req.setBondSettleId(tempBondSettleId);//债券结算编号
+		req.setBondProcStatus(bondProcStatus);//债券处理状态
+		req.setRetMsg("处理成功");//处理信息反馈
+		logger.debug("簿记DVP结算圈券指令异步反馈报文:"+bondDto);
+		logger.debug("簿记DVP结算圈券指令异步方法:settleNotifyClient.bondRsp");
+		settleNotifyClient.bondRsp(req);
+	}*/
+    
     
     /**
      * @方法名称: procRecordBond
@@ -166,7 +303,7 @@ public class BondSettltOrderService {
 					tmp.setBondName(bondDto.getBondName());
 					tmp.setBondType("01");
 					tmp.setTitleCode(bondDto.getBondCreditTitle());
-					tmp.setTitleName("可以");//TODO
+					tmp.setTitleName("可用");//TODO
 					tmp.setCurrencyAmt(bondDto.getBondFaceAmt());
 					bondBalanceMapper.insert(tmp);
 				}else {
@@ -175,6 +312,7 @@ public class BondSettltOrderService {
 					bondBalanceMapper.updateByPrimaryKeySelective(creditBalance);
 				}
 				bondProcStatus = "S";//成功
+				//这里调用单据生成服务 TODO
 			}
 		}else {
 			//这里需要做报错处理
@@ -185,7 +323,46 @@ public class BondSettltOrderService {
 		//3插入簿记流水表
 		bondSettltOrderMapper.insert(recordMatch(bondDto,bondProcStatus));
 		
-		//4.拼接异步反馈对象，返回异步调用处（给清算系统异步应答）
+		String json ="{\r\n" + 
+				"	\"yusys\": {\r\n" + 
+				"		\"head\": {\r\n" + 
+				"			\"appCode\": \"1003\",\r\n" + 
+				"			\"sceneNo\": \"1001\",\r\n" + 
+				"			\"chnlCode\": \"0147\",\r\n" + 
+				"			\"chnlSeqNo\": \"stm110000120180511001702891\",\r\n" + 
+				"			\"tradeName\": \"单据模板样例\",\r\n" + 
+				"			\"tradeCode\": \"SC3001\"\r\n" + 
+				"		},\r\n" + 
+				"		\"body\": {\r\n" + 
+				"			\"request\": {\r\n" + 
+				"				\"trade_id\":\"DVP201911170000001\",\r\n" + 
+				"				\"settle_order_id\":\"DVP20191117000001\",\r\n" + 
+				"				\"settle_date\":\"2019/11/17\",\r\n" + 
+				"				\"bond_code\":\"011900001\",\r\n" + 
+				"				\"bond_name\":\"国债城建001\",\r\n" + 
+				"				\"seller_mem_code\":\"A000005\",\r\n" + 
+				"				\"seller_mem_name\":\"中国工商银行\",\r\n" + 
+				"				\"buyer_mem_code\":\"A000006\",\r\n" + 
+				"				\"buyer_mem_name\":\"招商银行\",\r\n" + 
+				"				\"bond_face_amt\":\"999999999.99\",\r\n" + 
+				"				\"settle_order_status_update_tm\":\"2019/11/17 16:41:01\",\r\n" + 
+				"			}\r\n" + 
+				"		}\r\n" + 
+				"	}\r\n" + 
+				"}\r\n" + 
+				"";
+		//4单据打印
+		try {
+			SocketService.socket(json);
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		
+		//5.拼接异步反馈对象，返回异步调用处（给清算系统异步应答）
 		BondSettleNotifyReq req = new BondSettleNotifyReq();
 		req.setSettleOrderId(bondDto.getSettleOrderId());//结算指令编号
 		req.setTradeId(bondDto.getTradeId());//交易编号
