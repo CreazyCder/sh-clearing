@@ -3,8 +3,10 @@ package cn.com.yusys.yusp.service.task;
 import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
 import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
 import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
+import cn.com.yusys.yusp.commons.util.BeanUtil;
 import cn.com.yusys.yusp.constant.CashSettleStatusEnum;
 import cn.com.yusys.yusp.service.CallService;
+import cn.com.yusys.yusp.service.CashDto;
 import cn.com.yusys.yusp.service.ClearJobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +46,9 @@ public class CashHandlerJob extends IJobHandler {
                 log.warn("执行数据库操作异常:{}", number);
             }
             if (number != 0) {
-                // TODO 调用资金接口
-                callServ.callCashSettleApply();
+            	CashDto dto = new CashDto();
+            	BeanUtil.beanCopy(obj, dto);
+                callServ.callCashSettleApply(dto);
             }
         });
 
