@@ -39,4 +39,11 @@ public class CallService {
     	// 调用资金结算指令'
     	return cashClient.cash(req);
     }
+    
+    public String getBondStatus(String tradeId) {
+    	return "";
+    }
+    public String getCashStatus(String tradeId) {
+    	return "";
+    }
 }
