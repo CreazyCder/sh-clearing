@@ -127,7 +127,7 @@
         #{titleCode,jdbcType=VARCHAR},
         #{titleName,jdbcType=VARCHAR},
         #{currencyAmt,jdbcType=NUMERIC},
-        #{updateTm,jdbcType=VARCHAR}
+        systimestamp
         )
     </insert>
 

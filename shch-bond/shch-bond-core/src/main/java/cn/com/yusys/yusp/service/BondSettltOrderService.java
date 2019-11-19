@@ -8,6 +8,8 @@ package cn.com.yusys.yusp.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import cn.com.yusys.yusp.commons.fee.common.enums.LableType;
 import cn.com.yusys.yusp.commons.mapper.QueryModel;
 import cn.com.yusys.yusp.domain.BondBalance;
 import cn.com.yusys.yusp.domain.BondSettltOrder;
+import cn.com.yusys.yusp.domain.msg.settlenotify.BondSettleNotifyReq;
 import cn.com.yusys.yusp.repository.mapper.BondBalanceMapper;
 import cn.com.yusys.yusp.repository.mapper.BondSettltOrderMapper;
 
@@ -43,12 +46,13 @@ import cn.com.yusys.yusp.repository.mapper.BondSettltOrderMapper;
 @Transactional
 @CataLog(nodeType=ActionNodeType.MAPPER, value = "service/BondSettltOrderService", lableType=LableType.MS)
 public class BondSettltOrderService {
-
+	private Logger logger = LoggerFactory.getLogger(BondSettltOrderService.class);
     @Autowired
     private BondSettltOrderMapper bondSettltOrderMapper;
     @Autowired
     private BondBalanceMapper bondBalanceMapper;//簿记债券余额
-    
+    @Autowired
+    SettleNotifyClient settleNotifyClient;//系统间家口（簿记流程处理结束，进行异步反馈）
     /**
      * @方法名称: procCouponBond
      * @方法描述: 债券DVP结算圈存指令异步处理
@@ -79,6 +83,19 @@ public class BondSettltOrderService {
 				BondBalance creditBalance = bondBalanceMapper.selectByPrimaryKey(bondDto.getDebitMemId(), bondDto.getDebitHolderAccount(), bondDto.getBondCode(), bondDto.getBondCreditTitle());
 				if(creditBalance == null) {
 					//待付科目当前无记录-->插入
+					BondBalance tmp = new BondBalance();
+					tmp.setBizDate("20191111");
+					tmp.setMemCode(bondDto.getDebitMemId());
+					tmp.setMemName(bondDto.getDebitMemName());
+					tmp.setHolderAccount(bondDto.getDebitHolderAccount());
+					tmp.setHolderAccountName(bondDto.getDebitHolderAccountName());
+					tmp.setBondCode(bondDto.getBondCode());
+					tmp.setBondName(bondDto.getBondName());
+					tmp.setBondType("01");
+					tmp.setTitleCode(bondDto.getBondCreditTitle());
+					tmp.setTitleName("待付");//TODO
+					tmp.setCurrencyAmt(bondDto.getBondFaceAmt());
+					bondBalanceMapper.insert(tmp);
 				}else {
 					//待付科目记录存在，更新待付科目余额
 					creditBalance.setCurrencyAmt(creditBalance.getCurrencyAmt().add(tempAmt));//科目余额 =当前余额+债券面额
@@ -92,13 +109,22 @@ public class BondSettltOrderService {
 			bondProcStatus = "F";//失败(借方该债券余额信息不存在，流程失败)
 		}
 		
+		//债券结算状态特殊化处理(圈券时传入为空)
+		String tempBondSettleId = String.valueOf(System.currentTimeMillis()).substring(0, 10);
 		//3插入簿记流水表
 		bondSettltOrderMapper.insert(recordMatch(bondDto,bondProcStatus));
 		
 		//4.拼接异步反馈对象，返回异步调用处（给清算系统异步应答）
-		//这里要调用clear清算的api,需要另起事务，增加method		
+		BondSettleNotifyReq req = new BondSettleNotifyReq();
+		req.setSettleOrderId(bondDto.getSettleOrderId());//结算指令编号
+		req.setTradeId(bondDto.getTradeId());//交易编号
+		req.setBondSettleId(tempBondSettleId);//债券结算编号
+		req.setBondProcStatus(bondProcStatus);//债券处理状态
+		req.setRetMsg("处理成功");//处理信息反馈
+		logger.debug("簿记DVP结算圈券指令异步反馈报文:"+bondDto);
+		logger.debug("簿记DVP结算圈券指令异步方法:settleNotifyClient.bondRsp");
+		settleNotifyClient.bondRsp(req);
 	}
-    
     
     
     /**
@@ -130,6 +156,19 @@ public class BondSettltOrderService {
 				BondBalance creditBalance = bondBalanceMapper.selectByPrimaryKey(bondDto.getCreditMemId(), bondDto.getCreditHolderAccount(), bondDto.getBondCode(), bondDto.getBondCreditTitle());
 				if(creditBalance == null) {
 					//贷方可用科目当前无记录-->插入
+					BondBalance tmp = new BondBalance();
+					tmp.setBizDate("20191111");
+					tmp.setMemCode(bondDto.getCreditMemId());
+					tmp.setMemName(bondDto.getCreditMemName());
+					tmp.setHolderAccount(bondDto.getCreditHolderAccount());
+					tmp.setHolderAccountName(bondDto.getCreditHolderAccountName());
+					tmp.setBondCode(bondDto.getBondCode());
+					tmp.setBondName(bondDto.getBondName());
+					tmp.setBondType("01");
+					tmp.setTitleCode(bondDto.getBondCreditTitle());
+					tmp.setTitleName("可以");//TODO
+					tmp.setCurrencyAmt(bondDto.getBondFaceAmt());
+					bondBalanceMapper.insert(tmp);
 				}else {
 					//贷方可用科目记录存在，更新可用科目余额
 					creditBalance.setCurrencyAmt(creditBalance.getCurrencyAmt().add(tempAmt));//科目余额 =当前余额+债券面额
@@ -140,14 +179,22 @@ public class BondSettltOrderService {
 		}else {
 			//这里需要做报错处理
 			bondProcStatus = "F";//失败(借方该债券待付科目余额信息不存在，流程失败)
+			logger.error("簿记DVP结算圈券请求指令异常:"+bondDto);
 		}
 		
 		//3插入簿记流水表
 		bondSettltOrderMapper.insert(recordMatch(bondDto,bondProcStatus));
 		
 		//4.拼接异步反馈对象，返回异步调用处（给清算系统异步应答）
-		//这里要调用clear清算的api,需要另起事务，增加method
-  		
+		BondSettleNotifyReq req = new BondSettleNotifyReq();
+		req.setSettleOrderId(bondDto.getSettleOrderId());//结算指令编号
+		req.setTradeId(bondDto.getTradeId());//交易编号
+		req.setBondSettleId(bondDto.getBondSettleId());//债券结算编号
+		req.setBondProcStatus(bondProcStatus);//债券处理状态
+		req.setRetMsg("处理成功");//处理信息反馈
+		logger.debug("簿记DVP结算记账指令异步反馈报文:"+bondDto);
+		logger.debug("簿记DVP结算记账指令异步方法:settleNotifyClient.bondRsp");
+		settleNotifyClient.bondRsp(req);	
   	}
     /**
      * @方法名称: procCouponBond
@@ -194,7 +241,17 @@ public class BondSettltOrderService {
 		
 		//3插入簿记流水表
 		bondSettltOrderMapper.insert(recordMatch(bondDto,bondProcStatus));
-  		
+		
+		//4.拼接异步反馈对象，返回异步调用处（给清算系统异步应答）
+		BondSettleNotifyReq req = new BondSettleNotifyReq();
+		req.setSettleOrderId(bondDto.getSettleOrderId());//结算指令编号
+		req.setTradeId(bondDto.getTradeId());//交易编号
+		req.setBondSettleId(bondDto.getBondSettleId());//债券结算编号
+		req.setBondProcStatus(bondProcStatus);//债券处理状态
+		req.setRetMsg("处理成功");//处理信息反馈
+		logger.debug("簿记DVP结算撤销指令异步反馈报文:"+bondDto);
+		logger.debug("簿记DVP结算撤销指令异步方法:settleNotifyClient.bondRsp");
+		settleNotifyClient.bondRsp(req); 		
   	}
 	
     /**
@@ -297,7 +354,7 @@ public class BondSettltOrderService {
     	BondSettltOrder record = new BondSettltOrder();
 		//record.setSerialNum(serialNum);//流水号 uuid生成，无需代码传入
 		record.setTradeId(bondDto.getTradeId());//交易编号
-		//record.setBondSettleId(bondSettleId);//债券结算编号 uuid生成，无需代码出入
+		record.setBondSettleId(bondDto.getBondSettleId());//债券结算编号 
 		record.setBondCode(bondDto.getBondCode());//债券代码
 		record.setBondName(bondDto.getBondName());//债券简称
 		record.setDebitMemId(bondDto.getDebitMemId());//借方参与者代码
