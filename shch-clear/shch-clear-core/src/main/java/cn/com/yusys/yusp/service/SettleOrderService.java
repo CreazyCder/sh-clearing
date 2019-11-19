@@ -1,9 +1,13 @@
-/*
- * 代码生成器自动生成的
- * Since 2008 - 2019
- *
- */
 package cn.com.yusys.yusp.service;
+
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
 
 import cn.com.yusys.yusp.commons.fee.common.annotation.ide.CataLog;
 import cn.com.yusys.yusp.commons.fee.common.annotation.ide.Logic;
@@ -13,16 +17,9 @@ import cn.com.yusys.yusp.commons.fee.common.enums.LableType;
 import cn.com.yusys.yusp.commons.mapper.QueryModel;
 import cn.com.yusys.yusp.commons.security.SecurityUtils;
 import cn.com.yusys.yusp.commons.util.DateUtil;
-import cn.com.yusys.yusp.constant.SettleStatusEnum;
 import cn.com.yusys.yusp.domain.SettleOrder;
 import cn.com.yusys.yusp.domain.msg.dvpapply.DVPSettleApplyReq;
 import cn.com.yusys.yusp.repository.mapper.SettleOrderMapper;
-import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * @version 1.0.0
@@ -114,7 +111,11 @@ public class SettleOrderService {
         // 当前日期.
         settleOrder.setBizDate(DateUtil.getCurrDateStr());
         // 还有簿记的状态和资金的状态需要在其他部分添加
-        settleOrder.setInputOperId(SecurityUtils.getCurrentUserLogin());
+        String user=SecurityUtils.getCurrentUserLogin();
+        if(StringUtils.isEmpty(user)) {
+        	user="admin";
+        }
+        settleOrder.setInputOperId(user);
         // 带时分秒的数据
         settleOrder.setInputTm(DateUtil.formatDate(DateUtil.PATTERN_DATETIME_COMPACT));
         return settleOrderMapper.insert(settleOrder);
