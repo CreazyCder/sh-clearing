@@ -26,6 +26,12 @@ public class CallService {
     public ResultDto<String> callBondSettleApply(SettleOrder order){
     	BondDto req= new BondDto();
     	BeanUtil.beanCopy(order, req);
+    	if("0".equals(order.getBondSettleStatus())|| "2".equals(order.getBondSettleStatus())) {
+    		//应履行 等券
+    		req.setOpertionType("1");//TODO
+    	}else {
+    		req.setOpertionType("2");//TODO
+    	}
         return bondClient.procBond(req);
     }
 	/**

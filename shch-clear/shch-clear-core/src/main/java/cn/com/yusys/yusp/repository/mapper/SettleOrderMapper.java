@@ -55,6 +55,16 @@ public interface SettleOrderMapper {
      */
     List<SettleOrder> selectSettlesByStatus(@Param("size") int size,
                                             @Param("bondStatus") String bondStatus);
+    /**
+     * 查询待处理的记录.
+     *
+     * @param size 指定记录.
+     * @return 记录.
+     */
+    List<SettleOrder> selectTaskByStatus(@Param("size") int size,
+							    		@Param("settleStatus") String settleStatus,
+							            @Param("bondStatus") String bondStatus,
+							            @Param("cashStatus") String cashStatus);
 
     /**
      * 更新清算的状态.

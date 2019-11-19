@@ -13,15 +13,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * 簿记注册任务.
+ * 簿记记账任务.
  *
  * @author wpplu
  * @since 2019/11/18
  */
-@JobHandler("registerBond")
+@JobHandler("registerBondAccount")
 @Service
-public class RegisterBondJob extends IJobHandler {
-    private Logger log = LoggerFactory.getLogger(RegisterBondJob.class);
+public class AccountBondJob extends IJobHandler {
+    private Logger log = LoggerFactory.getLogger(AccountBondJob.class);
     @Autowired
     private CallService callServ;
 
@@ -32,7 +32,7 @@ public class RegisterBondJob extends IJobHandler {
     private int batchSize = 100;
 
     /**
-     * 执行查询需要簿记处理的清算指定列表.
+     * 执行查询需要簿记记账处理的清算指定列表.
      *
      * @param s
      * @return
@@ -40,13 +40,13 @@ public class RegisterBondJob extends IJobHandler {
      */
     @Override
     public ReturnT<String> execute(String s) throws Exception {
-        log.info("开始执行需要簿记的任务");
-        clearJobService.findNeedBondSettles(batchSize).forEach(obj -> {
+        log.info("开始执行需要簿记记账的任务");
+        clearJobService.findNeedBondAccountSettles(batchSize).forEach(obj -> {
             int result = 0;
             try {
                 // 交割中
                 result = clearJobService.updateBondSettleStatus(obj.getSettleOrderId(),
-                        BondSettleStatusEnum.HANDLING.getCode(),"0"); //TODO 独立事务
+                        BondSettleStatusEnum.HANDLING.getCode(),"1"); //TODO 独立事务
             } catch (Throwable e) {
                 log.warn("执行变更状态失败:{}", e);
             }

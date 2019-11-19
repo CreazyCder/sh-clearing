@@ -5,15 +5,15 @@
  */
 package cn.com.yusys.yusp.domain;
 
-import cn.com.yusys.yusp.commons.mapper.annotation.Generated;
-import cn.com.yusys.yusp.commons.mapper.annotation.GenerationType;
-import cn.com.yusys.yusp.commons.mapper.domain.BaseDomain;
-import lombok.Builder;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
+
+import cn.com.yusys.yusp.commons.mapper.annotation.Generated;
+import cn.com.yusys.yusp.commons.mapper.annotation.GenerationType;
+import cn.com.yusys.yusp.commons.mapper.domain.BaseDomain;
 
 /**
  * @项目名称: shch-clear-core模块
@@ -28,7 +28,6 @@ import java.io.Serializable;
  * @version 1.0.0
  * @Copyright (c) 宇信科技-版权所有
  */
-@Builder
 @Table(name = "SETTLE_ORDER")
 public class SettleOrder extends BaseDomain implements Serializable {
     private static final long serialVersionUID = 1L;
