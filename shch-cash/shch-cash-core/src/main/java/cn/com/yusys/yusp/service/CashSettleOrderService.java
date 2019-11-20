@@ -180,7 +180,7 @@ public class CashSettleOrderService {
 	public void enoughMoney(EnoughMoneyDto enoughMoneyDto) throws Exception {
 		try {
 			logger.info("发送到款数据到Rabbit:" + objectMapper.writeValueAsString(enoughMoneyDto));
-			amqpTemplate.convertAndSend("pay", objectMapper.writeValueAsString(enoughMoneyDto));
+			amqpTemplate.convertAndSend("payback", objectMapper.writeValueAsString(enoughMoneyDto));
 		} catch (Exception e) {
 			throw new YuspException("1", "发送rabbitmq失败" + e.getMessage());
 		}

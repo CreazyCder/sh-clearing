@@ -47,9 +47,28 @@ public class CashResource {
 		cashSettleOrderService.pay(param.get("serialNum").toString());
         return new ResultDto<String>("0");
     }
+
+    @GetMapping("/riqie")
+    protected ResultDto<String> create(String code) {
+    	logger.info("日切成功:"+code);
+        return new ResultDto<String>(0, "资金处理成功", "info");
+    }
     
     /**
-     * 112报文
+     * 通过Swagger发起人行来账报文到payback队列
+     * @param enoughMoneyDto
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/enough_money")
+    protected ResultDto<String> enoughMoney(@RequestBody EnoughMoneyDto enoughMoneyDto) throws Exception {
+    	logger.info("到款数据:"+enoughMoneyDto);
+    	cashSettleOrderService.enoughMoney(enoughMoneyDto);
+        return new ResultDto<String>(0, "到款处理成功", "ok");
+    }
+    
+    /**
+     * 收到人行大额网关过来的往账应答112报文
      * @param moneyDto
      * @return
      */
@@ -60,18 +79,5 @@ public class CashResource {
     	BeanUtils.copyProperties(moneyDto, record);
 		cashAccountBalanceMapper.addMoney(record);
         return new ResultDto<String>("0");
-    }
-    
-    @GetMapping("/riqie")
-    protected ResultDto<String> create(String code) {
-    	logger.info("日切成功:"+code);
-        return new ResultDto<String>(0, "资金处理成功", "info");
-    }
-    
-    @PostMapping("/enough_money")
-    protected ResultDto<String> enoughMoney(@RequestBody EnoughMoneyDto enoughMoneyDto) throws Exception {
-    	logger.info("到款数据:"+enoughMoneyDto);
-    	cashSettleOrderService.enoughMoney(enoughMoneyDto);
-        return new ResultDto<String>(0, "到款处理成功", "ok");
     }
 }

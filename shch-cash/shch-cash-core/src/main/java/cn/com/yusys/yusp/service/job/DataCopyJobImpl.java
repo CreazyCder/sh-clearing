@@ -3,6 +3,8 @@ package cn.com.yusys.yusp.service.job;
 import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
 import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
 import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
+
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -77,11 +79,11 @@ public class DataCopyJobImpl extends IJobHandler {
 		rs.close();
 	}
 	
-//	@Test
+	@Test
 	public void testInsertData() throws Exception {
 		Connection connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl","SHCH_POC","SHCH_POC");					
 		connection.setAutoCommit(false);
-		List<String> task = getTask(connection);	
+		List<String> task = getTask(connection);
 		List<String> cols = getTableColName(connection,task.get(0));
 		String sql = getSelectSql(cols,task.get(0));
 		//sql = sql +" where update_tm >= to_date("+task.get(2)+", 'yyyymmddhh24miss') and update_tm < to_date("+task.get(2)+", 'yyyymmddhh24miss') + numtodsinterval(10, 'second')";
@@ -90,7 +92,6 @@ public class DataCopyJobImpl extends IJobHandler {
 		closeConnection(connection);
 		insertData(data , task.get(1));
 	}
-	
 	
 	/**
 	 * @throws Exception 
@@ -180,10 +181,48 @@ public class DataCopyJobImpl extends IJobHandler {
 				logger.info("插入成功：" + sql);
 			} catch (Exception e) {
 				//e.printStackTrace();
+				logger.warn("insert 数据失败" + e.getMessage());
+				String updateSql = generateUpdateSql(dataT, table);
+				insert(connection, updateSql); // update数据
+				logger.info("更新成功：" + updateSql);
 			}
 		}
 		closeConnection(connection);
 		return data.size();
+	}
+	
+	private String generateUpdateSql(Map<String,Object> data, String table){
+		
+		StringBuilder items = new StringBuilder("");
+		
+		String acctDate = null;
+		String serialNum = null;
+		
+		for(String key:data.keySet()){
+			if(null==data.get(key)){
+				continue;
+			}
+			
+			String data1 = dataChange(data.get(key)).toString();
+			if (key.equals("ACCT_DATE")) {
+				acctDate = data1;
+				continue;
+			}
+			if (key.equals("SERIAL_NUM")) {
+				serialNum = data1;
+				continue;
+			}
+			
+			String item = " " + key + " = " + data1 + ",";
+			items.append(item);
+		}
+		
+		String updateString = items.toString();
+		updateString = updateString.substring(0, updateString.length()-1);
+		
+		String sql = String.format("UPDATE %s SET %s WHERE ACCT_DATE=%s AND SERIAL_NUM=%s", table, updateString, acctDate, serialNum);
+
+		return sql;
 	}
 	
 	private String generateSql(Map<String,Object> data,String table){
@@ -210,24 +249,25 @@ public class DataCopyJobImpl extends IJobHandler {
 		return sql.toString();
 	}
 	
+	
 	private Object dataChange(Object data){
 		StringBuffer dd = new StringBuffer();
 		if(data instanceof java.sql.Timestamp){
 			dd = dd.append("to_timestamp('").append(data).append("', 'yyyy-mm-dd hh24:mi:ss.ff1')");
-		}else{
+		} else if(data instanceof java.sql.Date){
+			dd = dd.append("to_date('").append(data).append("', 'yyyy-mm-dd hh24:mi:ss')");
+		} else{
 			dd = dd.append("'").append(data).append("'");
 		}
 		return dd;
 	}
 	
-	private void insert(Connection connection,String sql) {
+	private void insert(Connection connection,String sql) throws Exception {
         Statement statement = null;
         try {
             statement = connection.createStatement();
             statement.executeUpdate(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
+        } finally {
             if (statement != null) {
                 try {
                     statement.close();
