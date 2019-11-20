@@ -333,7 +333,7 @@
       and CASH_ACCOUNT   = #{cashAccount,jdbcType=VARCHAR}
   </update>
   
-  <select id="selectAccountState" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
+  <select id="selectAccountState" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance" resultType="int">
     select count(currency_amt) from cash_account_balance where cash_account = #{cashAccount} and currency_amt >=  #{currencyAmt} 
  </select>
 </mapper>

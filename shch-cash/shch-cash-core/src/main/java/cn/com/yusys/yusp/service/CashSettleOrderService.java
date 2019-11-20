@@ -84,11 +84,23 @@ public class CashSettleOrderService {
 	public void updateCashCount(CashDto record) {
 		logger.debug("资金DVP结算请求指令开始:" + record);
 		try {
+			
+			QueryModel model = new QueryModel();
+			model.setSize(0);
+			model.addCondition("memCode", record.getDebitMemId());
+			model.addCondition("holderAccount", record.getDebitHolderAccount());
+			model.addCondition("titleCode", record.getCashDebitTitle());
+			List<CashAccountBalance> rp = cashAccountBalanceMapper.selectByModel(model);
+			if (rp.size() <= 0) {
+				logger.error("账户记录不存在:" + model.toString());
+				return;
+			}
+			CashAccountBalance re2 = rp.get(0);
+			
 			CashSettleOrder cashSettleOrder = new CashSettleOrder();
 			BeanUtils.copyProperties(record, cashSettleOrder);
-
-			cashSettleOrder.setCashAccount("ZHa");
-			cashSettleOrder.setCashAccountName("账户a");
+			cashSettleOrder.setCashAccount(re2.getCashAccount());
+			cashSettleOrder.setCashAccountName(re2.getCashAccountName());
 			cashSettleOrder.setCashProcStatus("0");
 			cashSettleOrder.setCashSettleId(("A" + System.currentTimeMillis()).substring(0, 10));
 			cashSettleOrder.setSerialNum("B" + System.currentTimeMillis());
@@ -101,18 +113,7 @@ public class CashSettleOrderService {
 			record2.setHolderAccount(record.getDebitHolderAccount());
 			record2.setTitleCode(record.getCashDebitTitle());
 			
-			QueryModel model = new QueryModel();
-			model.setSize(0);
-			model.addCondition("memCode", record.getDebitMemId());
-			model.addCondition("holderAccount", record.getDebitHolderAccount());
-			model.addCondition("titleCode", record.getCashDebitTitle());
-			List<CashAccountBalance> cashAccountBalances = cashAccountBalanceMapper.selectByModel(model);
-			if (cashAccountBalances.size() <= 0) {
-				logger.error("账户记录不存在:" + model.toString());
-				return;
-			}
-
-			CashAccountBalance re2 = cashAccountBalances.get(0);
+			
 			record2.setCashAccount(re2.getCashAccount());
 
 			kouKuan(cashSettleOrder.getSerialNum(), record2);
