@@ -1,6 +1,8 @@
 package cn.com.yusys.yusp.service;
 
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,17 @@ public class CallService {
     public ResultDto<String> callBondSettleApply(SettleOrder order){
     	BondDto req= new BondDto();
     	BeanUtil.beanCopy(order, req);
+    	req.setBondFaceAmt(order.getBondFaceAmt());
+    	req.setCreditHolderAccount(order.getBuyerHolderAccount());
+    	req.setCreditHolderAccountName(order.getBuyerHolderAccountName());
+    	req.setCreditMemId(order.getBuyerMemCode());
+    	req.setCreditMemName(order.getBuyerMemName());
+    	req.setDebitHolderAccount(order.getSellerHolderAccount());
+    	req.setDebitHolderAccountName(order.getSellerHolderAccountName());
+    	req.setDebitMemId(order.getSellerMemCode());
+    	req.setDebitMemName(order.getSellerMemName());
+    	req.setBondDebitTitle("01");
+    	req.setBondCreditTitle("02");
     	if("0".equals(order.getBondSettleStatus())|| "2".equals(order.getBondSettleStatus())) {
     		//应履行 等券
     		req.setOpertionType("1");//TODO
@@ -42,6 +55,18 @@ public class CallService {
     public ResultDto<String> callCashSettleApply(SettleOrder order){
     	CashDto req = new CashDto();
     	BeanUtil.beanCopy(order, req);
+    	req.setCashSettleAmt(new BigDecimal(order.getSettleAmt()));
+    	req.setCreditHolderAccount(order.getBuyerHolderAccount());
+    	req.setCreditHolderAccountName(order.getBuyerHolderAccountName());
+    	req.setCreditMemId(order.getBuyerMemCode());
+    	req.setCreditMemName(order.getBuyerMemName());
+    	req.setDebitHolderAccount(order.getSellerHolderAccount());
+    	req.setDebitHolderAccountName(order.getSellerHolderAccountName());
+    	req.setDebitMemId(order.getSellerMemCode());
+    	req.setDebitMemName(order.getSellerMemName());
+    	req.setCashDebitTitle("01");
+    	req.setCashCreditTitle("02");
+    	
     	// 调用资金结算指令'
     	return cashClient.cash(req);
     }

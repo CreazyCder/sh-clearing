@@ -151,4 +151,9 @@ public interface SettleOrderMapper {
      */
     @Logic(description = "SETTLE_ORDER根据主键批量删除", transaction = true)
     int deleteByIds(@Param("ids") @LogicParam(description = "SETTLE_ORDER主键ID") String ids);
+    
+    
+    @Logic(description = "SETTLE_ORDER主键更新模型非空字段", transaction = true)
+    int updateByTradeId(@LogicParam(description = "SETTLE_ORDER模型实体") SettleOrder record);
+
 }

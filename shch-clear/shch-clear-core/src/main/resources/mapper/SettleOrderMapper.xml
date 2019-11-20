@@ -875,7 +875,125 @@
         where
         SETTLE_ORDER_ID = #{settleOrderId,jdbcType=VARCHAR}
     </update>
-
+   <!-- 根据主键更新-只更新非空字段 -->
+    <update id="updateByTradeId" parameterType="cn.com.yusys.yusp.domain.SettleOrder">
+        update SETTLE_ORDER
+        <set>
+            <if test="bizDate != null">
+                BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeId != null">
+                TRADE_ID = #{tradeId,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeDate != null">
+                TRADE_DATE = #{tradeDate,jdbcType=VARCHAR},
+            </if>
+            <if test="bondCode != null">
+                BOND_CODE = #{bondCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bondName != null">
+                BOND_NAME = #{bondName,jdbcType=VARCHAR},
+            </if>
+            <if test="bondType != null">
+                BOND_TYPE = #{bondType,jdbcType=VARCHAR},
+            </if>
+            <if test="bondFaceAmt != null">
+                BOND_FACE_AMT = #{bondFaceAmt,jdbcType=NUMERIC},
+            </if>
+            <if test="settleDate != null">
+                SETTLE_DATE = #{settleDate,jdbcType=VARCHAR},
+            </if>
+            <if test="settleType != null">
+                SETTLE_TYPE = #{settleType,jdbcType=VARCHAR},
+            </if>
+            <if test="settleAmt != null">
+                SETTLE_AMT = #{settleAmt,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerMemCode != null">
+                BUYER_MEM_CODE = #{buyerMemCode,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerMemName != null">
+                BUYER_MEM_NAME = #{buyerMemName,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerHolderAccount != null">
+                BUYER_HOLDER_ACCOUNT = #{buyerHolderAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerHolderAccountName != null">
+                BUYER_HOLDER_ACCOUNT_NAME = #{buyerHolderAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerMemCode != null">
+                SELLER_MEM_CODE = #{sellerMemCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerMemName != null">
+                SELLER_MEM_NAME = #{sellerMemName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerHolderAccount != null">
+                SELLER_HOLDER_ACCOUNT = #{sellerHolderAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerHolderAccountName != null">
+                SELLER_HOLDER_ACCOUNT_NAME = #{sellerHolderAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="settleOrderId != null">
+                SETTLE_ORDER_ID = #{settleOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="bondSettleId != null">
+                BOND_SETTLE_ID = #{bondSettleId,jdbcType=VARCHAR},
+            </if>
+            <if test="cashSettleId != null">
+                CASH_SETTLE_ID = #{cashSettleId,jdbcType=VARCHAR},
+            </if>
+            <if test="bondSettleStatus != null">
+                BOND_SETTLE_STATUS = #{bondSettleStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="bondSettleStatusUpdateTm != null">
+                BOND_SETTLE_STATUS_UPDATE_TM = #{bondSettleStatusUpdateTm,jdbcType=VARCHAR},
+            </if>
+            <if test="cashSettleStatus != null">
+                CASH_SETTLE_STATUS = #{cashSettleStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="cashSettleStatusUpdateTm != null">
+                CASH_SETTLE_STATUS_UPDATE_TM = #{cashSettleStatusUpdateTm,jdbcType=VARCHAR},
+            </if>
+            <if test="settleOrderStatus != null">
+                SETTLE_ORDER_STATUS = #{settleOrderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="settleOrderStatusUpdateTm != null">
+                SETTLE_ORDER_STATUS_UPDATE_TM = #{settleOrderStatusUpdateTm,jdbcType=VARCHAR},
+            </if>
+            <if test="cashPeroid != null">
+                CASH_PEROID = #{cashPeroid,jdbcType=VARCHAR},
+            </if>
+            <if test="bondPeroid != null">
+                BOND_PEROID = #{bondPeroid,jdbcType=VARCHAR},
+            </if>
+            <if test="inputOperId != null">
+                INPUT_OPER_ID = #{inputOperId,jdbcType=VARCHAR},
+            </if>
+            <if test="inputTm != null">
+                INPUT_TM = #{inputTm,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewOperId != null">
+                REVIEW_OPER_ID = #{reviewOperId,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewTm != null">
+                REVIEW_TM = #{reviewTm,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmOperId != null">
+                CONFIRM_OPER_ID = #{confirmOperId,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmTm != null">
+                CONFIRM_TM = #{confirmTm,jdbcType=VARCHAR},
+            </if>
+            <if test="srcFrom != null">
+                SRC_FROM = #{srcFrom,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+        TRADE_ID = #{tradeId,jdbcType=VARCHAR}
+    </update>
     <!-- 根据主键删除 -->
     <delete id="deleteByPrimaryKey">
         delete

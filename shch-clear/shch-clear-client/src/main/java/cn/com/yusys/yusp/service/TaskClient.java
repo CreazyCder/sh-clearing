@@ -10,7 +10,7 @@ import cn.com.yusys.yusp.commons.web.rest.dto.ResultDto;
 /**
  * 任务调用
  */
-@FeignClient(name = "${application.service.shch-clear:shch-clear}", fallback = TaskClient.class)
+@FeignClient(name = "${application.service.shch-clear:shch-clear}", fallback = TaskClientFallback.class)
 public interface TaskClient {
     /**
      * 薄记异步结算通知

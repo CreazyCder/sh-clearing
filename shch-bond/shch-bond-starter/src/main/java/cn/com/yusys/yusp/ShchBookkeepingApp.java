@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 //import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -104,7 +105,7 @@ import tk.mybatis.spring.annotation.MapperScan;
     exclude = {JmxAutoConfiguration.class, ThymeleafAutoConfiguration.class, 
             SecurityAutoConfiguration.class, JasyptSpringBootAutoConfiguration.class})
 @MapperScan({"cn.com.yusys.yusp.repository.mapper"})
-//@EnableFeignClients("cn.com.yusys.yusp")
+@EnableFeignClients("cn.com.yusys.yusp")
 @EnableTransactionManagement
 public class ShchBookkeepingApp {
     

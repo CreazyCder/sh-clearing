@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import cn.com.yusys.yusp.commons.web.rest.dto.ResultDto;
 import cn.com.yusys.yusp.service.TaskService;
@@ -12,6 +13,7 @@ import cn.com.yusys.yusp.service.TaskService;
  * @author boip
  *
  */
+@RestController
 @RequestMapping("/api/task/")
 public class TaskResource {
     @Autowired

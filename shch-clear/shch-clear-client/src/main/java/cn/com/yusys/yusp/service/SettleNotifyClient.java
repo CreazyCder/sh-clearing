@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * 异步结算通知
  */
-@FeignClient(name = "${application.service.shch-clear:shch-clear}", fallback = SettleNotifyClient.class)
+@FeignClient(name = "${application.service.shch-clear:shch-clear}", fallback = SettleNotifyFallback.class)
 public interface SettleNotifyClient {
     /**
      * 薄记异步结算通知

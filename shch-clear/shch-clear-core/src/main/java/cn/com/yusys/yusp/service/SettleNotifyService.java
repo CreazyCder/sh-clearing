@@ -29,14 +29,15 @@ public class SettleNotifyService {
      */
     public ResultDto bondRsp(BondSettleNotifyReq req) {
         SettleOrder order = new SettleOrder();
-        order.setSettleOrderId(req.getSettleOrderId());
+        order.setTradeId(req.getTradeId());
         order.setBondSettleId(req.getBondSettleId());
         order.setBondSettleStatus(req.getBondProcStatus());
         order.setSettleOrderStatus(
                 BondSettleStatusEnum.SUCCESS.getCode().equals(req.getBondProcStatus()) ?
-                        BondSettleStatusEnum.SUCCESS.getCode() : "");
+                        BondSettleStatusEnum.SUCCESS.getCode() : null);
         order.setBondSettleStatusUpdateTm(DateUtil.formatDate(DateUtil.PATTERN_DATETIME_COMPACT));
-        int ret = mapper.updateByPrimaryKeySelective(order);
+
+        int ret = mapper.updateByTradeId(order);
         if (ret == 1) {
             return new ResultDto("成功");
         } else {
@@ -52,12 +53,12 @@ public class SettleNotifyService {
      */
     public ResultDto cashRsp(CashSettleNotifyReq req) {
         SettleOrder order = new SettleOrder();
-        order.setSettleOrderId(req.getSettleOrderId());
+        order.setTradeId(req.getTradeId());
         order.setCashSettleId(req.getCashSettleId());
         order.setCashSettleStatus(req.getCashProcStatus());
         order.setCashSettleStatusUpdateTm(DateUtil.formatDate(DateUtil.PATTERN_DATETIME_COMPACT));
         //TODO 清算
-        int ret = mapper.updateByPrimaryKeySelective(order);
+        int ret = mapper.updateByTradeId(order);
 
         if (ret == 1) {
             return new ResultDto("成功");
