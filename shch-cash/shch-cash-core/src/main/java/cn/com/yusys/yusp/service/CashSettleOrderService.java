@@ -139,9 +139,9 @@ public class CashSettleOrderService {
 			record2.setSerialNum(serialNum);
 			record2.setMsgType("HVPS.111.001.01");
 			// cashSettleOrderMapper.updateStateSuccess(serialNum);
-			logger.debug("发送Rabbit报文:" + objectMapper.writeValueAsString(record2));
+			logger.info("发送Rabbit报文:" + objectMapper.writeValueAsString(record2));
 			amqpTemplate.convertAndSend("pay", objectMapper.writeValueAsString(record2));
-			logger.debug("交易成功:" + serialNum);
+			logger.info("交易成功:" + serialNum);
 			result = true;
 		}
 		
