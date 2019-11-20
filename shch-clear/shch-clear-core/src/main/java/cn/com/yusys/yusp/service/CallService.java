@@ -75,7 +75,7 @@ public class CallService {
     	req.setDebitMemId(order.getSellerMemCode());
     	req.setDebitMemName(order.getSellerMemName());
     	req.setCashDebitTitle("01");
-    	req.setCashCreditTitle("02");
+    	req.setCashCreditTitle("01");
     	
     	// 调用资金结算指令'
     	log.info("send msg info : {}",req);
