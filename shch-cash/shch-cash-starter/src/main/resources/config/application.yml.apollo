@@ -52,6 +52,11 @@ spring:
     # 如不使用redis，请将以上配置删除
     #
     # 如不使用zipkin，请将以下配置删除
+    rabbitmq:
+        host: 192.168.251.241 #Rabbitmq的地址
+        port: 5672 #Rabbitmq的端口
+        username: admin  #Rabbitmq的用户名
+        password: admin  #Rabbitmq的密码
     zipkin:
         base-url: http://localhost:9411 #spring zipkin地址
         enabled: true #是否启用zipkin

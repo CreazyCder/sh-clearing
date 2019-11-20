@@ -4,7 +4,7 @@ spring:
         
 server:
     port: 16002 #应用启动端口
-    
+
 app:
     id: shch-cash #apollo配置中心应用名
 apollo: 
