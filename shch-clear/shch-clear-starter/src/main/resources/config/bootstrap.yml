@@ -1,10 +1,8 @@
 spring:
     application:
-        name: shch-clear  #应用名称
-
+        name: shch-clear
 server:
     port: 16003 #应用启动端口
-
 app:
     id: shch-clear #apollo配置中心应用名
 apollo:
@@ -19,15 +17,3 @@ logging:
     level:
         root: INFO
         springfox.documentation.spring.web.readers.operation: OFF  #springfox日志关闭输出
-application:
-    xxl:
-        job:
-            enabled: true # 是否启用注册到注册到调度中心
-            admin:
-                addresses: http://192.168.251.173:8080/yusp-job-admin #localhost:8080
-            executor: #执行器配置
-                appname: shch-clear #执行器名称，要求务必唯一
-                ip: 172.16.80.209
-                port: 17001 #调度中心给微服务发送任务，通过此端口发送指令
-                logpath: D:/temp #执行器日志文件路径
-                logretentiondays: 3 # 本地日志保存天数，-1为永远保存

@@ -189,8 +189,8 @@ public class DVPSettleApplyReq implements Serializable {
     public SettleOrder toDomain() {
         SettleOrder settleOrder = new SettleOrder();
         BeanUtil.beanCopy(this, settleOrder);
-        // 默认值为待生效.
-        settleOrder.setSettleOrderStatus(SettleStatusEnum.TO_TAKE_EFFECT.getCode());
+        // 默认值为待生效.直接变成应履行.
+        settleOrder.setSettleOrderStatus(SettleStatusEnum.SHOULD_PERFORM.getCode());
         // 默认值为应履行.
         settleOrder.setBondSettleStatus(BondSettleStatusEnum.SHOULD_PERFORM.getCode());
         // 默认值为应履行.
@@ -198,16 +198,16 @@ public class DVPSettleApplyReq implements Serializable {
         return settleOrder;
     }
 
-	@Override
-	public String toString() {
-		return "DVPSettleApplyReq [tradeId=" + tradeId + ", tradeDate=" + tradeDate + ", bondCode=" + bondCode
-				+ ", bondName=" + bondName + ", bondType=" + bondType + ", bondFaceAmt=" + bondFaceAmt + ", settleDate="
-				+ settleDate + ", settleType=" + settleType + ", settleAmt=" + settleAmt + ", buyerMemCode="
-				+ buyerMemCode + ", buyerMemName=" + buyerMemName + ", buyerHolderAccount=" + buyerHolderAccount
-				+ ", buyerHolderAccountName=" + buyerHolderAccountName + ", sellerMemCode=" + sellerMemCode
-				+ ", sellerMemName=" + sellerMemName + ", sellerHolderAccount=" + sellerHolderAccount
-				+ ", sellerHolderAccountName=" + sellerHolderAccountName + ", srcFrom=" + srcFrom + "]";
-	}
+    @Override
+    public String toString() {
+        return "DVPSettleApplyReq [tradeId=" + tradeId + ", tradeDate=" + tradeDate + ", bondCode=" + bondCode
+                + ", bondName=" + bondName + ", bondType=" + bondType + ", bondFaceAmt=" + bondFaceAmt + ", settleDate="
+                + settleDate + ", settleType=" + settleType + ", settleAmt=" + settleAmt + ", buyerMemCode="
+                + buyerMemCode + ", buyerMemName=" + buyerMemName + ", buyerHolderAccount=" + buyerHolderAccount
+                + ", buyerHolderAccountName=" + buyerHolderAccountName + ", sellerMemCode=" + sellerMemCode
+                + ", sellerMemName=" + sellerMemName + ", sellerHolderAccount=" + sellerHolderAccount
+                + ", sellerHolderAccountName=" + sellerHolderAccountName + ", srcFrom=" + srcFrom + "]";
+    }
 
 }
 
