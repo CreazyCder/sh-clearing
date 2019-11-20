@@ -27,7 +27,6 @@ import cn.com.yusys.yusp.commons.fee.common.annotation.ide.LogicParam;
 import cn.com.yusys.yusp.commons.fee.common.enums.ActionNodeType;
 import cn.com.yusys.yusp.commons.fee.common.enums.LableType;
 import cn.com.yusys.yusp.commons.mapper.QueryModel;
-import cn.com.yusys.yusp.commons.util.BeanUtil;
 import cn.com.yusys.yusp.commons.web.rest.dto.ResultDto;
 import cn.com.yusys.yusp.domain.BondBalance;
 import cn.com.yusys.yusp.domain.BondSettltOrder;
@@ -97,12 +96,25 @@ public class BondSettltOrderService {
     	//借方减(借方一定有记录)
     	debitBalance1.setCurrencyAmt(debitBalance.getCurrencyAmt().subtract(bondDto.getBondFaceAmt()));
     	bondBalanceMapper.updateByPrimaryKeySelective(debitBalance1);
-    	//贷方增（增的一方可能没记录
+    	//贷方增（增的一方可能没记录）
     	if(creditBalance != null) {
 	    	creditBalance1.setCurrencyAmt(creditBalance.getCurrencyAmt().add(bondDto.getBondFaceAmt()));
 	    	bondBalanceMapper.updateByPrimaryKeySelective(creditBalance);
     	}else {
-    		//暂不考虑
+    		//贷方可用科目当前无记录-->插入
+			BondBalance tmp = new BondBalance();
+			tmp.setBizDate("20191111");
+			tmp.setMemCode(bondDto.getCreditMemId());
+			tmp.setMemName(bondDto.getCreditMemName());
+			tmp.setHolderAccount(bondDto.getCreditHolderAccount());
+			tmp.setHolderAccountName(bondDto.getCreditHolderAccountName());
+			tmp.setBondCode(bondDto.getBondCode());
+			tmp.setBondName(bondDto.getBondName());
+			tmp.setBondType("01");
+			tmp.setTitleCode(bondDto.getBondCreditTitle());
+			tmp.setTitleName("可用");//TODO
+			tmp.setCurrencyAmt(bondDto.getBondFaceAmt());
+			bondBalanceMapper.insert(tmp);
     	}
     }
     
@@ -130,6 +142,46 @@ public class BondSettltOrderService {
 		return returnDto;
     }
     
+    //簿记单据生成并发送
+    @Logic(description="簿记单据生成并发送",transaction=true)
+    public void callBondReport() {
+    	String json ="{\r\n" + 
+				"	\"yusys\": {\r\n" + 
+				"		\"head\": {\r\n" + 
+				"			\"appCode\": \"1003\",\r\n" + 
+				"			\"sceneNo\": \"1001\",\r\n" + 
+				"			\"chnlCode\": \"0147\",\r\n" + 
+				"			\"chnlSeqNo\": \"stm110000120180511001702891\",\r\n" + 
+				"			\"tradeName\": \"单据模板样例\",\r\n" + 
+				"			\"tradeCode\": \"SC3001\"\r\n" + 
+				"		},\r\n" + 
+				"		\"body\": {\r\n" + 
+				"			\"request\": {\r\n" + 
+				"				\"trade_id\":\"DVP201911170000001\",\r\n" + 
+				"				\"settle_order_id\":\"DVP20191117000001\",\r\n" + 
+				"				\"settle_date\":\"2019/11/17\",\r\n" + 
+				"				\"bond_code\":\"011900001\",\r\n" + 
+				"				\"bond_name\":\"国债城建001\",\r\n" + 
+				"				\"seller_mem_code\":\"A000005\",\r\n" + 
+				"				\"seller_mem_name\":\"中国工商银行\",\r\n" + 
+				"				\"buyer_mem_code\":\"A000006\",\r\n" + 
+				"				\"buyer_mem_name\":\"招商银行\",\r\n" + 
+				"				\"bond_face_amt\":\"999999999.99\",\r\n" + 
+				"				\"settle_order_status_update_tm\":\"2019/11/17 16:41:01\",\r\n" + 
+				"			}\r\n" + 
+				"		}\r\n" + 
+				"	}\r\n" + 
+				"}\r\n" + 
+				"";
+		//4单据打印
+		try {
+			SocketService.socket(json);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
     /**
      * @方法名称: procCouponBond
      * @方法描述: 债券DVP结算圈存指令异步处理
