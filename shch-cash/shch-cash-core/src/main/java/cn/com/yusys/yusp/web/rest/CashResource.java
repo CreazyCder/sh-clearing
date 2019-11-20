@@ -64,6 +64,6 @@ public class CashResource {
     @GetMapping("/riqie")
     protected ResultDto<String> create(String code) {
     	logger.info("日切成功:"+code);
-        return new ResultDto<String>("0");
+        return new ResultDto<String>(0, "资金处理成功", "info");
     }
 }

@@ -84,7 +84,7 @@ public class BondSettltOrderResource {
     @GetMapping("/riqie")
     protected ResultDto<String> updateBizDate(String code) {
     	bondSettltOrderService.updateBizDate(code);
-        return new ResultDto<String>("0");
+        return new ResultDto<String>(0, "薄记处理成功", "info");
     }
 
 	/**
