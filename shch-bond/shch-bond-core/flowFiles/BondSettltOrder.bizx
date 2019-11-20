@@ -31,12 +31,12 @@
       <mxGeometry as="geometry" height="50.0" width="50.0" x="220.0" y="270.0"/>
     </mxCell>
     <mxCell id="18" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/微服务组件.png" vertex="1">
-      <Action as="value" async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="getBondBalanceMap" canResetAsync="false" canTransaction="true" cellId="18" description="获取借贷双方簿记余额信息" nodeType="MAPPER" transaction="REQUIRED">
+      <Action as="value" async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="getBondBalanceMap" canResetAsync="false" canTransaction="true" cellId="18" description="获取圈券借贷双方簿记余额信息" nodeType="MAPPER" transaction="REQUIRED">
         <Array as="input">
           <Param className="cn.com.yusys.yusp.service.BondDto" isArray="false" name="bondDto" value="bondDto"/>
         </Array>
         <Array as="output">
-          <Param className="java.util.Map" description="来自获取借贷双方簿记余额信息的输出参数" isArray="false" name="map" value="map"/>
+          <Param className="java.util.Map" description="来自获取圈券借贷双方簿记余额信息的输出参数" isArray="false" name="map" value="map"/>
         </Array>
       </Action>
       <mxGeometry as="geometry" height="50.0" width="50.0" x="390.0" y="270.0"/>

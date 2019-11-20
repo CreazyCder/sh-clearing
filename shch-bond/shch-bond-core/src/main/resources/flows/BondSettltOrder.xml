@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flow bspIntercepter="" description="薄记" enableBSP="false" enableREST="true" flowId="BondSettltOrder" idempotent="false" intercepterName="" iptField="" iptRepeatField="" iptTtl="" publish="true" requestType="POST" serviceCombType="" url="/api/bondsettltorder2">
+<flow description="薄记" enableBSP="false" enableREST="true" flowId="BondSettltOrder" intercepterName="" publish="true" requestType="POST" serviceCombType="" url="/api/bondsettltorder2">
   <input>
     <param assignType="VARIABLE" className="cn.com.yusys.yusp.service.BondDto" description="薄记传参对象" isArray="false" name="bondDto" value=""/>
   </input>
   <output>
     <param assignType="VARIABLE" className="String" isArray="false" value="null"/>
   </output>
-  <global/>
+  <global>
+    <param assignType="VARIABLE" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value=""/>
+  </global>
   <actions>
     <action description="开始节点" id="2" nodeType="START">
       <input/>
       <output/>
       <transitions>
-        <transition condition="" description="" from="2" to="7" type="NORMAL"/>
+        <transition condition="" description="" from="2" to="17" type="NORMAL"/>
       </transitions>
     </action>
     <action description="结束节点" id="3" nodeType="END">
@@ -20,13 +22,89 @@
       <output/>
       <transitions/>
     </action>
-    <action async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="procCouponBond" description="债券DVP结算圈存指令异步处理逻辑" id="7" nodeType="MAPPER" transaction="NEW">
+    <action description="赋值" id="17" nodeType="SETVALUE">
       <input>
-        <param assignType="VARIABLE" className="cn.com.yusys.yusp.service.BondDto" isArray="false" name="bondDto" value="bondDto"/>
+        <param assignType="CONSTANT" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value="3"/>
       </input>
       <output/>
       <transitions>
-        <transition condition="" description="" from="7" to="3" type="NORMAL"/>
+        <transition condition="" description="" from="17" to="18" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="getBondBalanceMap" description="获取圈券借贷双方簿记余额信息" id="18" nodeType="MAPPER" transaction="REQUIRED">
+      <input>
+        <param assignType="VARIABLE" className="cn.com.yusys.yusp.service.BondDto" isArray="false" name="bondDto" value="bondDto"/>
+      </input>
+      <output>
+        <param assignType="VARIABLE" className="java.util.Map" description="来自获取圈券借贷双方簿记余额信息的输出参数" isArray="false" name="map" value="map"/>
+      </output>
+      <transitions>
+        <transition condition="" description="" from="18" to="29" type="NORMAL"/>
+        <transition condition="if(context.getParam(&quot;map&quot;).get(&quot;debitBalance&quot;)==null){  return true; }else{  return false; }" description="" from="18" order="" to="35" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="updateBondBalanceAll" description="簿记余额双边记账" id="21" nodeType="MAPPER" transaction="REQUIRED">
+      <input>
+        <param assignType="EXPRESSION" className="cn.com.yusys.yusp.domain.BondBalance" isArray="false" name="debitBalance" value="[map].debitBalance"/>
+        <param assignType="EXPRESSION" className="cn.com.yusys.yusp.domain.BondBalance" isArray="false" name="creditBalance" value="[map].creditBalance"/>
+        <param assignType="EXPRESSION" className="cn.com.yusys.yusp.service.BondDto" isArray="false" name="bondDto" value="bondDto"/>
+      </input>
+      <output/>
+      <transitions>
+        <transition condition="" description="" from="21" to="23" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="addBondSettleOrder" description="插入簿记余额流水" id="23" nodeType="MAPPER" transaction="REQUIRED">
+      <input>
+        <param assignType="VARIABLE" className="cn.com.yusys.yusp.service.BondDto" isArray="false" name="bondDto" value="bondDto"/>
+        <param assignType="VARIABLE" className="java.lang.String" isArray="false" name="bondStatus" value="bondProcStatus"/>
+      </input>
+      <output/>
+      <transitions>
+        <transition condition="" description="" from="23" to="25" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="callBackClear" description="异步反馈债券圈存结果" id="25" nodeType="MAPPER" transaction="REQUIRED">
+      <input>
+        <param assignType="VARIABLE" className="cn.com.yusys.yusp.service.BondDto" isArray="false" name="bondDto" value="bondDto"/>
+        <param assignType="VARIABLE" className="java.lang.String" isArray="false" name="bondProcStatus" value="bondProcStatus"/>
+      </input>
+      <output>
+        <param assignType="VARIABLE" className="cn.com.yusys.yusp.commons.web.rest.dto.ResultDto" description="来自异步反馈债券圈存结果的输出参数" isArray="false" name="resultDto" value="resultDto"/>
+      </output>
+      <transitions>
+        <transition condition="" description="" from="25" to="3" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="checkCompareTo" description="金额比较" id="29" nodeType="MAPPER" transaction="">
+      <input>
+        <param assignType="EXPRESSION" className="java.math.BigDecimal" isArray="false" name="var1" value="[map]['debitBalance'].currencyAmt"/>
+        <param assignType="EXPRESSION" className="java.math.BigDecimal" isArray="false" name="var2" value="[bondDto].bondFaceAmt"/>
+      </input>
+      <output>
+        <param assignType="VARIABLE" className="boolean" description="来自金额比较的输出参数" isArray="false" name="checkResult" value="checkResult"/>
+      </output>
+      <transitions>
+        <transition condition="if(context.getParam(&quot;checkResult&quot;)){  return true; }else{  return false; }" description="" from="29" order="" to="31" type="NORMAL"/>
+        <transition condition="" description="" from="29" to="21" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action description="赋值" id="31" nodeType="SETVALUE">
+      <input>
+        <param assignType="CONSTANT" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value="2"/>
+      </input>
+      <output/>
+      <transitions>
+        <transition condition="" description="" from="31" to="25" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action description="赋值" id="35" nodeType="SETVALUE">
+      <input>
+        <param assignType="CONSTANT" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value="F"/>
+      </input>
+      <output/>
+      <transitions>
+        <transition condition="" description="" from="35" to="25" type="NORMAL"/>
       </transitions>
     </action>
   </actions>

@@ -81,6 +81,11 @@ public class BondSettltOrderResource {
         
     }
 
+    @GetMapping("/riqie")
+    protected ResultDto<String> updateBizDate(String code) {
+    	bondSettltOrderService.updateBizDate(code);
+        return new ResultDto<String>("0");
+    }
 
 	/**
      * 全表查询.
