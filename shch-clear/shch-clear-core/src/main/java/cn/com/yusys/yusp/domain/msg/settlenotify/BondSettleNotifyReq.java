@@ -47,4 +47,11 @@ public class BondSettleNotifyReq {
     public void setRetMsg(String retMsg) {
         this.retMsg = retMsg;
     }
+
+	@Override
+	public String toString() {
+		return "BondSettleNotifyReq [settleOrderId=" + settleOrderId + ", tradeId=" + tradeId + ", bondSettleId="
+				+ bondSettleId + ", bondProcStatus=" + bondProcStatus + ", retMsg=" + retMsg + "]";
+	}
+    
 }

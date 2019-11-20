@@ -22,4 +22,8 @@ public class DVPRevokeReq {
 	public void setOrigTradeId(String origTradeId) {
 		this.origTradeId = origTradeId;
 	}
+	@Override
+	public String toString() {
+		return "DVPRevokeReq [tradeId=" + tradeId + ", origTradeId=" + origTradeId + "]";
+	}
 }

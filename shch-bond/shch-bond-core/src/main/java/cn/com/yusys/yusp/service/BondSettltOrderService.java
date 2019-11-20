@@ -252,6 +252,7 @@ public class BondSettltOrderService {
 		req.setRetMsg("处理成功");//处理信息反馈
 		logger.info("簿记DVP结算圈券指令异步反馈报文:"+bondDto);
 		logger.info("簿记DVP结算圈券指令异步方法:settleNotifyClient.bondRsp");
+		logger.info("send msg info : {}",req);
 		settleNotifyClient.bondRsp(req);
 	}
     
@@ -363,6 +364,7 @@ public class BondSettltOrderService {
 		req.setRetMsg("处理成功");//处理信息反馈
 		logger.debug("簿记DVP结算记账指令异步反馈报文:"+bondDto);
 		logger.debug("簿记DVP结算记账指令异步方法:settleNotifyClient.bondRsp");
+		logger.info("send msg info : {}",req);
 		settleNotifyClient.bondRsp(req);	
   	}
     /**
@@ -420,6 +422,7 @@ public class BondSettltOrderService {
 		req.setRetMsg("处理成功");//处理信息反馈
 		logger.debug("簿记DVP结算撤销指令异步反馈报文:"+bondDto);
 		logger.debug("簿记DVP结算撤销指令异步方法:settleNotifyClient.bondRsp");
+		logger.info("send msg info : {}",req);
 		settleNotifyClient.bondRsp(req); 		
   	}
 	

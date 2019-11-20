@@ -53,7 +53,7 @@ public class ClearJobServiceImpl implements ClearJobService {
     	
         return settleOrderMapper.selectTaskByStatus(size, SettleStatusEnum.HANDLING.getCode(), 
 				BondSettleStatusEnum.BOND_OK.getCode(), 
-				CashSettleStatusEnum.SHOULD_PERFORM.getCode());
+				CashSettleStatusEnum.BOND_OK.getCode());
         
     }
     /**

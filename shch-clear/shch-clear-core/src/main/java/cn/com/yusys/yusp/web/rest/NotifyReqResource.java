@@ -1,5 +1,7 @@
 package cn.com.yusys.yusp.web.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import cn.com.yusys.yusp.service.SettleNotifyService;
 @RestController
 @RequestMapping("/api/notify/")
 public class NotifyReqResource {
+	private Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private SettleNotifyService settleServ;
     /**
@@ -26,6 +29,7 @@ public class NotifyReqResource {
      */
     @PostMapping("/bond/asynRsp")
     protected ResultDto bondRsp(@RequestBody BondSettleNotifyReq req) {
+    	log.info("bondRsp rcv msg info : {}",req);
         return settleServ.bondRsp(req);
     }
     /**
@@ -34,6 +38,7 @@ public class NotifyReqResource {
      */
     @PostMapping("/cash/asynRsp")
     protected ResultDto cashRsp(@RequestBody CashSettleNotifyReq req) {
+    	log.info("cashRsp rcv msg info : {}",req);
         return settleServ.cashRsp(req);
     }
 }

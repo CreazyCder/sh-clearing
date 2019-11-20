@@ -3,6 +3,8 @@ package cn.com.yusys.yusp.service;
 
 import java.math.BigDecimal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import cn.com.yusys.yusp.domain.SettleOrder;
  */
 @Service
 public class CallService {
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private CashClient cashClient;
 	@Autowired
@@ -45,6 +48,7 @@ public class CallService {
     	}else {
     		req.setOpertionType("2");//TODO
     	}
+    	log.info("send msg info : {}",req);
         return bondClient.procBond(req);
     }
 	/**
@@ -70,6 +74,7 @@ public class CallService {
     	req.setCashCreditTitle("02");
     	
     	// 调用资金结算指令'
+    	log.info("send msg info : {}",req);
     	return cashClient.cash(req);
     }
     

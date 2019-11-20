@@ -64,5 +64,11 @@ public class DVPMsgPushReq {
 	public void setSrcFrom(String srcFrom) {
 		this.srcFrom = srcFrom;
 	}
+	@Override
+	public String toString() {
+		return "DVPMsgPushReq [bizDate=" + bizDate + ", tradeId=" + tradeId + ", settleOrderId=" + settleOrderId
+				+ ", settleDate=" + settleDate + ", tradeDate=" + tradeDate + ", inputOperId=" + inputOperId
+				+ ", bondCode=" + bondCode + ", settleAmt=" + settleAmt + ", srcFrom=" + srcFrom + "]";
+	}
 
 }

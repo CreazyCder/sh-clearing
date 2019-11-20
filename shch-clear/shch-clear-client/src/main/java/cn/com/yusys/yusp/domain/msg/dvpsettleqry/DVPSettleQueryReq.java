@@ -80,4 +80,11 @@ public class DVPSettleQueryReq {
         this.bondCode = bondCode;
     }
 
+	@Override
+	public String toString() {
+		return "DVPSettleQueryReq [tradeDate=" + tradeDate + ", tradeId=" + tradeId + ", settleOrderId=" + settleOrderId
+				+ ", settleDate=" + settleDate + ", srcFrom=" + srcFrom + ", memCode=" + memCode + ", holderAccount="
+				+ holderAccount + ", bondCode=" + bondCode + "]";
+	}
+
 }

@@ -198,5 +198,16 @@ public class DVPSettleApplyReq implements Serializable {
         return settleOrder;
     }
 
+	@Override
+	public String toString() {
+		return "DVPSettleApplyReq [tradeId=" + tradeId + ", tradeDate=" + tradeDate + ", bondCode=" + bondCode
+				+ ", bondName=" + bondName + ", bondType=" + bondType + ", bondFaceAmt=" + bondFaceAmt + ", settleDate="
+				+ settleDate + ", settleType=" + settleType + ", settleAmt=" + settleAmt + ", buyerMemCode="
+				+ buyerMemCode + ", buyerMemName=" + buyerMemName + ", buyerHolderAccount=" + buyerHolderAccount
+				+ ", buyerHolderAccountName=" + buyerHolderAccountName + ", sellerMemCode=" + sellerMemCode
+				+ ", sellerMemName=" + sellerMemName + ", sellerHolderAccount=" + sellerHolderAccount
+				+ ", sellerHolderAccountName=" + sellerHolderAccountName + ", srcFrom=" + srcFrom + "]";
+	}
+
 }
 
