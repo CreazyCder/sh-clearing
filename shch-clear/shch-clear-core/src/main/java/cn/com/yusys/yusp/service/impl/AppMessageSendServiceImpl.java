@@ -4,6 +4,7 @@ import cn.com.yusys.yusp.message.client.MessageClient;
 import cn.com.yusys.yusp.service.MessageSendService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 @Component
 public class AppMessageSendServiceImpl implements MessageSendService {
     private Logger log = LoggerFactory.getLogger(AppMessageSendServiceImpl.class);
+    @Autowired
     private MessageClient messageClient;
 
     /**
