@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +107,7 @@ public class SettleOrderService {
     @Transactional(rollbackFor = Exception.class)
     public int insert(DVPSettleApplyReq applyReq) {
         SettleOrder settleOrder = applyReq.toDomain();
+        settleOrder.setBondFaceAmt(new BigDecimal(applyReq.getBondFaceAmt()));
         // 清算ID由接口生成.
         // 当前日期.
         settleOrder.setBizDate(DateUtil.getCurrDateStr());

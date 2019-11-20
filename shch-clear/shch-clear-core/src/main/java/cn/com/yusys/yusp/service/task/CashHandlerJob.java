@@ -1,17 +1,16 @@
 package cn.com.yusys.yusp.service.task;
 
-import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
-import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
-import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
-import cn.com.yusys.yusp.commons.util.BeanUtil;
-import cn.com.yusys.yusp.constant.CashSettleStatusEnum;
-import cn.com.yusys.yusp.service.CallService;
-import cn.com.yusys.yusp.service.CashDto;
-import cn.com.yusys.yusp.service.ClearJobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
+import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
+import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
+import cn.com.yusys.yusp.constant.CashSettleStatusEnum;
+import cn.com.yusys.yusp.service.CallService;
+import cn.com.yusys.yusp.service.ClearJobService;
 
 /**
  * 资金处理任务.
