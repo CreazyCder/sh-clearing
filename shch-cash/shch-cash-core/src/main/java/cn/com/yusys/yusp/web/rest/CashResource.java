@@ -19,6 +19,7 @@ import cn.com.yusys.yusp.domain.CashAccountBalance;
 import cn.com.yusys.yusp.repository.mapper.CashAccountBalanceMapper;
 import cn.com.yusys.yusp.service.CashDto;
 import cn.com.yusys.yusp.service.CashSettleOrderService;
+import cn.com.yusys.yusp.service.EnoughMoneyDto;
 import cn.com.yusys.yusp.service.MoneyDto;
 
 @RestController
@@ -65,5 +66,12 @@ public class CashResource {
     protected ResultDto<String> create(String code) {
     	logger.info("日切成功:"+code);
         return new ResultDto<String>(0, "资金处理成功", "info");
+    }
+    
+    @PostMapping("/enough_money")
+    protected ResultDto<String> enoughMoney(@RequestBody EnoughMoneyDto enoughMoneyDto) throws Exception {
+    	logger.info("到款数据:"+enoughMoneyDto);
+    	cashSettleOrderService.enoughMoney(enoughMoneyDto);
+        return new ResultDto<String>(0, "到款处理成功", "ok");
     }
 }

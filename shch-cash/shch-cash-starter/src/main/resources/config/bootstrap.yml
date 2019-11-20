@@ -19,3 +19,10 @@ logging:
     level: 
         root: INFO
         springfox.documentation.spring.web.readers.operation: OFF  #springfox日志关闭输出
+        
+application:
+    swagger: 
+        enabled: true # 是否开启swagger功能，生产建议关闭， apollo模式下该配置无用，请使用bootstrap.properties中该配置
+        title: YUSP APP shch-cash-starter Application API         # swagger显示title
+        description: YUSP APP shch-cash-starter API documentation # swagger显示描述
+        version: 2.1.1.RELEASE                                # swagger显示的api版本

@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 
+import cn.com.yusys.yusp.commons.exception.YuspException;
 import cn.com.yusys.yusp.commons.mapper.QueryModel;
 import cn.com.yusys.yusp.domain.CashAccountBalance;
 import cn.com.yusys.yusp.domain.CashSettleOrder;
@@ -35,7 +37,7 @@ public class CashSettleOrderService {
 
 	@Autowired
 	private SettleNotifyClient settleNotifyClient;
-	
+
 	public int deleteByPrimaryKey(String serialNum) {
 		return cashSettleOrderMapper.deleteByPrimaryKey(serialNum);
 	}
@@ -144,7 +146,7 @@ public class CashSettleOrderService {
 			logger.info("交易成功:" + serialNum);
 			result = true;
 		}
-		
+
 		if (result) {// 调用资金dep异步结算通知
 
 		}
@@ -173,5 +175,14 @@ public class CashSettleOrderService {
 		cashSettleNotifyReq.setRetMsg("款项到账");
 		
 		settleNotifyClient.cashRsp(cashSettleNotifyReq);
+	}
+
+	public void enoughMoney(EnoughMoneyDto enoughMoneyDto) throws Exception {
+		try {
+			logger.info("发送到款数据到Rabbit:" + objectMapper.writeValueAsString(enoughMoneyDto));
+			amqpTemplate.convertAndSend("pay", objectMapper.writeValueAsString(enoughMoneyDto));
+		} catch (Exception e) {
+			throw new YuspException("1", "发送rabbitmq失败" + e.getMessage());
+		}
 	}
 }
