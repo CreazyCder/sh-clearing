@@ -47,6 +47,11 @@ public class CashResource {
         return new ResultDto<String>("0");
     }
     
+    /**
+     * 112报文
+     * @param moneyDto
+     * @return
+     */
     @PostMapping("/add")
     protected ResultDto<String> add(@RequestBody MoneyDto moneyDto) {
     	logger.info("pay:"+moneyDto);

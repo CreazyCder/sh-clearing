@@ -132,7 +132,7 @@ public class CashSettleOrderService {
 			record3.setCashProcStatus("1");
 			cashSettleOrderMapper.updateByPrimaryKeySelective(record3);
 			record2.setSerialNum(serialNum);
-			cashSettleOrderMapper.updateStateSuccess(serialNum);
+			//cashSettleOrderMapper.updateStateSuccess(serialNum);
 			amqpTemplate.convertAndSend("pay", objectMapper.writeValueAsString(record2));
 			logger.debug("交易成功:"+serialNum);
 			result = true;
@@ -146,7 +146,7 @@ public class CashSettleOrderService {
     public void pay(String serialNum) {
     	CashSettleOrder record3 = new CashSettleOrder();
 		record3.setSerialNum(serialNum);
-		record3.setCashProcStatus("3");
+		record3.setCashProcStatus("4");
 		cashSettleOrderMapper.updateByPrimaryKeySelective(record3);	
 		
 		/**

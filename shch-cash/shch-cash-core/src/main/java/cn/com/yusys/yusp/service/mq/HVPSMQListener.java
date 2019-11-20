@@ -32,7 +32,7 @@ public class HVPSMQListener {
 			Map data = objectMapper.readValue(message, Map.class);
 			logger.info("支付处理接收报文格式化对象成功："+message);
 			
-			cashSettleOrderService.pay(data.get("serialNum").toString());
+			//cashSettleOrderService.pay(data.get("serialNum").toString());
 		} catch (IOException e) {
 			logger.info("支付处理接收报文格式化对象失败："+message);
 		}
