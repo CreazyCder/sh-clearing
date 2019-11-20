@@ -253,5 +253,22 @@ public class DVPSettleQueryRsp {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	@Override
+	public String toString() {
+		return "DVPSettleQueryRsp [tradeId=" + tradeId + ", tradeDate=" + tradeDate + ", bondCode=" + bondCode
+				+ ", bondName=" + bondName + ", bondType=" + bondType + ", bondFaceAmt=" + bondFaceAmt + ", settleDate="
+				+ settleDate + ", settleType=" + settleType + ", settleAmt=" + settleAmt + ", buyerMemCode="
+				+ buyerMemCode + ", buyerMemName=" + buyerMemName + ", buyerHolderAccount=" + buyerHolderAccount
+				+ ", buyerHolderAccountName=" + buyerHolderAccountName + ", sellerMemCode=" + sellerMemCode
+				+ ", sellerMemName=" + sellerMemName + ", sellerHolderAccount=" + sellerHolderAccount
+				+ ", sellerHolderAccountName=" + sellerHolderAccountName + ", settleOrderId=" + settleOrderId
+				+ ", bondSettleId=" + bondSettleId + ", cashSettleId=" + cashSettleId + ", bondSettleStatus="
+				+ bondSettleStatus + ", bondSettleStatusUpdateTm=" + bondSettleStatusUpdateTm + ", cashSettleStatus="
+				+ cashSettleStatus + ", cashSettleStatusUpdateTm=" + cashSettleStatusUpdateTm + ", settleOrderStatus="
+				+ settleOrderStatus + ", settleOrderStatusUpdateTm=" + settleOrderStatusUpdateTm + ", cashPeroid="
+				+ cashPeroid + ", bondPeroid=" + bondPeroid + ", inputOperId=" + inputOperId + ", inputTm=" + inputTm
+				+ ", reviewOperId=" + reviewOperId + ", reviewTm=" + reviewTm + ", confirmOperId=" + confirmOperId
+				+ ", confirmTm=" + confirmTm + ", srcFrom=" + srcFrom + ", remark=" + remark + "]";
+	}
 
 }

@@ -47,4 +47,10 @@ public class CashSettleNotifyReq {
     public void setRetMsg(String retMsg) {
         this.retMsg = retMsg;
     }
+
+	@Override
+	public String toString() {
+		return "CashSettleNotifyReq [settleOrderId=" + settleOrderId + ", tradeId=" + tradeId + ", cashSettleId="
+				+ cashSettleId + ", cashProcStatus=" + cashProcStatus + ", retMsg=" + retMsg + "]";
+	}
 }
