@@ -211,6 +211,14 @@ public class SettleOrderService {
     	SettleOrder record = new SettleOrder();
     	record.setTradeId(req.getOrigTradeId());
     	record.setSettleOrderStatus(SettleStatusEnum.CANCELED.getCode());
+    	
+    	
+    	QueryModel model = new QueryModel();
+    	model.addCondition("tradeId", req.getTradeId());
+    	model.setSize(0);
+    	
+    	SettleOrder order = settleOrderMapper.selectByModel(model).get(0);
+    	order.setSettleOrderStatus(SettleStatusEnum.CANCELED.getCode());
     	return settleOrderMapper.updateByPrimaryKeySelective(record);
     }
 }
