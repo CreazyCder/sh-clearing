@@ -36,5 +36,5 @@ public interface SettleNotifyClient {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/api/settleorder/revoke")
-    ResultDto<Integer> update(@RequestBody DVPRevokeReq req) ;
+    ResultDto<Integer> revoke(@RequestBody DVPRevokeReq req) ;
 }

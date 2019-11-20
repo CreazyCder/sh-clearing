@@ -21,7 +21,7 @@ public class SettleNotifyFallback implements SettleNotifyClient {
     }
 
 	@Override
-	public ResultDto<Integer> update(DVPRevokeReq req) {
+	public ResultDto<Integer> revoke(DVPRevokeReq req) {
 		return new ResultDto<Integer>(1,"fail","error");
 	}
 }
