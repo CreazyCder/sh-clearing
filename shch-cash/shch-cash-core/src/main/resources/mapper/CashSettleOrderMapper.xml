@@ -488,15 +488,15 @@
   </delete>
   
   <update id="updateState" parameterType="java.lang.String">
-		UPDATE CASH_SETTLE_ORDER SET CASH_PROC_STATUS='3' where CASH_PROC_STATUS='2' and SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+		UPDATE CASH_SETTLE_ORDER SET CASH_PROC_STATUS='3', UPDATE_TM=sysdate where CASH_PROC_STATUS='2' and SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
   </update>
   
   <update id="updateStateReturn" parameterType="java.lang.String">
-		UPDATE CASH_SETTLE_ORDER SET CASH_PROC_STATUS='2' where CASH_PROC_STATUS='3' and  SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+		UPDATE CASH_SETTLE_ORDER SET CASH_PROC_STATUS='2', UPDATE_TM=sysdate where CASH_PROC_STATUS='3' and  SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
   </update>
   
   <update id="updateStateSuccess" parameterType="java.lang.String">
-		UPDATE CASH_SETTLE_ORDER SET CASH_PROC_STATUS='4' where  SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
+		UPDATE CASH_SETTLE_ORDER SET CASH_PROC_STATUS='4', UPDATE_TM=sysdate where  SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
   </update>
 
 </mapper>
