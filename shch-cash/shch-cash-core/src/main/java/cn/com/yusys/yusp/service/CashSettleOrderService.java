@@ -106,13 +106,13 @@ public class CashSettleOrderService {
 			model.addCondition("memCode", record.getDebitMemId());
 			model.addCondition("holderAccount", record.getDebitHolderAccount());
 			model.addCondition("titleCode", record.getCashDebitTitle());
-			List<CashSettleOrder> cashSettleOrders = cashSettleOrderMapper.selectByModel(model);
-			if (cashSettleOrders.size() <= 0) {
+			List<CashAccountBalance> cashAccountBalances = cashAccountBalanceMapper.selectByModel(model);
+			if (cashAccountBalances.size() <= 0) {
 				logger.error("账户记录不存在:" + model.toString());
 				return;
 			}
 
-			CashSettleOrder re2 = cashSettleOrders.get(0);
+			CashAccountBalance re2 = cashAccountBalances.get(0);
 			record2.setCashAccount(re2.getCashAccount());
 
 			kouKuan(cashSettleOrder.getSerialNum(), record2);
