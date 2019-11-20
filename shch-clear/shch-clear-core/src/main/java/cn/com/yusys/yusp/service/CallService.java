@@ -83,6 +83,8 @@ public class CallService {
     }
     
     public String getBondStatus(String tradeId) {
+    	
+    	
     	return "";
     }
     public String getCashStatus(String tradeId) {
