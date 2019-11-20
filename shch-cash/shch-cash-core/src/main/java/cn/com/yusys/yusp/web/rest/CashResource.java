@@ -24,46 +24,47 @@ import cn.com.yusys.yusp.service.MoneyDto;
 @RestController
 @RequestMapping("/api/cash")
 public class CashResource {
-    private Logger logger = LoggerFactory.getLogger(CashResource.class);
+	private Logger logger = LoggerFactory.getLogger(CashResource.class);
 
-    @Autowired
-    private CashSettleOrderService cashSettleOrderService;
-    
-    @Autowired
-    private CashAccountBalanceMapper cashAccountBalanceMapper;
-   
-    @PostMapping("/")
-    protected ResultDto<String> create(@RequestBody @Valid CashDto record) {
-    	logger.info("资金DVP结算请求指令接收报文:"+record);
-    	cashSettleOrderService.asynUpdateCashCount(record);
-        logger.info("资金DVP结算请求指令接收报文成功");
-        return new ResultDto<String>("0");
-    }
-    
-    @PostMapping("/pay")
-    protected ResultDto<String> pay(@RequestBody Map param) {
-    	logger.info("pay:"+param.get("serialNum").toString());
+	@Autowired
+	private CashSettleOrderService cashSettleOrderService;
+
+	@Autowired
+	private CashAccountBalanceMapper cashAccountBalanceMapper;
+
+	@PostMapping("/")
+	protected ResultDto<String> create(@RequestBody @Valid CashDto record) {
+		logger.info("资金DVP结算请求指令接收报文:" + record);
+		cashSettleOrderService.asynUpdateCashCount(record);
+		logger.info("资金DVP结算请求指令接收报文成功");
+		return new ResultDto<String>("0");
+	}
+
+	@PostMapping("/pay")
+	protected ResultDto<String> pay(@RequestBody Map param) {
+		logger.info("往账业务人行应答 Pay: serialNum=" + param.get("serialNum").toString());
 		cashSettleOrderService.pay(param.get("serialNum").toString());
-        return new ResultDto<String>("0");
-    }
-    
-    /**
-     * 112报文
-     * @param moneyDto
-     * @return
-     */
-    @PostMapping("/add")
-    protected ResultDto<String> add(@RequestBody MoneyDto moneyDto) {
-    	logger.info("pay:"+moneyDto);
-    	CashAccountBalance record = new CashAccountBalance();
-    	BeanUtils.copyProperties(moneyDto, record);
+		return new ResultDto<String>("0");
+	}
+
+	/**
+	 * 112报文
+	 * 
+	 * @param moneyDto
+	 * @return
+	 */
+	@PostMapping("/add")
+	protected ResultDto<String> add(@RequestBody MoneyDto moneyDto) {
+		logger.info("pay:" + moneyDto);
+		CashAccountBalance record = new CashAccountBalance();
+		BeanUtils.copyProperties(moneyDto, record);
 		cashAccountBalanceMapper.addMoney(record);
-        return new ResultDto<String>("0");
-    }
-    
-    @GetMapping("/riqie")
-    protected ResultDto<String> create(String code) {
-    	logger.info("日切成功:"+code);
-        return new ResultDto<String>("0");
-    }
+		return new ResultDto<String>("0");
+	}
+
+	@GetMapping("/riqie")
+	protected ResultDto<String> create(String code) {
+		logger.info("日切成功:" + code);
+		return new ResultDto<String>("0");
+	}
 }

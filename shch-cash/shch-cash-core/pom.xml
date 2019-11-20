@@ -1,57 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>cn.com.yusys.yusp</groupId>
-        <artifactId>shch-cash</artifactId>
-        <version>2.2.2-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>cn.com.yusys.yusp</groupId>
+		<artifactId>shch-cash</artifactId>
+		<version>2.2.2-SNAPSHOT</version>
+	</parent>
 
-    <groupId>cn.com.yusys.yusp</groupId>
-    <artifactId>shch-cash-core</artifactId>
-    <version>2.2.2-SNAPSHOT</version>
-    <description>shch-funds-core微服务业务模块</description>
-    <packaging>jar</packaging>
+	<groupId>cn.com.yusys.yusp</groupId>
+	<artifactId>shch-cash-core</artifactId>
+	<version>2.2.2-SNAPSHOT</version>
+	<description>shch-funds-core微服务业务模块</description>
+	<packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>cn.com.yusys.yusp</groupId>
-            <artifactId>yusp-app-message-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.com.yusys.yusp</groupId>
-            <artifactId>yusp-common-job</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.com.yusys.yusp</groupId>
-            <artifactId>shch-cash-client</artifactId>
-            <version>2.2.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.com.yusys.yusp</groupId>
-            <artifactId>yusp-common-app</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!-- 不使用springcache请排除以下包 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
-        <!-- 不使用springcache请排除以上包 -->
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>cn.com.yusys.yusp</groupId>
+			<artifactId>yusp-app-message-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.com.yusys.yusp</groupId>
+			<artifactId>yusp-common-job</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.com.yusys.yusp</groupId>
+			<artifactId>shch-cash-client</artifactId>
+			<version>2.2.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.com.yusys.yusp</groupId>
+			<artifactId>shch-clear-client</artifactId>
+			<version>2.2.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.com.yusys.yusp</groupId>
+			<artifactId>yusp-common-app</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- 不使用springcache请排除以下包 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<!-- 不使用springcache请排除以上包 -->
+	</dependencies>
 
 </project>

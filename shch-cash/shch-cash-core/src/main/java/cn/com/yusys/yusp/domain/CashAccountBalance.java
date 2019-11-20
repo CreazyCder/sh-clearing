@@ -79,7 +79,22 @@ public class CashAccountBalance extends BaseDomain implements Serializable {
     @Column(name = "CASH_ACCOUNT_NAME")
     private String cashAccountName;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 交易代码
+     */
+    @Column(name = "MSG_TYPE")
+    private String msgType;
+
+    
+    public String getMsgType() {
+		return msgType;
+	}
+
+	public void setMsgType(String msgType) {
+		this.msgType = msgType;
+	}
+
+	private static final long serialVersionUID = 1L;
 
     /**
      * 获取参与者代码

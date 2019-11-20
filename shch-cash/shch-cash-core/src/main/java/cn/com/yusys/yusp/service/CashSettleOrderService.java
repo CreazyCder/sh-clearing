@@ -81,12 +81,12 @@ public class CashSettleOrderService {
         try {
         	CashSettleOrder cashSettleOrder = new CashSettleOrder();
         	BeanUtils.copyProperties(record, cashSettleOrder);
-        	
         	cashSettleOrder.setCashAccount("ZHa");
         	cashSettleOrder.setCashAccountName("账户a");
         	cashSettleOrder.setCashProcStatus("0");
         	cashSettleOrder.setCashSettleId(("A"+System.currentTimeMillis()).substring(0, 10));
-        	cashSettleOrder.setSerialNum("B"+System.currentTimeMillis());       
+        	cashSettleOrder.setSerialNum("B"+System.currentTimeMillis());   
+        	cashSettleOrder.setSettleOrderId(record.getSettleOrderId());
         	cashSettleOrderMapper.insert(cashSettleOrder);  
         	logger.debug("等级流水成功"+record);
         	
