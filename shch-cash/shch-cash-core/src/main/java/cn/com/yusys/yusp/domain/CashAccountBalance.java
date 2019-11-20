@@ -94,7 +94,7 @@ public class CashAccountBalance extends BaseDomain implements Serializable {
 		this.msgType = msgType;
 	}
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 11L;
 
     /**
      * 获取参与者代码

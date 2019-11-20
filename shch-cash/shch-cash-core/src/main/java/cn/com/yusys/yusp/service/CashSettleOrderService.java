@@ -145,6 +145,16 @@ public class CashSettleOrderService {
 			record3.setSerialNum(serialNum);
 			record3.setCashProcStatus("2");
 			cashSettleOrderMapper.updateByPrimaryKeySelective(record3);
+			
+			CashSettleOrder order = selectByPrimaryKey(serialNum);
+			CashSettleNotifyReq cashSettleNotifyReq = new CashSettleNotifyReq();
+			cashSettleNotifyReq.setCashSettleId(order.getCashSettleId());
+			cashSettleNotifyReq.setSettleOrderId(order.getSettleOrderId());
+			cashSettleNotifyReq.setTradeId(order.getTradeId());
+			cashSettleNotifyReq.setCashProcStatus("2");
+			cashSettleNotifyReq.setRetMsg("等款");
+			
+			settleNotifyClient.cashRsp(cashSettleNotifyReq);
 			result = false;
 		} else {
 			CashSettleOrder record3 = new CashSettleOrder();
@@ -154,8 +164,9 @@ public class CashSettleOrderService {
 			record2.setSerialNum(serialNum);
 			record2.setMsgType("HVPS.111.001.01");
 			// cashSettleOrderMapper.updateStateSuccess(serialNum);
-			logger.info("发送Rabbit报文:" + objectMapper.writeValueAsString(record2));
-			amqpTemplate.convertAndSend("pay", objectMapper.writeValueAsString(record2));
+			String data = objectMapper.writeValueAsString(record2);
+			logger.info("发送Rabbit报文:" + data);
+			amqpTemplate.convertAndSend("pay1", data);
 			logger.info("交易成功:" + serialNum);
 			result = true;
 		}

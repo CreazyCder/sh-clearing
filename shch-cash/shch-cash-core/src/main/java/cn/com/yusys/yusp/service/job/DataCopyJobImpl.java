@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -275,4 +277,11 @@ public class DataCopyJobImpl extends IJobHandler {
             }
         }
     }
+	
+	/*public static void main(String[] args) throws Exception {
+		String ff = "{\"memCode\":\"A000004\",\"serialNum\":100}";
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.readValue(ff, Map.class);
+		objectMapper.readValue(ff, Map.class);
+	}*/
 }
