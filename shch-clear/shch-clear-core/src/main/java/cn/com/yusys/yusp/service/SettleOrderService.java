@@ -130,7 +130,7 @@ public class SettleOrderService {
      *
      * @param settleOrder 清算指令信息
      */
-    private void sendMessageAsync(SettleOrder settleOrder) {
+    public void sendMessageAsync(SettleOrder settleOrder) {
         Map<String, Object> content = new HashMap<>(8);
         StringBuilder message = new StringBuilder();
         message.append("营业日期: ").append(settleOrder.getBizDate())

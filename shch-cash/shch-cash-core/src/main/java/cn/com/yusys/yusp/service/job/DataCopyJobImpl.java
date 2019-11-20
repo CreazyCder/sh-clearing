@@ -4,7 +4,6 @@ import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
 import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
 import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
 
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -79,7 +78,6 @@ public class DataCopyJobImpl extends IJobHandler {
 		rs.close();
 	}
 	
-	@Test
 	public void testInsertData() throws Exception {
 		Connection connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl","SHCH_POC","SHCH_POC");					
 		connection.setAutoCommit(false);
