@@ -18,7 +18,7 @@ public class TaskService {
 
     public ResultDto<String> dayOff(String date) {
         log.info("接收到任务调度请求,日期:{}", date);
-        return new ResultDto<String>(0, "处理成功", "info");
+        return new ResultDto<String>(0, "清算处理成功", "info");
     }
 
 }
