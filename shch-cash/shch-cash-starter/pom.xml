@@ -60,7 +60,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>shch-funds-${project.version}</finalName>
+		<finalName>shch-cash-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

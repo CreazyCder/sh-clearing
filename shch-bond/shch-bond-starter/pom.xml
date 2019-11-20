@@ -60,7 +60,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>shch-bookkeeping-${project.version}</finalName>
+		<finalName>shch-bond-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
