@@ -1,6 +1,7 @@
 package cn.com.yusys.yusp.service;
 
 import cn.com.yusys.yusp.commons.web.rest.dto.ResultDto;
+import cn.com.yusys.yusp.domain.msg.revoke.DVPRevokeReq;
 import cn.com.yusys.yusp.domain.msg.settlenotify.BondSettleNotifyReq;
 import cn.com.yusys.yusp.domain.msg.settlenotify.CashSettleNotifyReq;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -28,5 +29,12 @@ public interface SettleNotifyClient {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/api/notify/cash/asynRsp")
     ResultDto cashRsp(@RequestBody CashSettleNotifyReq req);
-
+    
+    /**
+     * 交易撤消
+     * @param req
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/api/settleorder/revoke")
+    ResultDto<Integer> revoke(@RequestBody DVPRevokeReq req) ;
 }

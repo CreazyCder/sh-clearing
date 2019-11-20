@@ -8,8 +8,10 @@ import cn.com.yusys.yusp.commons.fee.common.enums.LableType;
 import cn.com.yusys.yusp.commons.mapper.QueryModel;
 import cn.com.yusys.yusp.commons.security.SecurityUtils;
 import cn.com.yusys.yusp.commons.util.DateUtil;
+import cn.com.yusys.yusp.constant.SettleStatusEnum;
 import cn.com.yusys.yusp.domain.SettleOrder;
 import cn.com.yusys.yusp.domain.msg.dvpapply.DVPSettleApplyReq;
+import cn.com.yusys.yusp.domain.msg.revoke.DVPRevokeReq;
 import cn.com.yusys.yusp.repository.mapper.SettleOrderMapper;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -194,5 +196,18 @@ public class SettleOrderService {
      */
     public int deleteByIds(String ids) {
         return settleOrderMapper.deleteByIds(ids);
+    }
+    
+    /**
+     * @方法名称: 交易撤消
+     * @方法描述: 根据多个主键更新
+     * @参数与返回说明:
+     * @算法描述: 无
+     */
+    public int revoke(DVPRevokeReq req) {
+    	SettleOrder record = new SettleOrder();
+    	record.setTradeId(req.getOrigTradeId());
+    	record.setSettleOrderStatus(SettleStatusEnum.CANCELED.getCode());
+    	return settleOrderMapper.updateByPrimaryKeySelective(record);
     }
 }
