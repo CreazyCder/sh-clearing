@@ -214,7 +214,7 @@ public class SettleOrderService {
     	
     	
     	QueryModel model = new QueryModel();
-    	model.addCondition("tradeId", req.getTradeId());
+    	model.addCondition("tradeId", req.getOrigTradeId());
     	model.setSize(0);
     	
     	SettleOrder order = settleOrderMapper.selectByModel(model).get(0);
