@@ -55,6 +55,8 @@ public class CallService {
     public ResultDto<String> callCashSettleApply(SettleOrder order){
     	CashDto req = new CashDto();
     	BeanUtil.beanCopy(order, req);
+    	req.setTradeId(order.getTradeId());
+    	req.setSettleOrderId(order.getSettleOrderId());
     	req.setCashSettleAmt(new BigDecimal(order.getSettleAmt()));
     	req.setCreditHolderAccount(order.getBuyerHolderAccount());
     	req.setCreditHolderAccountName(order.getBuyerHolderAccountName());

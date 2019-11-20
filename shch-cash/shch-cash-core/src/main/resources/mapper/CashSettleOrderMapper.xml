@@ -60,14 +60,14 @@
       CASH_DEBIT_TITLE, CREDIT_MEM_ID, CREDIT_MEM_NAME, 
       CREDIT_HOLDER_ACCOUNT, CREDIT_HOLDER_ACCOUNT_NAME, 
       CASH_CREDIT_TITLE, CASH_SETTLE_AMT, UPDATE_TM, 
-      REMARK, CASH_PROC_STATUS)
+      REMARK, CASH_PROC_STATUS,acct_date,settle_order_id)
     values (#{serialNum,jdbcType=VARCHAR}, #{tradeId,jdbcType=VARCHAR}, #{cashSettleId,jdbcType=VARCHAR}, 
       #{cashAccount,jdbcType=VARCHAR}, #{cashAccountName,jdbcType=VARCHAR}, #{debitMemId,jdbcType=VARCHAR}, 
       #{debitMemName,jdbcType=VARCHAR}, #{debitHolderAccount,jdbcType=VARCHAR}, #{debitHolderAccountName,jdbcType=VARCHAR}, 
       #{cashDebitTitle,jdbcType=VARCHAR}, #{creditMemId,jdbcType=VARCHAR}, #{creditMemName,jdbcType=VARCHAR}, 
       #{creditHolderAccount,jdbcType=VARCHAR}, #{creditHolderAccountName,jdbcType=VARCHAR}, 
       #{cashCreditTitle,jdbcType=VARCHAR}, #{cashSettleAmt,jdbcType=NUMERIC}, #{updateTm,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{cashProcStatus,jdbcType=VARCHAR})
+      #{remark,jdbcType=VARCHAR}, #{cashProcStatus,jdbcType=VARCHAR},to_char(sysdate,'yyyyMMdd'),#{settleOrderId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.com.yusys.yusp.domain.CashSettleOrder">
     <!--
