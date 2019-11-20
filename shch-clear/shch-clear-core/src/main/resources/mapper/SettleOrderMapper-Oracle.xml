@@ -28,9 +28,8 @@
         select
         <include refid="Base_Column_List"/>
         from SETTLE_ORDER
-        where BOND_SETTLE_STATUS=#{bondStatus,jdbcType=VARCHAR}
-        and SETTLE_ORDER_STATUS='Y'
-        and CASH_SETTLE_STATUS ='0'
+        where BOND_SETTLE_STATUS in ('1','2')
+        and SETTLE_ORDER_STATUS='1'
         <![CDATA[ AND ROWNUM <= ${size} ]]>
     </select>
 </mapper>

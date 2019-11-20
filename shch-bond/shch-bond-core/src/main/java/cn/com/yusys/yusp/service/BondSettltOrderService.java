@@ -7,6 +7,8 @@ package cn.com.yusys.yusp.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,10 +143,13 @@ public class BondSettltOrderService {
 		returnDto.setMessage("");
 		return returnDto;
     }
-    
+   
     //簿记单据生成并发送
     @Logic(description="簿记单据生成并发送",transaction=true)
-    public void callBondReport() {
+    public void callBondReport(BondDto bondDto) {
+    	String dateStr1 = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+    	String dateStr2 = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(new Date());
+    	
     	String json ="{\r\n" + 
 				"	\"yusys\": {\r\n" + 
 				"		\"head\": {\r\n" + 
@@ -157,17 +162,17 @@ public class BondSettltOrderService {
 				"		},\r\n" + 
 				"		\"body\": {\r\n" + 
 				"			\"request\": {\r\n" + 
-				"				\"trade_id\":\"DVP201911170000001\",\r\n" + 
-				"				\"settle_order_id\":\"DVP20191117000001\",\r\n" + 
-				"				\"settle_date\":\"2019/11/17\",\r\n" + 
-				"				\"bond_code\":\"011900001\",\r\n" + 
-				"				\"bond_name\":\"国债城建001\",\r\n" + 
-				"				\"seller_mem_code\":\"A000005\",\r\n" + 
-				"				\"seller_mem_name\":\"中国工商银行\",\r\n" + 
-				"				\"buyer_mem_code\":\"A000006\",\r\n" + 
-				"				\"buyer_mem_name\":\"招商银行\",\r\n" + 
-				"				\"bond_face_amt\":\"999999999.99\",\r\n" + 
-				"				\"settle_order_status_update_tm\":\"2019/11/17 16:41:01\",\r\n" + 
+				"				\"trade_id\":\""+ bondDto.getTradeId() +"\",\r\n" + 
+				"				\"settle_order_id\":\""+ bondDto.getSettleOrderId() +"\",\r\n" + 
+				"				\"settle_date\":\""+ dateStr1 +"\",\r\n" + 
+				"				\"bond_code\":\""+ bondDto.getBondCode() +"\",\r\n" + 
+				"				\"bond_name\":\""+ bondDto.getBondName() +"\",\r\n" + 
+				"				\"seller_mem_code\":\""+ bondDto.getDebitMemId() +"\",\r\n" + 
+				"				\"seller_mem_name\":\""+ bondDto.getDebitMemName() +"\",\r\n" + 
+				"				\"buyer_mem_code\":\""+ bondDto.getCreditMemId() + "\",\r\n" + 
+				"				\"buyer_mem_name\":\""+ bondDto.getCreditMemName() + "\",\r\n" + 
+				"				\"bond_face_amt\":\""+ bondDto.getBondFaceAmt() +"\",\r\n" + 
+				"				\"settle_order_status_update_tm\":\""+ dateStr2  +"\",\r\n" + 
 				"			}\r\n" + 
 				"		}\r\n" + 
 				"	}\r\n" + 
@@ -316,44 +321,8 @@ public class BondSettltOrderService {
 		//3插入簿记流水表
 		bondSettltOrderMapper.insert(recordMatch(bondDto,bondProcStatus));
 		
-		String json ="{\r\n" + 
-				"	\"yusys\": {\r\n" + 
-				"		\"head\": {\r\n" + 
-				"			\"appCode\": \"1003\",\r\n" + 
-				"			\"sceneNo\": \"1001\",\r\n" + 
-				"			\"chnlCode\": \"0147\",\r\n" + 
-				"			\"chnlSeqNo\": \"stm110000120180511001702891\",\r\n" + 
-				"			\"tradeName\": \"单据模板样例\",\r\n" + 
-				"			\"tradeCode\": \"SC3001\"\r\n" + 
-				"		},\r\n" + 
-				"		\"body\": {\r\n" + 
-				"			\"request\": {\r\n" + 
-				"				\"trade_id\":\"DVP201911170000001\",\r\n" + 
-				"				\"settle_order_id\":\"DVP20191117000001\",\r\n" + 
-				"				\"settle_date\":\"2019/11/17\",\r\n" + 
-				"				\"bond_code\":\"011900001\",\r\n" + 
-				"				\"bond_name\":\"国债城建001\",\r\n" + 
-				"				\"seller_mem_code\":\"A000005\",\r\n" + 
-				"				\"seller_mem_name\":\"中国工商银行\",\r\n" + 
-				"				\"buyer_mem_code\":\"A000006\",\r\n" + 
-				"				\"buyer_mem_name\":\"招商银行\",\r\n" + 
-				"				\"bond_face_amt\":\"999999999.99\",\r\n" + 
-				"				\"settle_order_status_update_tm\":\"2019/11/17 16:41:01\",\r\n" + 
-				"			}\r\n" + 
-				"		}\r\n" + 
-				"	}\r\n" + 
-				"}\r\n" + 
-				"";
 		//4单据打印
-		try {
-			SocketService.socket(json);
-		} catch (IOException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-		}
+		callBondReport(bondDto);
 		
 		//5.拼接异步反馈对象，返回异步调用处（给清算系统异步应答）
 		BondSettleNotifyReq req = new BondSettleNotifyReq();
