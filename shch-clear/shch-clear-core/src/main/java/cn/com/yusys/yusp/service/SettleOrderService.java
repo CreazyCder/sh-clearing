@@ -130,7 +130,7 @@ public class SettleOrderService {
      *
      * @param settleOrder 清算指令信息
      */
-    private void sendMessageAsync(SettleOrder settleOrder) {
+    public void sendMessageAsync(SettleOrder settleOrder) {
         Map<String, Object> content = new HashMap<>(8);
         StringBuilder message = new StringBuilder();
         message.append("营业日期: ").append(settleOrder.getBizDate())
@@ -143,7 +143,8 @@ public class SettleOrderService {
                 .append("\n 结算金额: ").append(settleOrder.getSettleAmt())
                 .append("\n 交易来源: ").append(settleOrder.getSrcFrom());
         content.put("channelType", "system");
-        content.put("users", "40,20");
+        // 发送到指定三个用户.
+        content.put("users", "fbd643075e3c41c4a92c322c519cf2f6,40,20");
         // 发送给指定用户.
         content.put("content", message);
         content.put("title", "清算消息");
