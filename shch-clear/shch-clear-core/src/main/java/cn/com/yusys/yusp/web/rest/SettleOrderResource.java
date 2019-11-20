@@ -10,6 +10,7 @@ import cn.com.yusys.yusp.commons.mapper.QueryModel;
 import cn.com.yusys.yusp.commons.web.rest.dto.ResultDto;
 import cn.com.yusys.yusp.domain.SettleOrder;
 import cn.com.yusys.yusp.domain.msg.dvpapply.DVPSettleApplyReq;
+import cn.com.yusys.yusp.domain.msg.revoke.DVPRevokeReq;
 import cn.com.yusys.yusp.service.SettleOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +92,18 @@ public class SettleOrderResource {
     @PostMapping("/delete/{settleOrderId}")
     protected ResultDto<Integer> delete(@PathVariable("settleOrderId") String settleOrderId) {
         int result = settleOrderService.deleteByPrimaryKey(settleOrderId);
+        return new ResultDto<Integer>(result);
+    }
+    
+    /**
+     * @函数名称:update
+     * @函数描述:对象修改，公共API接口
+     * @参数与返回说明:
+     * @算法描述:
+     */
+    @PostMapping("/revoke")
+    protected ResultDto<Integer> update(@RequestBody DVPRevokeReq req) throws URISyntaxException {
+        int result = settleOrderService.revoke(req);
         return new ResultDto<Integer>(result);
     }
 }
