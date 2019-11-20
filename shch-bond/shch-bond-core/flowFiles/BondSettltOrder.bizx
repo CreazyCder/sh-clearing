@@ -14,21 +14,13 @@
         </Array>
       </Flow>
     </mxCell>
-    <mxCell id="2" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/开始.png" vertex="1">
-      <Action as="value" cellId="2" description="开始节点" nodeType="START"/>
-      <mxGeometry as="geometry" height="40.0" width="40.0" x="90.0" y="270.0"/>
-    </mxCell>
-    <mxCell id="3" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/结束.png" vertex="1">
-      <Action as="value" description="结束节点" nodeType="END"/>
-      <mxGeometry as="geometry" height="40.0" width="40.0" x="1220.0" y="290.0"/>
-    </mxCell>
     <mxCell id="17" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/赋值.png" vertex="1">
       <Action as="value" canTransaction="true" cellId="17" description="赋值" nodeType="SETVALUE">
         <Array as="input">
           <Param assignType="CONSTANT" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value="3"/>
         </Array>
       </Action>
-      <mxGeometry as="geometry" height="50.0" width="50.0" x="220.0" y="270.0"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="390.0" y="110.0"/>
     </mxCell>
     <mxCell id="18" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/微服务组件.png" vertex="1">
       <Action as="value" async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="getBondBalanceMap" canResetAsync="false" canTransaction="true" cellId="18" description="获取圈券借贷双方簿记余额信息" nodeType="MAPPER" transaction="REQUIRED">
@@ -39,7 +31,7 @@
           <Param className="java.util.Map" description="来自获取圈券借贷双方簿记余额信息的输出参数" isArray="false" name="map" value="map"/>
         </Array>
       </Action>
-      <mxGeometry as="geometry" height="50.0" width="50.0" x="390.0" y="270.0"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="530.0" y="110.0"/>
     </mxCell>
     <mxCell id="21" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/微服务组件.png" vertex="1">
       <Action as="value" async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="updateBondBalanceAll" canResetAsync="false" canTransaction="true" cellId="21" description="簿记余额双边记账" nodeType="MAPPER" transaction="REQUIRED">
@@ -52,7 +44,7 @@
           <Param className="void" description="来自簿记余额双边记账的输出参数" isArray="false" name="簿记余额双边记账未配置输出上下文值"/>
         </Array>
       </Action>
-      <mxGeometry as="geometry" height="50.0" width="50.0" x="670.0" y="70.0"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="850.0" y="110.0"/>
     </mxCell>
     <mxCell id="23" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/微服务组件.png" vertex="1">
       <Action as="value" async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="addBondSettleOrder" canResetAsync="false" canTransaction="true" cellId="23" description="插入簿记余额流水" nodeType="MAPPER" transaction="REQUIRED">
@@ -64,13 +56,13 @@
           <Param className="void" description="来自插入簿记余额流水的输出参数" isArray="false" name="插入簿记余额流水未配置输出上下文值"/>
         </Array>
       </Action>
-      <mxGeometry as="geometry" height="50.0" width="50.0" x="810.0" y="160.0"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="850.0" y="340.0"/>
     </mxCell>
     <mxCell edge="1" id="24" parent="1" source="21" style="straight" target="23">
       <Transition as="value" condition="" description="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="660.0" y="270.0"/>
-        <mxPoint as="targetPoint" x="870.0" y="270.0"/>
+        <mxPoint as="sourcePoint" x="670.0" y="130.0"/>
+        <mxPoint as="targetPoint" x="880.0" y="130.0"/>
       </mxGeometry>
     </mxCell>
     <mxCell id="25" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/微服务组件.png" vertex="1">
@@ -83,27 +75,20 @@
           <Param className="cn.com.yusys.yusp.commons.web.rest.dto.ResultDto" description="来自异步反馈债券圈存结果的输出参数" isArray="false" name="resultDto" value="resultDto"/>
         </Array>
       </Action>
-      <mxGeometry as="geometry" height="50.0" width="50.0" x="1000.0" y="280.0"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="680.0" y="340.0"/>
     </mxCell>
     <mxCell edge="1" id="26" parent="1" source="23" style="straight" target="25">
       <Transition as="value" condition="" description="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="860.0" y="270.0"/>
-        <mxPoint as="targetPoint" x="1040.0" y="280.0"/>
-      </mxGeometry>
-    </mxCell>
-    <mxCell edge="1" id="27" parent="1" source="2" style="straight" target="17">
-      <Transition as="value" condition="" description="" type="NORMAL"/>
-      <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="130.0" y="270.0"/>
-        <mxPoint as="targetPoint" x="220.0" y="420.0"/>
+        <mxPoint as="sourcePoint" x="870.0" y="130.0"/>
+        <mxPoint as="targetPoint" x="1050.0" y="140.0"/>
       </mxGeometry>
     </mxCell>
     <mxCell edge="1" id="28" parent="1" source="17" style="straight" target="18">
       <Transition as="value" condition="" description="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="240.0" y="410.0"/>
-        <mxPoint as="targetPoint" x="300.0" y="280.0"/>
+        <mxPoint as="sourcePoint" x="250.0" y="270.0"/>
+        <mxPoint as="targetPoint" x="310.0" y="140.0"/>
       </mxGeometry>
     </mxCell>
     <mxCell id="29" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/微服务组件.png" vertex="1">
@@ -116,13 +101,13 @@
           <Param className="boolean" description="来自金额比较的输出参数" isArray="false" name="checkResult" value="checkResult"/>
         </Array>
       </Action>
-      <mxGeometry as="geometry" height="50.0" width="50.0" x="530.0" y="170.0"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="680.0" y="110.0"/>
     </mxCell>
     <mxCell edge="1" id="30" parent="1" source="18" style="straight" target="29">
       <Transition as="value" condition="" description="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="285.0" y="280.0"/>
-        <mxPoint as="targetPoint" x="445.0" y="190.0"/>
+        <mxPoint as="sourcePoint" x="295.0" y="140.0"/>
+        <mxPoint as="targetPoint" x="455.0" y="50.0"/>
       </mxGeometry>
     </mxCell>
     <mxCell id="31" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/赋值.png" vertex="1">
@@ -131,27 +116,27 @@
           <Param assignType="CONSTANT" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value="2"/>
         </Array>
       </Action>
-      <mxGeometry as="geometry" height="50.0" width="50.0" x="670.0" y="270.0"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="680.0" y="230.0"/>
     </mxCell>
     <mxCell edge="1" id="32" parent="1" source="29" style="straight;strokeColor=#B452CD" target="31">
       <Transition as="value" condition="if(context.getParam(&quot;checkResult&quot;)){&lt;br&gt;  return true; &lt;br&gt;}else{&lt;br&gt;  return false; &lt;br&gt;}" description="" order="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="480.0" y="145.0"/>
-        <mxPoint as="targetPoint" x="660.0" y="145.0"/>
+        <mxPoint as="sourcePoint" x="502.0" y="95.0"/>
+        <mxPoint as="targetPoint" x="682.0" y="95.0"/>
       </mxGeometry>
     </mxCell>
     <mxCell edge="1" id="33" parent="1" source="29" style="straight" target="21">
       <Transition as="value" condition="" description="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="470.0" y="140.0"/>
-        <mxPoint as="targetPoint" x="660.0" y="280.0"/>
+        <mxPoint as="sourcePoint" x="480.0"/>
+        <mxPoint as="targetPoint" x="670.0" y="140.0"/>
       </mxGeometry>
     </mxCell>
     <mxCell edge="1" id="34" parent="1" source="31" style="straight" target="25">
       <Transition as="value" condition="" description="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="660.0" y="140.0"/>
-        <mxPoint as="targetPoint" x="1070.0" y="270.0"/>
+        <mxPoint as="sourcePoint" x="670.0"/>
+        <mxPoint as="targetPoint" x="1080.0" y="130.0"/>
       </mxGeometry>
     </mxCell>
     <mxCell id="35" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/赋值.png" vertex="1">
@@ -160,27 +145,86 @@
           <Param assignType="CONSTANT" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value="F"/>
         </Array>
       </Action>
-      <mxGeometry as="geometry" height="50.0" width="50.0" x="670.0" y="410.0"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="530.0" y="340.0"/>
     </mxCell>
     <mxCell edge="1" id="36" parent="1" source="18" style="straight;strokeColor=#B452CD" target="35">
       <Transition as="value" condition="if(context.getParam(&quot;map&quot;).get(&quot;debitBalance&quot;)==null){&lt;br&gt;  return true; &lt;br&gt;}else{&lt;br&gt;  return false; &lt;br&gt;}" description="" order="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="310.0" y="260.0"/>
-        <mxPoint as="targetPoint" x="410.0" y="420.0"/>
+        <mxPoint as="sourcePoint" x="320.0" y="120.0"/>
+        <mxPoint as="targetPoint" x="420.0" y="280.0"/>
       </mxGeometry>
     </mxCell>
     <mxCell edge="1" id="37" parent="1" source="35" style="straight" target="25">
       <Transition as="value" condition="" description="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="430.0" y="430.0"/>
-        <mxPoint as="targetPoint" x="920.0" y="410.0"/>
+        <mxPoint as="sourcePoint" x="440.0" y="290.0"/>
+        <mxPoint as="targetPoint" x="930.0" y="270.0"/>
       </mxGeometry>
     </mxCell>
-    <mxCell edge="1" id="38" parent="1" source="25" style="straight" target="3">
+    <mxCell id="39" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/微服务组件.png" vertex="1">
+      <Action as="value" async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="checkTradeRepeat" canResetAsync="false" canTransaction="true" cellId="39" description="交易判重" nodeType="MAPPER" transaction="">
+        <Array as="input">
+          <Param className="cn.com.yusys.yusp.service.BondDto" isArray="false" name="bondDto" value="bondDto"/>
+        </Array>
+        <Array as="output">
+          <Param className="boolean" description="来自交易判重的输出参数" isArray="false" name="repeatTrade" value="repeatTrade"/>
+        </Array>
+      </Action>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="230.0" y="110.0"/>
+    </mxCell>
+    <mxCell edge="1" id="41" parent="1" source="39" style="straight" target="17">
       <Transition as="value" condition="" description="" type="NORMAL"/>
       <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
-        <mxPoint as="sourcePoint" x="930.0" y="310.0"/>
-        <mxPoint as="targetPoint" x="1250.0" y="350.0"/>
+        <mxPoint as="sourcePoint" x="230.0" y="300.0"/>
+        <mxPoint as="targetPoint" x="250.0" y="180.0"/>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="44" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/抛出异常组件.png" vertex="1">
+      <Action as="value" cellId="44" description="抛出异常" nodeType="THROW_EXCEPTION">
+        <Array as="input">
+          <Param assignType="CONSTANT" className="java.lang.String" isArray="false" name="errorCode" value="900"/>
+          <Param assignType="CONSTANT" className="java.lang.String" isArray="false" name="errorMessage" value="交易重复"/>
+        </Array>
+        <Array as="output">
+          <Param className="cn.com.yusys.yusp.commons.fee.common.exception.FeeException" value="null"/>
+        </Array>
+      </Action>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="230.0" y="470.0"/>
+    </mxCell>
+    <mxCell edge="1" id="45" parent="1" source="39" style="straight;strokeColor=#B452CD" target="44">
+      <Transition as="value" condition="if(context.getParam(&quot;repeatTrade&quot;)){&lt;br&gt;  return true; &lt;br&gt;}else{&lt;br&gt;  return false; &lt;br&gt;}" description="" order="" type="NORMAL"/>
+      <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
+        <mxPoint as="sourcePoint" x="230.0" y="300.0"/>
+        <mxPoint as="targetPoint" x="610.0" y="470.0"/>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="47" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/开始.png" vertex="1">
+      <Action as="value" description="开始节点" nodeType="START"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="90.0" y="110.0"/>
+    </mxCell>
+    <mxCell edge="1" id="48" parent="1" source="47" style="straight" target="39">
+      <Transition as="value" condition="" description="" type="NORMAL"/>
+      <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
+        <mxPoint as="sourcePoint" x="120.0" y="150.0"/>
+        <mxPoint as="targetPoint" x="260.0" y="150.0"/>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="49" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/结束.png" vertex="1">
+      <Action as="value" description="结束节点" nodeType="END"/>
+      <mxGeometry as="geometry" height="50.0" width="50.0" x="680.0" y="470.0"/>
+    </mxCell>
+    <mxCell edge="1" id="50" parent="1" source="44" style="straight" target="49">
+      <Transition as="value" condition="" description="" type="NORMAL"/>
+      <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
+        <mxPoint as="sourcePoint" x="260.0" y="460.0"/>
+        <mxPoint as="targetPoint" x="1050.0" y="460.0"/>
+      </mxGeometry>
+    </mxCell>
+    <mxCell edge="1" id="51" parent="1" source="25" style="straight" target="49">
+      <Transition as="value" condition="" description="" type="NORMAL"/>
+      <mxGeometry as="geometry" height="120.0" relative="1" width="120.0">
+        <mxPoint as="sourcePoint" x="1060.0" y="360.0"/>
+        <mxPoint as="targetPoint" x="1050.0" y="450.0"/>
       </mxGeometry>
     </mxCell>
   </root>

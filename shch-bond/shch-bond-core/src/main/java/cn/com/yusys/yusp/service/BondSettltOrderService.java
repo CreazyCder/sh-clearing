@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.assertj.core.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -64,6 +65,27 @@ public class BondSettltOrderService {
     @Logic(description="金额比较",transaction=true)
     public boolean checkCompareTo(BigDecimal var1,BigDecimal var2) {
     	return var1.subtract(var2).compareTo(BigDecimal.ZERO) < 0 ? true : false;
+    }
+    
+    @Logic(description="交易判重",transaction=true)
+    public boolean checkTradeRepeat(BondDto bondDto) {
+    	QueryModel model = new QueryModel();
+    	model.addCondition("tradeId", bondDto.getTradeId());//交易编号
+    	model.addCondition("bondCode", bondDto.getBondCode());//债券代码
+    	model.addCondition("debitMemId", bondDto.getDebitMemId());//借方参与者
+    	model.addCondition("debitHolderAccount", bondDto.getDebitHolderAccount());//借方持有人账号
+    	model.addCondition("bondDebitTitle", bondDto.getBondDebitTitle());//借方科目
+    	model.addCondition("creditMemId", bondDto.getCreditMemId());//贷方参与者
+    	model.addCondition("creditHolderAccount", bondDto.getCreditHolderAccount());//贷方持有人账号
+    	model.addCondition("bondCreditTitle", bondDto.getBondCreditTitle());//贷方科目
+    	model.addCondition("bondProcStatus", Arrays.asList(new String[]{"","2"}));
+    	//记录已存在债券状态为空（圈券逻辑）或未等券（记账逻辑），进行交易判重逻辑
+    	List<BondSettltOrder> list = bondSettltOrderMapper.selectByModel(model);
+    	if(list != null && list.size() == 0) {
+    		return false;//不重复
+    	}
+    	
+    	return true;//重复
     }
     
     //获取圈券借贷双方簿记余额信息

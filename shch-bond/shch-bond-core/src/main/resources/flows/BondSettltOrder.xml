@@ -10,18 +10,6 @@
     <param assignType="VARIABLE" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value=""/>
   </global>
   <actions>
-    <action description="开始节点" id="2" nodeType="START">
-      <input/>
-      <output/>
-      <transitions>
-        <transition condition="" description="" from="2" to="17" type="NORMAL"/>
-      </transitions>
-    </action>
-    <action description="结束节点" id="3" nodeType="END">
-      <input/>
-      <output/>
-      <transitions/>
-    </action>
     <action description="赋值" id="17" nodeType="SETVALUE">
       <input>
         <param assignType="CONSTANT" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value="3"/>
@@ -73,7 +61,7 @@
         <param assignType="VARIABLE" className="cn.com.yusys.yusp.commons.web.rest.dto.ResultDto" description="来自异步反馈债券圈存结果的输出参数" isArray="false" name="resultDto" value="resultDto"/>
       </output>
       <transitions>
-        <transition condition="" description="" from="25" to="3" type="NORMAL"/>
+        <transition condition="" description="" from="25" to="49" type="NORMAL"/>
       </transitions>
     </action>
     <action async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="checkCompareTo" description="金额比较" id="29" nodeType="MAPPER" transaction="">
@@ -106,6 +94,42 @@
       <transitions>
         <transition condition="" description="" from="35" to="25" type="NORMAL"/>
       </transitions>
+    </action>
+    <action async="false" callClassName="cn.com.yusys.yusp.service.BondSettltOrderService" callMethod="checkTradeRepeat" description="交易判重" id="39" nodeType="MAPPER" transaction="">
+      <input>
+        <param assignType="VARIABLE" className="cn.com.yusys.yusp.service.BondDto" isArray="false" name="bondDto" value="bondDto"/>
+      </input>
+      <output>
+        <param assignType="VARIABLE" className="boolean" description="来自交易判重的输出参数" isArray="false" name="repeatTrade" value="repeatTrade"/>
+      </output>
+      <transitions>
+        <transition condition="" description="" from="39" to="17" type="NORMAL"/>
+        <transition condition="if(context.getParam(&quot;repeatTrade&quot;)){  return true; }else{  return false; }" description="" from="39" order="" to="44" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action description="抛出异常" id="44" nodeType="THROW_EXCEPTION">
+      <input>
+        <param assignType="CONSTANT" className="java.lang.String" isArray="false" name="errorCode" value="900"/>
+        <param assignType="CONSTANT" className="java.lang.String" isArray="false" name="errorMessage" value="交易重复"/>
+      </input>
+      <output>
+        <param assignType="VARIABLE" className="cn.com.yusys.yusp.commons.fee.common.exception.FeeException" value="null"/>
+      </output>
+      <transitions>
+        <transition condition="" description="" from="44" to="49" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action description="开始节点" id="47" nodeType="START">
+      <input/>
+      <output/>
+      <transitions>
+        <transition condition="" description="" from="47" to="39" type="NORMAL"/>
+      </transitions>
+    </action>
+    <action description="结束节点" id="49" nodeType="END">
+      <input/>
+      <output/>
+      <transitions/>
     </action>
   </actions>
 </flow>
