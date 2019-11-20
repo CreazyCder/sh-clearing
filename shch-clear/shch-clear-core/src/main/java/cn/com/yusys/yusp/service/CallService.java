@@ -40,12 +40,16 @@ public class CallService {
     	req.setDebitHolderAccountName(order.getSellerHolderAccountName());
     	req.setDebitMemId(order.getSellerMemCode());
     	req.setDebitMemName(order.getSellerMemName());
-    	req.setBondDebitTitle("01");
-    	req.setBondCreditTitle("02");
+
     	if("0".equals(order.getBondSettleStatus())|| "2".equals(order.getBondSettleStatus())) {
     		//应履行 等券
+        	req.setBondDebitTitle("01");
+        	req.setBondCreditTitle("02");
+        	
     		req.setOpertionType("1");//TODO
     	}else {
+        	req.setBondDebitTitle("02");
+        	req.setBondCreditTitle("01");
     		req.setOpertionType("2");//TODO
     	}
     	log.info("send msg info : {}",req);
