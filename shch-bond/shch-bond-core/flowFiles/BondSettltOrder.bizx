@@ -15,7 +15,7 @@
       </Flow>
     </mxCell>
     <mxCell id="17" parent="1" style="image;image=/cn/com/yusys/ide/flow/other/images/custom/赋值.png" vertex="1">
-      <Action as="value" canTransaction="true" cellId="17" description="赋值" nodeType="SETVALUE">
+      <Action as="value" canTransaction="true" cellId="17" description="初始化" nodeType="SETVALUE">
         <Array as="input">
           <Param assignType="CONSTANT" className="java.lang.String" description="bondProcStatus" isArray="false" name="bondProcStatus" value="3"/>
         </Array>

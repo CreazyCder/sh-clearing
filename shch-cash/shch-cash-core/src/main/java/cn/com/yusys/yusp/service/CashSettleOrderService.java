@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 
@@ -101,7 +100,20 @@ public class CashSettleOrderService {
 			record2.setMemCode(record.getDebitMemId());
 			record2.setHolderAccount(record.getDebitHolderAccount());
 			record2.setTitleCode(record.getCashDebitTitle());
-			record2.setCashAccount("0009");
+			
+			QueryModel model = new QueryModel();
+			model.setSize(0);
+			model.addCondition("memCode", record.getDebitMemId());
+			model.addCondition("holderAccount", record.getDebitHolderAccount());
+			model.addCondition("titleCode", record.getCashDebitTitle());
+			List<CashAccountBalance> cashAccountBalances = cashAccountBalanceMapper.selectByModel(model);
+			if (cashAccountBalances.size() <= 0) {
+				logger.error("账户记录不存在:" + model.toString());
+				return;
+			}
+
+			CashAccountBalance re2 = cashAccountBalances.get(0);
+			record2.setCashAccount(re2.getCashAccount());
 
 			kouKuan(cashSettleOrder.getSerialNum(), record2);
 
