@@ -24,17 +24,24 @@ public class DataCopyJobImpl extends IJobHandler {
 
     @Override
     public ReturnT<String> execute(String param) throws Exception {
-        logger.info("数据同步定时任务执行：DataCopyJobImpl");
-        Connection connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", "SHCH_POC", "SHCH_POC");
-        connection.setAutoCommit(false);
-        List<String> task = getTask(connection);
-        List<String> cols = getTableColName(connection, task.get(0));
-        String sql = getSelectSql(cols, task.get(0));
-        //sql = sql +" where update_tm >= to_date("+task.get(2)+", 'yyyymmddhh24miss') and update_tm < to_date("+task.get(2)+", 'yyyymmddhh24miss') + numtodsinterval(10, 'second')";
-        System.out.println(sql);
-        List<Map<String, Object>> data = getData(connection, cols, sql);
-        closeConnection(connection);
-        insertData(data, task.get(1));
+
+        Connection connection = null;
+        try {
+            logger.info("数据同步定时任务执行：DataCopyJobImpl");
+            connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", "SHCH_POC", "SHCH_POC");
+            connection.setAutoCommit(false);
+            List<String> task = getTask(connection);
+            List<String> cols = getTableColName(connection, task.get(0));
+            String sql = getSelectSql(cols, task.get(0));
+            //sql = sql +" where update_tm >= to_date("+task.get(2)+", 'yyyymmddhh24miss') and update_tm < to_date("+task.get(2)+", 'yyyymmddhh24miss') + numtodsinterval(10, 'second')";
+            System.out.println(sql);
+            List<Map<String, Object>> data = getData(connection, cols, sql);
+            insertData(data, task.get(1));
+        } catch (Exception e) {
+            if (connection != null) {
+                closeConnection(connection);
+            }
+        }
 
         return ReturnT.SUCCESS;
     }
@@ -174,23 +181,29 @@ public class DataCopyJobImpl extends IJobHandler {
     }
 
     private int insertData(List<Map<String, Object>> data, String table) throws Exception {
-        Connection connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", "SHCH_SUM", "SHCH_SUM");
-        connection.setAutoCommit(false);
-        for (Map<String, Object> dataT : data) {
-            String sql = generateSql(dataT, table);
-            System.out.println(sql);
-            try {
-                insert(connection, sql);
-                logger.info("插入成功：" + sql);
-            } catch (Exception e) {
-                //e.printStackTrace();
-                logger.warn("insert 数据失败" + e.getMessage());
-                String updateSql = generateUpdateSql(dataT, table);
-                insert(connection, updateSql); // update数据
-                logger.info("更新成功：" + updateSql);
+        Connection connection = null;
+        try {
+            connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", "SHCH_SUM", "SHCH_SUM");
+            connection.setAutoCommit(false);
+            for (Map<String, Object> dataT : data) {
+                String sql = generateSql(dataT, table);
+                System.out.println(sql);
+                try {
+                    insert(connection, sql);
+                    logger.info("插入成功：" + sql);
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                    logger.warn("insert 数据失败" + e.getMessage());
+                    String updateSql = generateUpdateSql(dataT, table);
+                    insert(connection, updateSql); // update数据
+                    logger.info("更新成功：" + updateSql);
+                }
+            }
+        } catch (Exception e) {
+            if (connection != null) {
+                closeConnection(connection);
             }
         }
-        closeConnection(connection);
         return data.size();
     }
 

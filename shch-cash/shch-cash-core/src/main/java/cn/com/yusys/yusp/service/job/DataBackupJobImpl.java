@@ -21,25 +21,32 @@ public class DataBackupJobImpl extends IJobHandler {
     private Logger logger = LoggerFactory.getLogger(DataBackupJobImpl.class);
 
     @Override
-    public ReturnT<String> execute(String param) throws Exception {
-        logger.info("数据备份定时任务执行：DataBackupJobImpl");
-        Connection connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", "SHCH_POC", "SHCH_POC");
-        connection.setAutoCommit(false);
-        String date = DateUtil.getCurrDateStr();
-        date = date.replaceAll("-", "");
-        List<String> task = getTask(connection, date);
-        if (null == task || task.isEmpty()) {
-            logger.info("当天数据已经备份");
-        } else {
-            List<String> cols = getTableColName(connection, task.get(0));
-            String sql = getSelectSql(cols, task.get(0));
-            sql = sql + " where " + task.get(1) + " < '" + date + "'";
-            List<Map<String, Object>> data = getData(connection, cols, sql);
-            for (Map<String, Object> dataT : data) {
-                generateData(dataT);
+    public ReturnT<String> execute(String param) {
+        Connection connection = null;
+        try {
+
+            logger.info("数据备份定时任务执行：DataBackupJobImpl");
+            connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", "SHCH_POC", "SHCH_POC");
+            connection.setAutoCommit(false);
+            String date = DateUtil.getCurrDateStr();
+            date = date.replaceAll("-", "");
+            List<String> task = getTask(connection, date);
+            if (null == task || task.isEmpty()) {
+                logger.info("当天数据已经备份");
+            } else {
+                List<String> cols = getTableColName(connection, task.get(0));
+                String sql = getSelectSql(cols, task.get(0));
+                sql = sql + " where " + task.get(1) + " < '" + date + "'";
+                List<Map<String, Object>> data = getData(connection, cols, sql);
+                for (Map<String, Object> dataT : data) {
+                    generateData(dataT);
+                }
+                update(connection, "update DATA_BACKUP_CTRL set LAST_BACKUP_DATE = '" + date + "' where BACKUP_TABLE_NAME = '" + task.get(0) + "' and DATE_COLUMN_NAME = '" + task.get(1) + "' and LAST_BACKUP_DATE = '" + task.get(2) + "'");
             }
-            update(connection, "update DATA_BACKUP_CTRL set LAST_BACKUP_DATE = '" + date + "' where BACKUP_TABLE_NAME = '" + task.get(0) + "' and DATE_COLUMN_NAME = '" + task.get(1) + "' and LAST_BACKUP_DATE = '" + task.get(2) + "'");
-            closeConnection(connection);
+        } catch (Exception e) {
+            if (connection != null) {
+                closeConnection(connection);
+            }
         }
         return ReturnT.SUCCESS;
     }
