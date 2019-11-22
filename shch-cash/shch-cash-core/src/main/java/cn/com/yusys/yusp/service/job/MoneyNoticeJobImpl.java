@@ -46,7 +46,7 @@ public class MoneyNoticeJobImpl extends IJobHandler {
 		List<CashAccountBalance> data = cashAccountBalanceService.selectByModel(model);
 		for(CashAccountBalance cashAccountBalanceT:data){
 			amqpTemplate.convertAndSend(cashAccountBalanceT.getMemCode(), objectMapper.writeValueAsString(cashAccountBalanceT));
-			if(cashAccountBalanceT.getCurrencyAmt().compareTo(new BigDecimal("10000"))<0){
+			if(cashAccountBalanceT.getCurrencyAmt().compareTo(new BigDecimal("800"))<0){
 				param.put("channelType", "system");
 				param.put("users", "40");// 用户id,多个,隔开
 				param.put("content", "余额即将不足了");
