@@ -38,6 +38,8 @@ public class DataCopyJobImpl extends IJobHandler {
             List<Map<String, Object>> data = getData(connection, cols, sql);
             insertData(data, task.get(1));
         } catch (Exception e) {
+            logger.error("发生异常: " + e.getMessage());
+        } finally {
             if (connection != null) {
                 closeConnection(connection);
             }
@@ -200,10 +202,13 @@ public class DataCopyJobImpl extends IJobHandler {
                 }
             }
         } catch (Exception e) {
+            logger.error("发生异常: " + e.getMessage());
+        } finally {
             if (connection != null) {
                 closeConnection(connection);
             }
         }
+
         return data.size();
     }
 

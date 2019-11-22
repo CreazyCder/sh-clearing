@@ -44,10 +44,13 @@ public class DataBackupJobImpl extends IJobHandler {
                 update(connection, "update DATA_BACKUP_CTRL set LAST_BACKUP_DATE = '" + date + "' where BACKUP_TABLE_NAME = '" + task.get(0) + "' and DATE_COLUMN_NAME = '" + task.get(1) + "' and LAST_BACKUP_DATE = '" + task.get(2) + "'");
             }
         } catch (Exception e) {
+            logger.error("发生异常: " + e.getMessage());
+        } finally {
             if (connection != null) {
                 closeConnection(connection);
             }
         }
+
         return ReturnT.SUCCESS;
     }
 
