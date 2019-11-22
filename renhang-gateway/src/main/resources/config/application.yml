@@ -54,6 +54,17 @@ spring:
         port: 5672 #Rabbitmq的端口
         username: admin  #Rabbitmq的用户名
         password: admin  #Rabbitmq的密码
+        publisher-confirms: true #是否开启发送确认
+        publisher-returns: true #是否开发发送失败退回
+        template: 
+            mandatory: true #生产者是否启用强制消息
+            retry: 
+                enabled: true #生产者是否开启重启
+        listener: 
+            acknowledge-mode: manual #消费者ack模式
+            retry: 
+                enabled: true #消费者是否重试
+                max-attempts: 1 #消费者重试次数
 # 如不使用redis，请将以上配置删除
 #
 # 如不使用zipkin，请将以下配置删除
