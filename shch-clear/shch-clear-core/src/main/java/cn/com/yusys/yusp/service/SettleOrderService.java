@@ -219,6 +219,6 @@ public class SettleOrderService {
     	
     	SettleOrder order = settleOrderMapper.selectByModel(model).get(0);
     	order.setSettleOrderStatus(SettleStatusEnum.CANCELED.getCode());
-    	return settleOrderMapper.updateByPrimaryKeySelective(record);
+    	return settleOrderMapper.updateByPrimaryKeySelective(order);
     }
 }
