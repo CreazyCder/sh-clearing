@@ -12,7 +12,7 @@ import cn.com.yusys.yusp.domain.SettleOrder;
 import cn.com.yusys.yusp.domain.msg.dvpapply.DVPSettleApplyReq;
 import cn.com.yusys.yusp.domain.msg.revoke.DVPRevokeReq;
 import cn.com.yusys.yusp.service.SettleOrderService;
-import cn.com.yusys.yusys.utils.annotation.YusysIdempotent;
+import cn.com.yusys.yusp.utils.annotation.YusysIdempotent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

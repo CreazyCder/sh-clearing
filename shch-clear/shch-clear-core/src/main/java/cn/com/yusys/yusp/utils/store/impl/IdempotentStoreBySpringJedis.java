@@ -1,9 +1,9 @@
-package cn.com.yusys.yusys.utils.yusys.utils.store.impl;
+package cn.com.yusys.yusp.utils.store.impl;
 
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 
-import cn.com.yusys.yusys.utils.idempotent.YusysIdempotentException;
-import cn.com.yusys.yusys.utils.idempotent.YusysIdempotentStore;
+import cn.com.yusys.yusp.utils.idempotent.YusysIdempotentException;
+import cn.com.yusys.yusp.utils.idempotent.YusysIdempotentStore;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;

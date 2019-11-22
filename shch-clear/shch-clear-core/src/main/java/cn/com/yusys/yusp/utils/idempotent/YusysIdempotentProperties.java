@@ -1,4 +1,4 @@
-package cn.com.yusys.yusys.utils.idempotent;
+package cn.com.yusys.yusp.utils.idempotent;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

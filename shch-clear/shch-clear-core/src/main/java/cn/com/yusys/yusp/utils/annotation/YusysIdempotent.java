@@ -1,4 +1,4 @@
-package cn.com.yusys.yusys.utils.annotation;
+package cn.com.yusys.yusp.utils.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

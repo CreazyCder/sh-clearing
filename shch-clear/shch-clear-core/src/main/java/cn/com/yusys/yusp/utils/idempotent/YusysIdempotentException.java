@@ -1,4 +1,4 @@
-package cn.com.yusys.yusys.utils.idempotent;
+package cn.com.yusys.yusp.utils.idempotent;
 
 public class YusysIdempotentException extends RuntimeException {
     //无参构造方法

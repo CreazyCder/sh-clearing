@@ -1,9 +1,9 @@
-package cn.com.yusys.yusys.utils.idempotent;
+package cn.com.yusys.yusp.utils.idempotent;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
-import cn.com.yusys.yusys.utils.annotation.YusysIdempotent;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
+import java.net.URLEncoder;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,14 +12,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-import java.net.URLEncoder;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import cn.com.yusys.yusp.utils.annotation.YusysIdempotent;
 
 @Aspect
 @Component
@@ -31,7 +30,7 @@ public class YusysIdempotentAop {
     @Autowired
     YusysIdempotentStore yusysIdempotentStore;
 
-    @Pointcut("@annotation(cn.com.yusys.yusys.utils.annotation.YusysIdempotent)")
+    @Pointcut("@annotation(cn.com.yusys.yusp.utils.annotation.YusysIdempotent)")
     public void idempotent() {
     }
 
