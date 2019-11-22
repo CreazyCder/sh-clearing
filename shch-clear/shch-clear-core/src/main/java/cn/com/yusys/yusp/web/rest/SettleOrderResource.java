@@ -12,6 +12,8 @@ import cn.com.yusys.yusp.domain.SettleOrder;
 import cn.com.yusys.yusp.domain.msg.dvpapply.DVPSettleApplyReq;
 import cn.com.yusys.yusp.domain.msg.revoke.DVPRevokeReq;
 import cn.com.yusys.yusp.service.SettleOrderService;
+import cn.com.yusys.yusys.utils.annotation.YusysIdempotent;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,7 @@ public class SettleOrderResource {
      * @return 录入完成的记录.
      */
     @PostMapping("/")
+    @YusysIdempotent(field = "tradeId",ttl="10m")
     protected ResultDto<String> save(@Validated @RequestBody DVPSettleApplyReq applyReq) {
         int order = settleOrderService.insert(applyReq);
         if (order == 0) {
