@@ -66,14 +66,17 @@ public class CallService {
     	req.setTradeId(order.getTradeId());
     	req.setSettleOrderId(order.getSettleOrderId());
     	req.setCashSettleAmt(new BigDecimal(order.getSettleAmt()));
-    	req.setCreditHolderAccount(order.getBuyerHolderAccount());
-    	req.setCreditHolderAccountName(order.getBuyerHolderAccountName());
-    	req.setCreditMemId(order.getBuyerMemCode());
-    	req.setCreditMemName(order.getBuyerMemName());
-    	req.setDebitHolderAccount(order.getSellerHolderAccount());
-    	req.setDebitHolderAccountName(order.getSellerHolderAccountName());
-    	req.setDebitMemId(order.getSellerMemCode());
-    	req.setDebitMemName(order.getSellerMemName());
+    	
+    	req.setCreditHolderAccount(order.getSellerHolderAccount());
+    	req.setCreditHolderAccountName(order.getSellerHolderAccountName());
+    	req.setCreditMemId(order.getSellerMemCode());
+    	req.setCreditMemName(order.getSellerMemName());
+    	
+    	req.setDebitHolderAccount(order.getBuyerHolderAccount());
+    	req.setDebitHolderAccountName(order.getBuyerHolderAccountName());
+    	req.setDebitMemId(order.getBuyerMemCode());
+    	req.setDebitMemName(order.getBuyerMemName());
+    	
     	req.setCashDebitTitle("01");
     	req.setCashCreditTitle("01");
     	
