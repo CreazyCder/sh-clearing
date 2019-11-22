@@ -1,0 +1,1 @@
+java -jar -Dfile.encoding=UTF-8 ../renhang-gateway-2.2.2-SNAPSHOT.jar
