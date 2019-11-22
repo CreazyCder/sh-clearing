@@ -35,8 +35,8 @@ import java.util.Map;
  * @创建人: boip
  * @创建时间: 2019-11-18 11:32:23
  * @修改备注:
- * @修改记录: 修改时间    修改人员    修改原因
- * -------------------------------------------------------------
+ * @修改记录: 修改时间 修改人员 修改原因
+ *        -------------------------------------------------------------
  * @Copyright (c) 宇信科技-版权所有
  */
 @Service
@@ -44,187 +44,193 @@ import java.util.Map;
 @CataLog(nodeType = ActionNodeType.MAPPER, value = "service/SettleOrderService", lableType = LableType.MS)
 public class SettleOrderService {
 
-    @Autowired
-    private SettleOrderMapper settleOrderMapper;
-    @Autowired
-    private MessageSendService messageSendService;
+	@Autowired
+	private SettleOrderMapper settleOrderMapper;
+	@Autowired
+	private MessageSendService messageSendService;
 
+	/**
+	 * @方法名称: selectByPrimaryKey
+	 * @方法描述: 根据主键查询
+	 * @参数与返回说明:
+	 * @算法描述: 无
+	 */
+	public SettleOrder selectByPrimaryKey(String settleOrderId) {
+		return settleOrderMapper.selectByPrimaryKey(settleOrderId);
+	}
 
-    /**
-     * @方法名称: selectByPrimaryKey
-     * @方法描述: 根据主键查询
-     * @参数与返回说明:
-     * @算法描述: 无
-     */
-    public SettleOrder selectByPrimaryKey(String settleOrderId) {
-        return settleOrderMapper.selectByPrimaryKey(settleOrderId);
-    }
+	/**
+	 * @方法名称: selectAll
+	 * @方法描述: 查询所有数据
+	 * @参数与返回说明:
+	 * @算法描述: 无
+	 */
+	@Transactional(readOnly = true)
+	public List<SettleOrder> selectAll(QueryModel model) {
+		List<SettleOrder> records = (List<SettleOrder>) settleOrderMapper.selectByModel(model);
+		return records;
+	}
 
-    /**
-     * @方法名称: selectAll
-     * @方法描述: 查询所有数据
-     * @参数与返回说明:
-     * @算法描述: 无
-     */
-    @Transactional(readOnly = true)
-    public List<SettleOrder> selectAll(QueryModel model) {
-        List<SettleOrder> records = (List<SettleOrder>) settleOrderMapper.selectByModel(model);
-        return records;
-    }
+	/**
+	 * 分页查询.
+	 *
+	 * @param model 包括分页的请求参数.
+	 * @return 分页查询结果.
+	 */
+	@Transactional(readOnly = true)
+	public List<SettleOrder> selectPageByModel(QueryModel model) {
+		PageHelper.startPage(model.getPage(), model.getSize());
+		List<SettleOrder> list = settleOrderMapper.selectPageSettleByParam(model);
+		PageHelper.clearPage();
+		return list;
+	}
 
-    /**
-     * 分页查询.
-     *
-     * @param model 包括分页的请求参数.
-     * @return 分页查询结果.
-     */
-    @Transactional(readOnly = true)
-    public List<SettleOrder> selectPageByModel(QueryModel model) {
-        PageHelper.startPage(model.getPage(), model.getSize());
-        List<SettleOrder> list = settleOrderMapper.selectPageSettleByParam(model);
-        PageHelper.clearPage();
-        return list;
-    }
+	/**
+	 * @方法名称: selectByModel
+	 * @方法描述: 条件查询 - 查询进行分页
+	 * @参数与返回说明:
+	 * @算法描述: 无
+	 */
+	@Logic(description = "SETTLE_ORDERService分页查询", transaction = true)
+	public List<SettleOrder> selectByModel(@LogicParam(description = "SETTLE_ORDER模型实体") QueryModel model) {
+		PageHelper.startPage(model.getPage(), model.getSize());
+		List<SettleOrder> list = settleOrderMapper.selectByModel(model);
+		PageHelper.clearPage();
+		return list;
+	}
 
-    /**
-     * @方法名称: selectByModel
-     * @方法描述: 条件查询 - 查询进行分页
-     * @参数与返回说明:
-     * @算法描述: 无
-     */
-    @Logic(description = "SETTLE_ORDERService分页查询", transaction = true)
-    public List<SettleOrder> selectByModel(@LogicParam(description = "SETTLE_ORDER模型实体") QueryModel model) {
-        PageHelper.startPage(model.getPage(), model.getSize());
-        List<SettleOrder> list = settleOrderMapper.selectByModel(model);
-        PageHelper.clearPage();
-        return list;
-    }
+	/**
+	 * 插入一条申请记录.
+	 *
+	 * @param applyReq 申请请求.
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public int insert(DVPSettleApplyReq applyReq) {
+		SettleOrder settleOrder = applyReq.toDomain();
+		settleOrder.setBondFaceAmt(new BigDecimal(applyReq.getBondFaceAmt()));
+		// 清算ID由接口生成.
+		// 当前日期.
+		settleOrder.setBizDate(DateUtil.getCurrDateStr());
+		// 还有簿记的状态和资金的状态需要在其他部分添加
+		String user = SecurityUtils.getCurrentUserLogin();
+		if (StringUtils.isEmpty(user)) {
+			user = "admin";
+		}
+		settleOrder.setInputOperId(user);
+		// 带时分秒的数据
+		settleOrder.setInputTm(DateUtil.formatDate(DateUtil.PATTERN_DATETIME_COMPACT));
+		int count = settleOrderMapper.insert(settleOrder);
+		// 插入消息记录.
+		sendMessageAsync(settleOrder);
+		return count;
+	}
 
-    /**
-     * 插入一条申请记录.
-     *
-     * @param applyReq 申请请求.
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public int insert(DVPSettleApplyReq applyReq) {
-        SettleOrder settleOrder = applyReq.toDomain();
-        settleOrder.setBondFaceAmt(new BigDecimal(applyReq.getBondFaceAmt()));
-        // 清算ID由接口生成.
-        // 当前日期.
-        settleOrder.setBizDate(DateUtil.getCurrDateStr());
-        // 还有簿记的状态和资金的状态需要在其他部分添加
-        String user = SecurityUtils.getCurrentUserLogin();
-        if (StringUtils.isEmpty(user)) {
-            user = "admin";
-        }
-        settleOrder.setInputOperId(user);
-        // 带时分秒的数据
-        settleOrder.setInputTm(DateUtil.formatDate(DateUtil.PATTERN_DATETIME_COMPACT));
-        int count = settleOrderMapper.insert(settleOrder);
-        // 插入消息记录.
-        sendMessageAsync(settleOrder);
-        return count;
-    }
+	/**
+	 * 异步发送消息.
+	 *
+	 * @param settleOrder 清算指令信息
+	 */
+	public void sendMessageAsync(SettleOrder settleOrder) {
+		Map<String, Object> content = new HashMap<>(8);
+		StringBuilder message = new StringBuilder();
+		message.append("营业日期: ").append(settleOrder.getBizDate()).append("\n交易编号: ").append(settleOrder.getTradeId())
+				.append("\n结算指令编号: ").append(settleOrder.getSettleOrderId()).append("\n结算日: ")
+				.append(settleOrder.getSettleDate()).append("\n交易日: ").append(settleOrder.getTradeDate())
+				.append("\n录入操作员代码: ").append(settleOrder.getInputOperId()).append("\n债卷代码: ")
+				.append(settleOrder.getBondCode()).append("\n 结算金额: ").append(settleOrder.getSettleAmt())
+				.append("\n 交易来源: ").append(settleOrder.getSrcFrom());
+		content.put("channelType", "system");
+		// 发送到指定三个用户.
+		content.put("users", "fbd643075e3c41c4a92c322c519cf2f6,40,20");
+		// 发送给指定用户.
+		content.put("content", message);
+		content.put("title", "清算消息");
+		messageSendService.sendMessage(content);
+	}
 
-    /**
-     * 异步发送消息.
-     *
-     * @param settleOrder 清算指令信息
-     */
-    public void sendMessageAsync(SettleOrder settleOrder) {
-        Map<String, Object> content = new HashMap<>(8);
-        StringBuilder message = new StringBuilder();
-        message.append("营业日期: ").append(settleOrder.getBizDate())
-                .append("\n交易编号: ").append(settleOrder.getTradeId())
-                .append("\n结算指令编号: ").append(settleOrder.getSettleOrderId())
-                .append("\n结算日: ").append(settleOrder.getSettleDate())
-                .append("\n交易日: ").append(settleOrder.getTradeDate())
-                .append("\n录入操作员代码: ").append(settleOrder.getInputOperId())
-                .append("\n债卷代码: ").append(settleOrder.getBondCode())
-                .append("\n 结算金额: ").append(settleOrder.getSettleAmt())
-                .append("\n 交易来源: ").append(settleOrder.getSrcFrom());
-        content.put("channelType", "system");
-        // 发送到指定三个用户.
-        content.put("users", "fbd643075e3c41c4a92c322c519cf2f6,40,20");
-        // 发送给指定用户.
-        content.put("content", message);
-        content.put("title", "清算消息");
-        messageSendService.sendMessage(content);
-    }
+	/**
+	 * @方法名称: insertSelective
+	 * @方法描述: 插入 - 只插入非空字段
+	 * @参数与返回说明:
+	 * @算法描述: 无
+	 */
+	public int insertSelective(SettleOrder record) {
+		return settleOrderMapper.insertSelective(record);
+	}
 
-    /**
-     * @方法名称: insertSelective
-     * @方法描述: 插入 - 只插入非空字段
-     * @参数与返回说明:
-     * @算法描述: 无
-     */
-    public int insertSelective(SettleOrder record) {
-        return settleOrderMapper.insertSelective(record);
-    }
+	/**
+	 * @方法名称: update
+	 * @方法描述: 根据主键更新
+	 * @参数与返回说明:
+	 * @算法描述: 无
+	 */
+	public int update(SettleOrder record) {
+		return settleOrderMapper.updateByPrimaryKey(record);
+	}
 
-    /**
-     * @方法名称: update
-     * @方法描述: 根据主键更新
-     * @参数与返回说明:
-     * @算法描述: 无
-     */
-    public int update(SettleOrder record) {
-        return settleOrderMapper.updateByPrimaryKey(record);
-    }
+	/**
+	 * @方法名称: updateSelective
+	 * @方法描述: 根据主键更新 - 只更新非空字段
+	 * @参数与返回说明:
+	 * @算法描述: 无
+	 */
+	public int updateSelective(SettleOrder record) {
+		return settleOrderMapper.updateByPrimaryKeySelective(record);
+	}
 
-    /**
-     * @方法名称: updateSelective
-     * @方法描述: 根据主键更新 - 只更新非空字段
-     * @参数与返回说明:
-     * @算法描述: 无
-     */
-    public int updateSelective(SettleOrder record) {
-        return settleOrderMapper.updateByPrimaryKeySelective(record);
-    }
+	/**
+	 * @方法名称: deleteByPrimaryKey
+	 * @方法描述: 根据主键删除
+	 * @参数与返回说明:
+	 * @算法描述: 无
+	 */
+	public int deleteByPrimaryKey(String settleOrderId) {
+		return settleOrderMapper.deleteByPrimaryKey(settleOrderId);
+	}
 
-    /**
-     * @方法名称: deleteByPrimaryKey
-     * @方法描述: 根据主键删除
-     * @参数与返回说明:
-     * @算法描述: 无
-     */
-    public int deleteByPrimaryKey(String settleOrderId) {
-        return settleOrderMapper.deleteByPrimaryKey(settleOrderId);
-    }
+	/**
+	 * @方法名称: deleteByIds
+	 * @方法描述: 根据多个主键删除
+	 * @参数与返回说明:
+	 * @算法描述: 无
+	 */
+	public int deleteByIds(String ids) {
+		return settleOrderMapper.deleteByIds(ids);
+	}
 
-    /**
-     * @方法名称: deleteByIds
-     * @方法描述: 根据多个主键删除
-     * @参数与返回说明:
-     * @算法描述: 无
-     */
-    public int deleteByIds(String ids) {
-        return settleOrderMapper.deleteByIds(ids);
-    }
-    
-    /**
-     * @方法名称: 交易撤消
-     * @方法描述: 根据多个主键更新
-     * @参数与返回说明:
-     * @算法描述: 无
-     */
-    public int revoke(DVPRevokeReq req) {
-    	SettleOrder record = new SettleOrder();
-    	record.setTradeId(req.getOrigTradeId());
-    	record.setSettleOrderStatus(SettleStatusEnum.CANCELED.getCode());
-    	
-    	
-    	QueryModel model = new QueryModel();
-    	model.addCondition("tradeId", req.getOrigTradeId());
-    	model.setSize(0);
-    	
-    	SettleOrder order = settleOrderMapper.selectByModel(model).get(0);
-    	
-    	order.setSettleOrderStatus(SettleStatusEnum.CANCELED.getCode());
-    	order.setBondSettleStatus(BondSettleStatusEnum.CANCELED.getCode());
-    	order.setCashSettleStatus(CashSettleStatusEnum.CANCELED.getCode());
-    			
-    	return settleOrderMapper.updateByPrimaryKeySelective(order);
-    }
+	/**
+	 * @方法名称: 交易撤消
+	 * @方法描述: 根据多个主键更新
+	 * @参数与返回说明:
+	 * @算法描述: 无
+	 */
+	public int revoke(DVPRevokeReq req) {
+		SettleOrder record = new SettleOrder();
+		record.setTradeId(req.getOrigTradeId());
+		record.setSettleOrderStatus(SettleStatusEnum.CANCELED.getCode());
+
+		QueryModel model = new QueryModel();
+		model.addCondition("tradeId", req.getOrigTradeId());
+		model.setSize(0);
+
+		SettleOrder order = settleOrderMapper.selectByModel(model).get(0);
+
+		if (order.getSettleOrderStatus().equals(SettleStatusEnum.HANDLING.getCode())) {
+			if (order.getBondSettleStatus().equals(BondSettleStatusEnum.WAIT_BONDING.getCode())
+					|| order.getCashSettleStatus().equals(CashSettleStatusEnum.WAIT_CASHING.getCode())) {
+				order.setSettleOrderStatus(SettleStatusEnum.CANCELED.getCode());
+				order.setBondSettleStatus(BondSettleStatusEnum.CANCELED.getCode());
+				order.setCashSettleStatus(CashSettleStatusEnum.CANCELED.getCode());
+				
+				return settleOrderMapper.updateByPrimaryKeySelective(order);
+			} else {
+				return 0;
+			}
+
+		} else {
+			return 0;
+		}
+
+	}
 }

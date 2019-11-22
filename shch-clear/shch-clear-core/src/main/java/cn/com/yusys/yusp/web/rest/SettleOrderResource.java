@@ -107,6 +107,9 @@ public class SettleOrderResource {
     @PostMapping("/revoke")
     protected ResultDto<Integer> update(@RequestBody DVPRevokeReq req) throws URISyntaxException {
         int result = settleOrderService.revoke(req);
+        if(0==result) {
+        	return new ResultDto<Integer>(1,"撤销时前置状态不正确！","error");
+        }
         return new ResultDto<Integer>(result);
     }
 }
