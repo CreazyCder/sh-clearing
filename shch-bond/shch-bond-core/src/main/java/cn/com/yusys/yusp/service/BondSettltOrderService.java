@@ -163,7 +163,7 @@ public class BondSettltOrderService {
     }
    
     //簿记单据生成并发送
-    @Logic(description="簿记单据生成并发送",transaction=true)
+    @Logic(description="簿记单据生成并发送")
     public void callBondReport(BondDto bondDto) {
     	logger.info("callBondReport 方法开始:"+bondDto);
     	String dateStr1 = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
@@ -199,6 +199,7 @@ public class BondSettltOrderService {
 				"";
 		//4单据打印
 		try {
+			logger.info("callBondReport json is:{}",json);
 			SocketService.socket(json);
 			logger.info("callBondReport 方法结束！");
 		} catch (IOException e) {
