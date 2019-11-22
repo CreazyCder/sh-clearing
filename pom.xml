@@ -14,6 +14,7 @@
         <module>shch-common</module>
         <module>shch-bond</module>
         <module>shch-cash</module>
+        <module>renhang-gateway</module>
     </modules>
     <!-- 公共属性 -->
     <properties>

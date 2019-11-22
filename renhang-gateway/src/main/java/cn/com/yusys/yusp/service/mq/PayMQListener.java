@@ -61,7 +61,7 @@ public class PayMQListener {
                 cashClient.add(money);
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             logger.info("支付处理接收报文格式化对象失败：" + msg);
         }
