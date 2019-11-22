@@ -364,6 +364,18 @@ public class BondDto implements Serializable{
 		this.opertionType = opertionType;
 	}
 
+	@Override
+	public String toString() {
+		return "BondDto [serialNum=" + serialNum + ", tradeId=" + tradeId + ", bondSettleId=" + bondSettleId
+				+ ", bondCode=" + bondCode + ", bondName=" + bondName + ", debitMemId=" + debitMemId + ", debitMemName="
+				+ debitMemName + ", debitHolderAccount=" + debitHolderAccount + ", debitHolderAccountName="
+				+ debitHolderAccountName + ", bondDebitTitle=" + bondDebitTitle + ", creditMemId=" + creditMemId
+				+ ", creditMemName=" + creditMemName + ", creditHolderAccount=" + creditHolderAccount
+				+ ", creditHolderAccountName=" + creditHolderAccountName + ", bondCreditTitle=" + bondCreditTitle
+				+ ", bondFaceAmt=" + bondFaceAmt + ", updateTm=" + updateTm + ", remark=" + remark + ", bondProcStatus="
+				+ bondProcStatus + ", settleOrderId=" + settleOrderId + ", opertionType=" + opertionType + "]";
+	}
+
 	
 
 }

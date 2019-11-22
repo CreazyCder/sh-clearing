@@ -162,7 +162,7 @@ public class BondSettltOrderService {
 		return returnDto;
     }
    
-    //簿记单据生成并发送
+    //簿记单据生成并发送（流程编排用）
     @Logic(description="簿记单据生成并发送")
     public void callBondReport(BondDto bondDto) {
     	logger.info("callBondReport 方法开始:"+bondDto);
@@ -206,6 +206,54 @@ public class BondSettltOrderService {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+    }
+    
+   //簿记单据生成并发送（流程编排用）
+    public void callBondReport2(BondDto bondDto) {
+    	logger.info("callBondReport2 方法开始:{}",bondDto);
+    	String dateStr1 = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+    	String dateStr2 = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(new Date());
+    	
+    	String json ="{\r\n" + 
+				"	\"yusys\": {\r\n" + 
+				"		\"head\": {\r\n" + 
+				"			\"appCode\": \"1003\",\r\n" + 
+				"			\"sceneNo\": \"1001\",\r\n" + 
+				"			\"chnlCode\": \"0147\",\r\n" + 
+				"			\"chnlSeqNo\": \"stm110000120180511001702891\",\r\n" + 
+				"			\"tradeName\": \"单据模板样例\",\r\n" + 
+				"			\"tradeCode\": \"SC3001\"\r\n" + 
+				"		},\r\n" + 
+				"		\"body\": {\r\n" + 
+				"			\"request\": {\r\n" + 
+				"				\"trade_id\":\""+ bondDto.getTradeId() +"\",\r\n" + 
+				"				\"settle_order_id\":\""+ bondDto.getSettleOrderId() +"\",\r\n" + 
+				"				\"settle_date\":\""+ dateStr1 +"\",\r\n" + 
+				"				\"bond_code\":\""+ bondDto.getBondCode() +"\",\r\n" + 
+				"				\"bond_name\":\""+ bondDto.getBondName() +"\",\r\n" + 
+				"				\"seller_mem_code\":\""+ bondDto.getDebitMemId() +"\",\r\n" + 
+				"				\"seller_mem_name\":\""+ bondDto.getDebitMemName() +"\",\r\n" + 
+				"				\"buyer_mem_code\":\""+ bondDto.getCreditMemId() + "\",\r\n" + 
+				"				\"buyer_mem_name\":\""+ bondDto.getCreditMemName() + "\",\r\n" + 
+				"				\"bond_face_amt\":\""+ bondDto.getBondFaceAmt() +"\",\r\n" + 
+				"				\"settle_order_status_update_tm\":\""+ dateStr2  +"\",\r\n" + 
+				"			}\r\n" + 
+				"		}\r\n" + 
+				"	}\r\n" + 
+				"}\r\n" + 
+				"";
+		//4单据打印
+		try {
+			logger.info("callBondReport2 json is:{}",json);
+			SocketService.socket(json);
+			logger.info("callBondReport2 方法结束！");
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.error("callBondReport2 IOException is:",e);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("callBondReport2 Exception is:",e);
 		}
     }
     /**
@@ -342,8 +390,10 @@ public class BondSettltOrderService {
 		//3插入簿记流水表
 		bondSettltOrderMapper.insert(recordMatch(bondDto,bondProcStatus));
 		
+		if("S".equals(bondProcStatus)) {
 		//4单据打印
-		callBondReport(bondDto);
+			callBondReport2(bondDto);
+		}
 		
 		//5.拼接异步反馈对象，返回异步调用处（给清算系统异步应答）
 		BondSettleNotifyReq req = new BondSettleNotifyReq();
