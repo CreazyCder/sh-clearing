@@ -166,7 +166,7 @@ public class CashSettleOrderService {
 			// cashSettleOrderMapper.updateStateSuccess(serialNum);
 			String data = objectMapper.writeValueAsString(record2);
 			logger.info("发送Rabbit报文:" + data);
-			amqpTemplate.convertAndSend("pay1", data);
+			amqpTemplate.convertAndSend("pay", data);
 			logger.info("交易成功:" + serialNum);
 			result = true;
 		}

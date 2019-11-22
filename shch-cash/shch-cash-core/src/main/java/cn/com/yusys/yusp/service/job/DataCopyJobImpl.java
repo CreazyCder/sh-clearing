@@ -112,7 +112,7 @@ public class DataCopyJobImpl extends IJobHandler {
 			data.add(d);
 			break;
 		}
-		rs.close();
+        rs.close();
 		return data;
 	}
 	/**
