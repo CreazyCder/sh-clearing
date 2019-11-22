@@ -8,6 +8,8 @@ import cn.com.yusys.yusp.commons.fee.common.enums.LableType;
 import cn.com.yusys.yusp.commons.mapper.QueryModel;
 import cn.com.yusys.yusp.commons.security.SecurityUtils;
 import cn.com.yusys.yusp.commons.util.DateUtil;
+import cn.com.yusys.yusp.constant.BondSettleStatusEnum;
+import cn.com.yusys.yusp.constant.CashSettleStatusEnum;
 import cn.com.yusys.yusp.constant.SettleStatusEnum;
 import cn.com.yusys.yusp.domain.SettleOrder;
 import cn.com.yusys.yusp.domain.msg.dvpapply.DVPSettleApplyReq;
@@ -218,7 +220,11 @@ public class SettleOrderService {
     	model.setSize(0);
     	
     	SettleOrder order = settleOrderMapper.selectByModel(model).get(0);
+    	
     	order.setSettleOrderStatus(SettleStatusEnum.CANCELED.getCode());
+    	order.setBondSettleStatus(BondSettleStatusEnum.CANCELED.getCode());
+    	order.setCashSettleStatus(CashSettleStatusEnum.CANCELED.getCode());
+    			
     	return settleOrderMapper.updateByPrimaryKeySelective(order);
     }
 }
