@@ -23,6 +23,7 @@ import cn.com.yusys.yusp.service.EnoughMoneyDto;
 import cn.com.yusys.yusp.service.MoneyDto;
 import cn.com.yusys.yusp.service.job.DataBackupJobImpl;
 import cn.com.yusys.yusp.service.job.DataCopyJobImpl;
+import cn.com.yusys.yusp.service.job.MoneyCheckJobImpl;
 
 @RestController
 @RequestMapping("/api/cash")
@@ -34,10 +35,13 @@ public class CashResource {
     
     @Autowired
     private CashAccountBalanceMapper cashAccountBalanceMapper;
+    
     @Autowired
     private DataCopyJobImpl dbCody;
     @Autowired
    	private DataBackupJobImpl dbBackup;
+    @Autowired
+    private MoneyCheckJobImpl moneyChk;
     @PostMapping("/")
     protected ResultDto<String> create(@RequestBody @Valid CashDto record) {
     	logger.info("资金DVP结算请求指令接收报文:"+record);
@@ -101,6 +105,15 @@ public class CashResource {
 			dbBackup.execute(null);
 		} catch (Exception e) {
 			logger.error("backup error", e);
+		}
+        return new ResultDto<String>("0");
+    }
+    @PostMapping("/moneyChk")
+    protected ResultDto<String> moneyChk() {
+    	try {
+    		moneyChk.execute(null);
+		} catch (Exception e) {
+			logger.error("moneyChk error", e);
 		}
         return new ResultDto<String>("0");
     }
