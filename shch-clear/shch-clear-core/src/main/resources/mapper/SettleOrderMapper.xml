@@ -421,7 +421,7 @@
                                   CASH_SETTLE_ID, BOND_SETTLE_STATUS, BOND_SETTLE_STATUS_UPDATE_TM, CASH_SETTLE_STATUS,
                                   CASH_SETTLE_STATUS_UPDATE_TM, SETTLE_ORDER_STATUS, SETTLE_ORDER_STATUS_UPDATE_TM,
                                   CASH_PEROID, BOND_PEROID, INPUT_OPER_ID, INPUT_TM, REVIEW_OPER_ID, REVIEW_TM,
-                                  CONFIRM_OPER_ID, CONFIRM_TM, SRC_FROM, REMARK)
+                                  CONFIRM_OPER_ID, CONFIRM_TM, SRC_FROM, REMARK,UPDATE_TM)
         values (#{bizDate,jdbcType=VARCHAR},
                 #{tradeId,jdbcType=VARCHAR},
                 #{tradeDate,jdbcType=VARCHAR},
@@ -458,7 +458,7 @@
                 #{confirmOperId,jdbcType=VARCHAR},
                 #{confirmTm,jdbcType=VARCHAR},
                 #{srcFrom,jdbcType=VARCHAR},
-                #{remark,jdbcType=VARCHAR})
+                #{remark,jdbcType=VARCHAR},sysdate)
     </insert>
 
     <!-- 插入-只插入非空字段 -->
@@ -738,7 +738,9 @@
     <!-- 根据主键更新-只更新非空字段 -->
     <update id="updateSettleStatus" parameterType="cn.com.yusys.yusp.domain.SettleOrder">
         update SETTLE_ORDER
+        	
         <set>
+      		UPDATE_TM = sysdate,
             <if test="bondStatus != null and bondStatus!=''">
                 BOND_SETTLE_STATUS = #{bondStatus,jdbcType=VARCHAR},
                 BOND_SETTLE_STATUS_UPDATE_TM=#{updateTime,jdbcType=VARCHAR},
@@ -760,6 +762,7 @@
     <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.domain.SettleOrder">
         update SETTLE_ORDER
         <set>
+        	UPDATE_TM = sysdate,
             <if test="bizDate != null">
                 BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
             </if>
