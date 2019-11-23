@@ -319,7 +319,7 @@ public class DataCopyJobImpl extends IJobHandler {
         updateString = updateString.substring(0, updateString.length() - 1);
 
         String sql = String.format("UPDATE %s SET %s WHERE 1=1 %s", table, updateString, condation.toString());
-
+        logger.info("generateUpdateSqlByKey sql :{}",sql);
         return sql;
     }
     
