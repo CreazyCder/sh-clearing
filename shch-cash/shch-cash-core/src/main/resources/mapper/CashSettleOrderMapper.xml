@@ -66,7 +66,7 @@
       #{debitMemName,jdbcType=VARCHAR}, #{debitHolderAccount,jdbcType=VARCHAR}, #{debitHolderAccountName,jdbcType=VARCHAR}, 
       #{cashDebitTitle,jdbcType=VARCHAR}, #{creditMemId,jdbcType=VARCHAR}, #{creditMemName,jdbcType=VARCHAR}, 
       #{creditHolderAccount,jdbcType=VARCHAR}, #{creditHolderAccountName,jdbcType=VARCHAR}, 
-      #{cashCreditTitle,jdbcType=VARCHAR}, #{cashSettleAmt,jdbcType=NUMERIC}, #{updateTm,jdbcType=VARCHAR}, 
+      #{cashCreditTitle,jdbcType=VARCHAR}, #{cashSettleAmt,jdbcType=NUMERIC}, sysdate,
       #{remark,jdbcType=VARCHAR}, #{cashProcStatus,jdbcType=VARCHAR},to_char(sysdate,'yyyyMMdd'),#{settleOrderId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.com.yusys.yusp.domain.CashSettleOrder">
@@ -276,7 +276,7 @@
       CREDIT_HOLDER_ACCOUNT_NAME = #{creditHolderAccountName,jdbcType=VARCHAR},
       CASH_CREDIT_TITLE = #{cashCreditTitle,jdbcType=VARCHAR},
       CASH_SETTLE_AMT = #{cashSettleAmt,jdbcType=NUMERIC},
-      UPDATE_TM = #{updateTm,jdbcType=VARCHAR},
+      UPDATE_TM = sysdate,
       REMARK = #{remark,jdbcType=VARCHAR},
       CASH_PROC_STATUS = #{cashProcStatus,jdbcType=VARCHAR}
     where SERIAL_NUM = #{serialNum,jdbcType=VARCHAR}
