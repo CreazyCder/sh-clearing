@@ -33,7 +33,8 @@ public class MoneyCheckJobImpl extends IJobHandler {
         logger.info("定时任务执行：MoneyCheckJobImpl");
         QueryModel model = new QueryModel();
         model.setSize(100);
-        model.addCondition("CASH_PROC_STATUS", "2");
+        model.setPage(1);
+        model.addCondition("cashProcStatus", "2");
         List<CashSettleOrder> data = cashSettleOrderService.selectByModel(model);
         for (CashSettleOrder dataT : data) {
             if (1 == cashSettleOrderService.updateState(dataT.getSerialNum())) {
