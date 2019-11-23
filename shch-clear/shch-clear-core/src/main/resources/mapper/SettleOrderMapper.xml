@@ -408,8 +408,18 @@
             <if test="condition.bondCode!=null and condition.bondCode!=''">
                 AND BOND_CODE=#{condition.bondCode,jdbcType=VARCHAR}
             </if>
+            
+           <if test="condition.settleOrderStatus != null and condition.settleOrderStatus != ''">
+                AND SETTLE_ORDER_STATUS = #{condition.settleOrderStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="condition.bondSettleStatus != null and condition.bondSettleStatus != ''">
+                AND BOND_SETTLE_STATUS = #{condition.bondSettleStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="condition.cashSettleStatus != null and condition.cashSettleStatus != ''">
+                AND CASH_SETTLE_STATUS = #{condition.cashSettleStatus,jdbcType=VARCHAR}
+            </if>
         </where>
-        order by INPUT_TM
+        order by INPUT_TM DESC
     </select>
 
     <!-- 插入 -->
