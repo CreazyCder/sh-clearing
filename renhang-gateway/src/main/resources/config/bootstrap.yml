@@ -19,3 +19,9 @@ logging:
     level: 
         root: INFO
         springfox.documentation.spring.web.readers.operation: OFF  #springfox日志关闭输出
+
+renhang:
+  gateway:
+    cash:
+      DEV: http://172.30.254.220:18001/api/cash/pay
+      PRO: http://172.30.254.011:18001/api/cash/pay
