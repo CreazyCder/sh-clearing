@@ -28,10 +28,20 @@ public class DataCopyJobImpl extends IJobHandler {
     @Override
     public ReturnT<String> execute(String param) throws Exception {
 
+    	
+    	execTask("SHCH_POC", "SHCH_POC");
+    	execTask("SHCH_POC1", "SHCH_POC1");
+        
+        return ReturnT.SUCCESS;
+    }
+
+    
+    public void execTask(String user,String pass) {
+
         Connection connection = null;
         try {
-            logger.info("数据同步定时任务执行：DataCopyJobImpl");
-            connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", "SHCH_POC", "SHCH_POC");
+            logger.info("数据同步定时任务执行：DataCopyJobImpl - {}",user);
+            connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", user, pass);
             connection.setAutoCommit(false);
             List<List<String>> task = getTasks(connection);
             
@@ -50,10 +60,9 @@ public class DataCopyJobImpl extends IJobHandler {
                 closeConnection(connection);
             }
         }
-
-        return ReturnT.SUCCESS;
     }
-
+    
+    
     /**
      * 获取数据库连接
      *
