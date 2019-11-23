@@ -85,7 +85,33 @@ public class CashAccountBalance extends BaseDomain implements Serializable {
     @Column(name = "MSG_TYPE")
     private String msgType;
 
-    
+    public String getTradeId() {
+        return tradeId;
+    }
+
+    public void setTradeId(String tradeId) {
+        this.tradeId = tradeId;
+    }
+
+    /**
+     * 渠道流水号
+     */
+    private String tradeId;
+
+    /**
+     * 环境代码
+     */
+    private String env;
+
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
+    }
+
     public String getMsgType() {
 		return msgType;
 	}

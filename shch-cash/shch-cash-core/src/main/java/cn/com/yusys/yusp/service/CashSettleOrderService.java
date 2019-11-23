@@ -2,6 +2,7 @@ package cn.com.yusys.yusp.service;
 
 import java.util.List;
 
+import cn.com.yusys.yusp.config.EnvClusterConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -27,6 +28,10 @@ import cn.com.yusys.yusp.repository.mapper.CashSettleOrderMapper;
 public class CashSettleOrderService {
     private Logger logger = LoggerFactory.getLogger(CashSettleOrderService.class);
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    EnvClusterConfig envClusterConfig;
+
     @Autowired
     private CashSettleOrderMapper cashSettleOrderMapper;
 
@@ -114,7 +119,7 @@ public class CashSettleOrderService {
             record2.setMemCode(record.getDebitMemId());
             record2.setHolderAccount(record.getDebitHolderAccount());
             record2.setTitleCode(record.getCashDebitTitle());
-
+            record2.setTradeId(record.getTradeId());
 
             record2.setCashAccount(re2.getCashAccount());
 
@@ -165,9 +170,11 @@ public class CashSettleOrderService {
             cashSettleOrderMapper.updateByPrimaryKeySelective(record3);
             record2.setSerialNum(serialNum);
             record2.setMsgType("HVPS.111.001.01");
+            record2.setEnv(envClusterConfig.getEnv());
+
             // cashSettleOrderMapper.updateStateSuccess(serialNum);
             String data = objectMapper.writeValueAsString(record2);
-            logger.info("发送Rabbit报文:" + data);
+            logger.info("发送往账报文到MQ:" + data);
 
             //amqpTemplate.convertAndSend("to_hvps", data);
 

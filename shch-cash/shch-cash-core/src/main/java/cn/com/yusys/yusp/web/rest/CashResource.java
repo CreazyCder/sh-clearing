@@ -47,20 +47,20 @@ public class CashResource {
     	logger.info("资金DVP结算请求指令接收报文:"+record);
     	cashSettleOrderService.asynUpdateCashCount(record);
         logger.info("资金DVP结算请求指令接收报文成功");
-        return new ResultDto<String>("0");
+        return new ResultDto<>("0");
     }
     
     @PostMapping("/pay")
     protected ResultDto<String> pay(@RequestBody Map param) {
-    	logger.info("pay:"+param.get("serialNum").toString());
+    	logger.info("支付应答报文:{}", param.toString());
 		cashSettleOrderService.pay(param.get("serialNum").toString());
-        return new ResultDto<String>("0");
+        return new ResultDto<>("0");
     }
 
     @GetMapping("/riqie")
     protected ResultDto<String> create(String code) {
     	logger.info("日切成功:"+code);
-        return new ResultDto<String>(0, "资金处理成功", "info");
+        return new ResultDto<>(0, "资金处理成功", "info");
     }
     
     /**

@@ -19,7 +19,7 @@ import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
 import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
 import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
 
-@JobHandler(value = "DataCopyJobImpl")
+//@JobHandler(value = "DataCopyJobImpl")
 @Service
 public class DataCopyJobImpl extends IJobHandler {
 

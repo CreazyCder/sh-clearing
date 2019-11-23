@@ -21,7 +21,7 @@ import cn.com.yusys.yusp.domain.CashAccountBalance;
 import cn.com.yusys.yusp.message.client.MessageClient;
 import cn.com.yusys.yusp.service.CashAccountBalanceService;
 
-@JobHandler(value = "MoneyNoticeJobImpl")
+//@JobHandler(value = "MoneyNoticeJobImpl")
 @Service
 public class MoneyNoticeJobImpl extends IJobHandler {
 
@@ -51,8 +51,9 @@ public class MoneyNoticeJobImpl extends IJobHandler {
 				param.put("users", "40");// 用户id,多个,隔开
 				param.put("content", "余额即将不足了");
 				param.put("tittle", "余额通知");// 邮件和系统消息才需要
-				messageClient.sendRealTimeMessageWithOutTemplate(param);// 一般消息发送
-			}
+				//messageClient.sendRealTimeMessageWithOutTemplate(param);// 一般消息发送
+                amqpTemplate.convertAndSend("notify_to_client", param);
+            }
 		}
 		
 		return ReturnT.SUCCESS;
