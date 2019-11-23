@@ -882,6 +882,7 @@
     <update id="updateByTradeId" parameterType="cn.com.yusys.yusp.domain.SettleOrder">
         update SETTLE_ORDER
         <set>
+       		 UPDATE_TM = sysdate,
             <if test="bizDate != null">
                 BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
             </if>
