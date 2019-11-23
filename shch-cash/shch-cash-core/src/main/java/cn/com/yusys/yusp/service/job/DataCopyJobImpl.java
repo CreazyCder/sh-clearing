@@ -1,20 +1,23 @@
 package cn.com.yusys.yusp.service.job;
 
-import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
-import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
-import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import cn.com.yusys.yusp.commons.job.core.biz.model.ReturnT;
+import cn.com.yusys.yusp.commons.job.core.handler.IJobHandler;
+import cn.com.yusys.yusp.commons.job.core.handler.annotation.JobHandler;
 
 @JobHandler(value = "DataCopyJobImpl")
 @Service
@@ -30,13 +33,16 @@ public class DataCopyJobImpl extends IJobHandler {
             logger.info("数据同步定时任务执行：DataCopyJobImpl");
             connection = getConnection("jdbc:oracle:thin:@//192.168.251.166:1521/orcl", "SHCH_POC", "SHCH_POC");
             connection.setAutoCommit(false);
-            List<String> task = getTask(connection);
-            List<String> cols = getTableColName(connection, task.get(0));
-            String sql = getSelectSql(cols, task.get(0));
-            //sql = sql +" where update_tm >= to_date("+task.get(2)+", 'yyyymmddhh24miss') and update_tm < to_date("+task.get(2)+", 'yyyymmddhh24miss') + numtodsinterval(10, 'second')";
-            System.out.println(sql);
-            List<Map<String, Object>> data = getData(connection, cols, sql);
-            insertData(data, task.get(1));
+            List<List<String>> task = getTasks(connection);
+            
+            for (List<String> t : task) {
+            	List<String> cols = getTableColName(connection,t.get(0));
+                String sql = getSelectSql(cols, t.get(0));
+                System.out.println(sql);
+                List<Map<String, Object>> data = getData(connection, cols, sql);
+                insertData(data, t.get(1));
+			}
+            
         } catch (Exception e) {
             logger.error("发生异常: " + e.getMessage());
         } finally {
@@ -126,6 +132,21 @@ public class DataCopyJobImpl extends IJobHandler {
         return data;
     }
 
+    private List<List<String>> getTasks(Connection conn) throws Exception {
+        List<List<String>> data = new ArrayList<List<String>>();
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery("select src_table, dst_table, to_char(last_transx_tm, 'yyyymmddhh24miss') from data_transx_ctrl where last_transx_tm < sysdate - numtodsinterval(20, 'second')");
+        // 遍历获取表结构信息
+        while (rs.next()) {
+            String s = rs.getString(1);
+            String t = rs.getString(2);
+            String d = rs.getString(3);
+            
+            data.add(Arrays.asList(new String[] {s,t,d}));
+        }
+        rs.close();
+        return data;
+    }
     /**
      * 获取表结构
      *
@@ -145,6 +166,28 @@ public class DataCopyJobImpl extends IJobHandler {
             String date = rs.getString(3);
             System.out.println(id + " " + name + " " + date);
             colNames.add(name);
+        }
+        rs.close();
+        return colNames;
+    }
+    /**
+     * 取得表主键
+     * @param connection
+     * @param tableName
+     * @return
+     * @throws Exception
+     */
+    private List<String> getTableKeyName(Connection connection, String tableName) throws Exception {
+        List<String> colNames = new ArrayList<String>();
+        Statement st = connection.createStatement();
+        ResultSet rs = st.executeQuery("select col.column_name \r\n" + 
+        		"from user_constraints con,  user_cons_columns col \r\n" + 
+        		"where con.constraint_name = col.constraint_name \r\n" + 
+        		"and con.constraint_type='P' \r\n" + 
+        		"and col.table_name = '"+tableName+"'");
+        // 遍历获取表结构信息
+        while (rs.next()) {
+            colNames.add(rs.getString(1));
         }
         rs.close();
         return colNames;
@@ -196,7 +239,7 @@ public class DataCopyJobImpl extends IJobHandler {
                 } catch (Exception e) {
                     //e.printStackTrace();
                     logger.warn("insert 数据失败" + e.getMessage());
-                    String updateSql = generateUpdateSql(dataT, table);
+                    String updateSql = generateUpdateSqlByKey(connection,dataT, table);
                     insert(connection, updateSql); // update数据
                     logger.info("更新成功：" + updateSql);
                 }
@@ -246,6 +289,40 @@ public class DataCopyJobImpl extends IJobHandler {
         return sql;
     }
 
+    private String generateUpdateSqlByKey(Connection conn,Map<String, Object> data, String table) throws Exception {
+
+    	List<String> keys = getTableKeyName(conn, table);
+    	
+        StringBuilder items = new StringBuilder("");
+        StringBuilder condation = new StringBuilder("");
+        
+        String acctDate = null;
+        String serialNum = null;
+
+        for (String key : data.keySet()) {
+            if (null == data.get(key)) {
+                continue;
+            }
+
+            String data1 = dataChange(data.get(key)).toString();
+            
+            if (keys.contains(key)) {
+                condation.append("AND ").append(key).append(" = ").append(data1);
+                continue;
+            }
+
+            String item = " " + key + " = " + data1 + ",";
+            items.append(item);
+        }
+
+        String updateString = items.toString();
+        updateString = updateString.substring(0, updateString.length() - 1);
+
+        String sql = String.format("UPDATE %s SET %s WHERE 1=1 %s", table, updateString, condation.toString());
+
+        return sql;
+    }
+    
     private String generateSql(Map<String, Object> data, String table) {
         StringBuilder sql = new StringBuilder();
         sql = sql.append("INSERT INTO " + table + " ");

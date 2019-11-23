@@ -21,6 +21,8 @@ import cn.com.yusys.yusp.service.CashDto;
 import cn.com.yusys.yusp.service.CashSettleOrderService;
 import cn.com.yusys.yusp.service.EnoughMoneyDto;
 import cn.com.yusys.yusp.service.MoneyDto;
+import cn.com.yusys.yusp.service.job.DataBackupJobImpl;
+import cn.com.yusys.yusp.service.job.DataCopyJobImpl;
 
 @RestController
 @RequestMapping("/api/cash")
@@ -32,7 +34,10 @@ public class CashResource {
     
     @Autowired
     private CashAccountBalanceMapper cashAccountBalanceMapper;
-   
+    @Autowired
+    private DataCopyJobImpl dbCody;
+    @Autowired
+   	private DataBackupJobImpl dbBackup;
     @PostMapping("/")
     protected ResultDto<String> create(@RequestBody @Valid CashDto record) {
     	logger.info("资金DVP结算请求指令接收报文:"+record);
@@ -78,6 +83,25 @@ public class CashResource {
     	CashAccountBalance record = new CashAccountBalance();
     	BeanUtils.copyProperties(moneyDto, record);
 		cashAccountBalanceMapper.addMoney(record);
+        return new ResultDto<String>("0");
+    }
+    
+    @PostMapping("/dbcopy")
+    protected ResultDto<String> copy() {
+    	try {
+			dbCody.execute(null);
+		} catch (Exception e) {
+			logger.error("copy error", e);
+		}
+        return new ResultDto<String>("0");
+    }
+    @PostMapping("/dbbackup")
+    protected ResultDto<String> backup() {
+    	try {
+			dbBackup.execute(null);
+		} catch (Exception e) {
+			logger.error("backup error", e);
+		}
         return new ResultDto<String>("0");
     }
 }
