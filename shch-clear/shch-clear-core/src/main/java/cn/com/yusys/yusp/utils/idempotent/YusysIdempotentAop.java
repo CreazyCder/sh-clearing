@@ -156,7 +156,9 @@ public class YusysIdempotentAop {
                 res = joinPoint.proceed();
                 if (res != null) {
                     if (JSON.isValid(JSONObject.toJSONString(res)))   //业务方法返回结果可以转换json的情况
+                    	
                         yusysIdempotentStore.update(name, JSONObject.toJSONString(res), ttl);
+                    
                     else  //业务方法返回结果是基本类型的情况
                         yusysIdempotentStore.update(name, res.toString(), ttl);
                 } else {

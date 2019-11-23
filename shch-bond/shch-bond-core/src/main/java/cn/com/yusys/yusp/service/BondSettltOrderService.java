@@ -384,7 +384,7 @@ public class BondSettltOrderService {
 		}else {
 			//这里需要做报错处理
 			bondProcStatus = "F";//失败(借方该债券待付科目余额信息不存在，流程失败)
-			logger.error("簿记DVP结算圈券请求指令异常:"+bondDto);
+			logger.error("簿记DVP结算记账请求指令异常:"+bondDto);
 		}
 		
 		//3插入簿记流水表
