@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//@JobHandler(value = "DataBackupJobImpl")
+@JobHandler(value = "DataBackupJobImpl")
 @Service
 public class DataBackupJobImpl extends IJobHandler {
 

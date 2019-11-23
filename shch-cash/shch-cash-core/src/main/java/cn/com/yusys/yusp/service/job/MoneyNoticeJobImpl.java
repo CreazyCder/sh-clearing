@@ -21,7 +21,7 @@ import cn.com.yusys.yusp.domain.CashAccountBalance;
 import cn.com.yusys.yusp.message.client.MessageClient;
 import cn.com.yusys.yusp.service.CashAccountBalanceService;
 
-//@JobHandler(value = "MoneyNoticeJobImpl")
+@JobHandler(value = "MoneyNoticeJobImpl")
 @Service
 public class MoneyNoticeJobImpl extends IJobHandler {
 

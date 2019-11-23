@@ -17,7 +17,7 @@ import cn.com.yusys.yusp.service.CashAccountBalanceService;
 import cn.com.yusys.yusp.service.CashSettleOrderService;
 import cn.com.yusys.yusp.web.rest.CashResource;
 
-//@JobHandler(value = "MoneyCheckJobImpl")
+@JobHandler(value = "MoneyCheckJobImpl")
 @Service
 public class MoneyCheckJobImpl extends IJobHandler {
 
