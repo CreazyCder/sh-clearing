@@ -30,7 +30,7 @@
     -->
     select 
     <include refid="Base_Column_List" />
-    from CASH_ACCOUNT_BALANCE
+    from SHCH_POC.CASH_ACCOUNT_BALANCE
     where MEM_CODE = #{memCode,jdbcType=VARCHAR}
       and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
       and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
@@ -40,7 +40,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    delete from CASH_ACCOUNT_BALANCE
+    delete from SHCH_POC.CASH_ACCOUNT_BALANCE
     where MEM_CODE = #{memCode,jdbcType=VARCHAR}
       and HOLDER_ACCOUNT = #{holderAccount,jdbcType=VARCHAR}
       and TITLE_CODE = #{titleCode,jdbcType=VARCHAR}
@@ -50,7 +50,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    insert into CASH_ACCOUNT_BALANCE (MEM_CODE, HOLDER_ACCOUNT, TITLE_CODE, 
+    insert into SHCH_POC.CASH_ACCOUNT_BALANCE (MEM_CODE, HOLDER_ACCOUNT, TITLE_CODE,
       CASH_ACCOUNT, BIZ_DATE, MEM_NAME, 
       HOLDER_ACCOUNT_NAME, TITLE_NAME, CURRENCY_AMT, 
       UPDATE_TM, CASH_ACCOUNT_NAME)
@@ -63,7 +63,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    insert into CASH_ACCOUNT_BALANCE
+    insert into SHCH_POC.CASH_ACCOUNT_BALANCE
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memCode != null">
         MEM_CODE,
@@ -139,7 +139,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    update CASH_ACCOUNT_BALANCE
+    update SHCH_POC.CASH_ACCOUNT_BALANCE
     <set>
       <if test="bizDate != null">
         BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
@@ -172,7 +172,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    update CASH_ACCOUNT_BALANCE
+    update SHCH_POC.CASH_ACCOUNT_BALANCE
     set BIZ_DATE = #{bizDate,jdbcType=VARCHAR},
       MEM_NAME = #{memName,jdbcType=VARCHAR},
       HOLDER_ACCOUNT_NAME = #{holderAccountName,jdbcType=VARCHAR},
@@ -186,7 +186,7 @@
       and CASH_ACCOUNT = #{cashAccount,jdbcType=VARCHAR}
   </update>
   <select id="selectByModel" parameterType="cn.com.yusys.yusp.commons.mapper.QueryModel" resultMap="BaseResultMap">
-    SELECT * FROM CASH_ACCOUNT_BALANCE
+    SELECT * FROM SHCH_POC.CASH_ACCOUNT_BALANCE
     <where>
       <if test="condition.memCode !=null and condition.memCode !=''">
         <choose>
@@ -305,13 +305,13 @@
     </if>
   </select>
   <delete id="deleteByIds" parameterType="java.lang.String">
-    DELETE FROM CASH_ACCOUNT_BALANCE WHERE MEM_CODE IN
+    DELETE FROM SHCH_POC.CASH_ACCOUNT_BALANCE WHERE MEM_CODE IN
     <foreach close=")" collection="@cn.com.yusys.yusp.commons.mapper.provider.OGNLUtil@toList('java.lang.String',_parameter)" item="id" open="(" separator=",">
       #{id,jdbcType=VARCHAR}
     </foreach>
   </delete>
   <update id="updateMoney" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
-    update CASH_ACCOUNT_BALANCE
+    update SHCH_POC.CASH_ACCOUNT_BALANCE
     <set>     
         currency_amt = currency_amt - #{currencyAmt,jdbcType=NUMERIC}
     </set>
@@ -323,7 +323,7 @@
   </update>
   
   <update id="addMoney" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance">
-    update CASH_ACCOUNT_BALANCE
+    update SHCH_POC.CASH_ACCOUNT_BALANCE
     <set>     
         currency_amt = currency_amt + #{currencyAmt,jdbcType=NUMERIC}
     </set>
@@ -334,6 +334,6 @@
   </update>
   
   <select id="selectAccountState" parameterType="cn.com.yusys.yusp.domain.CashAccountBalance" resultType="java.lang.Integer">
-    select count(currency_amt) from cash_account_balance where cash_account = #{cashAccount} and currency_amt >=  #{currencyAmt} 
+    select count(currency_amt) from SHCH_POC.cash_account_balance where cash_account = #{cashAccount} and currency_amt >=  #{currencyAmt}
  </select>
 </mapper>
