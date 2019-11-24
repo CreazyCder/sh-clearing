@@ -23,5 +23,5 @@ logging:
 renhang:
   gateway:
     cash:
-      DEV: http://172.30.254.220:18001/api/cash/pay
-      PRO: http://172.30.254.011:18001/api/cash/pay
+      DEV: http://192.168.251.174:18001/api/cash/pay
+      PRO: http://192.168.251.171:18001/api/cash/pay
