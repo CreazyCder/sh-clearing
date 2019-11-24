@@ -228,7 +228,7 @@ public class BondSettltOrderService {
 				"		\"body\": {\r\n" + 
 				"			\"request\": {\r\n" + 
 				"				\"trade_id\":\""+ bondDto.getTradeId() +"\",\r\n" + 
-				"				\"settle_order_id\":\""+ bondDto.getSettleOrderId() +"\",\r\n" + 
+				"				\"settle_order_id\":\""+ bondDto.getSettleOrderId().substring(0, 8) +"\",\r\n" + 
 				"				\"settle_date\":\""+ dateStr1 +"\",\r\n" + 
 				"				\"bond_code\":\""+ bondDto.getBondCode() +"\",\r\n" + 
 				"				\"bond_name\":\""+ bondDto.getBondName() +"\",\r\n" + 
@@ -236,7 +236,7 @@ public class BondSettltOrderService {
 				"				\"seller_mem_name\":\""+ bondDto.getDebitMemName() +"\",\r\n" + 
 				"				\"buyer_mem_code\":\""+ bondDto.getCreditMemId() + "\",\r\n" + 
 				"				\"buyer_mem_name\":\""+ bondDto.getCreditMemName() + "\",\r\n" + 
-				"				\"bond_face_amt\":\""+ bondDto.getBondFaceAmt() +"\",\r\n" + 
+				"				\"bond_face_amt\":\""+ bondDto.getBondFaceAmt().multiply(new BigDecimal(100)) +"\",\r\n" + 
 				"				\"settle_order_status_update_tm\":\""+ dateStr2  +"\",\r\n" + 
 				"			}\r\n" + 
 				"		}\r\n" + 
