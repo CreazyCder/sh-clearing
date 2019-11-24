@@ -60,8 +60,8 @@ public class SocketService {
 				"		},\r\n" + 
 				"		\"body\": {\r\n" + 
 				"			\"request\": {\r\n" + 
-				"				\"trade_id\":\"DVP201911170000001\",\r\n" + 
-				"				\"settle_order_id\":\"DVP20191117000001\",\r\n" + 
+				"				\"trade_id\":\"DVP201911<br>170000001\",\r\n" + 
+				"				\"settle_order_id\":\"DVP2019111<br>000001\",\r\n" + 
 				"				\"settle_date\":\"2019/11/17\",\r\n" + 
 				"				\"bond_code\":\"011900001\",\r\n" + 
 				"				\"bond_name\":\"国债城建001\",\r\n" + 
@@ -69,7 +69,7 @@ public class SocketService {
 				"				\"seller_mem_name\":\"中国工商银行\",\r\n" + 
 				"				\"buyer_mem_code\":\"A000006\",\r\n" + 
 				"				\"buyer_mem_name\":\"招商银行\",\r\n" + 
-				"				\"bond_face_amt\":\"999999999.99\",\r\n" + 
+				"				\"bond_face_amt\":\"1\",\r\n" + 
 				"				\"settle_order_status_update_tm\":\"2019/11/17 16:41:01\",\r\n" + 
 				"			}\r\n" + 
 				"		}\r\n" + 

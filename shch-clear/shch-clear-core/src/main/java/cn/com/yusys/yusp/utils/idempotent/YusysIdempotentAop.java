@@ -11,6 +11,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
@@ -23,7 +25,7 @@ import cn.com.yusys.yusp.utils.annotation.YusysIdempotent;
 @Aspect
 @Component
 public class YusysIdempotentAop {
-
+	private Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     YusysIdempotentProperties yusysIdempotentProperties;
 
@@ -36,7 +38,7 @@ public class YusysIdempotentAop {
 
 /*    @Before("idempotent()")
     public void doBeforeAdvice(JoinPoint joinPoint){
-        System.out.println("进入方法前执行.....");
+        log.info("进入方法前执行.....");
 
     }*/
 
@@ -102,7 +104,8 @@ public class YusysIdempotentAop {
             }
         }
 
-        System.out.println("---------存入数据源中的key值为-------------:" + name);
+        log.info("---------存入数据源中的key值为-------------:" + name);
+        
         //时间格式的转换，传入时间要求“数字+d/h/m/s”,转换为long类型的值
         Object res = null;
         String ttlStr = action.ttl();
@@ -156,7 +159,6 @@ public class YusysIdempotentAop {
                 res = joinPoint.proceed();
                 if (res != null) {
                     if (JSON.isValid(JSONObject.toJSONString(res)))   //业务方法返回结果可以转换json的情况
-                    	
                         yusysIdempotentStore.update(name, JSONObject.toJSONString(res), ttl);
                     
                     else  //业务方法返回结果是基本类型的情况
@@ -184,7 +186,7 @@ public class YusysIdempotentAop {
      */
     //@AfterReturning(returning = "ret", pointcut = "idempotent()")
     public void doAfterReturning(Object ret) {
-        System.out.println("方法的返回值 : " + ret);
+        log.info("方法的返回值 : " + ret);
     }
 
     /**
@@ -192,7 +194,7 @@ public class YusysIdempotentAop {
      */
     //@AfterThrowing("idempotent()")
     public void throwss(JoinPoint jp) {
-        System.out.println("方法异常时执行.....");
+        log.info("方法异常时执行.....");
     }
 
 
@@ -201,6 +203,6 @@ public class YusysIdempotentAop {
      */
    /* @After("idempotent()")
     public void after(JoinPoint jp){
-        System.out.println("方法最后执行.....");
+        log.info("方法最后执行.....");
     }*/
 }
